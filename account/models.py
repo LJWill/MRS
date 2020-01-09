@@ -37,14 +37,24 @@ class MyAccountManager(BaseUserManager):
 
 
 class Account(AbstractBaseUser):
-	email 					= models.EmailField(verbose_name="email", max_length=60, unique=True)
-	username 				= models.CharField(max_length=30, unique=True)
-	date_joined				= models.DateTimeField(verbose_name='date joined', auto_now_add=True)
-	last_login				= models.DateTimeField(verbose_name='last login', auto_now=True)
-	is_admin				= models.BooleanField(default=False)
-	is_active				= models.BooleanField(default=True)
-	is_staff				= models.BooleanField(default=False)
-	is_superuser			= models.BooleanField(default=False)
+    
+	gender = (
+        ('male', 'Male'),
+        ('female', 'Female'),
+        ('unisex','Unisex'),
+        ('transgender','Transgender')
+    )
+
+	email 			= 	models.EmailField(verbose_name="email", max_length=60, unique=True)
+	username 		= 	models.CharField(max_length=30, unique=True)
+	date_joined		= 	models.DateTimeField(verbose_name='date joined', auto_now_add=True)
+	last_login		= 	models.DateTimeField(verbose_name='last login', auto_now=True)
+	sex 			= 	models.CharField(db_column='gender', max_length=32, choices=gender, default='')
+	birthdate 		= 	models.DateField(db_column='birthDate', null=True)
+	is_admin		= 	models.BooleanField(default=False)
+	is_active		= 	models.BooleanField(default=True)
+	is_staff		= 	models.BooleanField(default=False)
+	is_superuser	= 	models.BooleanField(default=False)
 
 
 	USERNAME_FIELD = 'email'
