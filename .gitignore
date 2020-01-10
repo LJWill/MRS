@@ -4,6 +4,7 @@ venv/
 **/__pycache__
 *_initial.py
 *_auto_*.py
+*.csv
 db.sqlite3
 node_modules
 build
