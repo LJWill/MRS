@@ -1,5 +1,5 @@
 
-# MRS
+# MRS - a movie recommender system
 
 ## Quick Start
 
@@ -12,13 +12,14 @@ source venv/bin/activate
 pip install -r requirements.txt
 
 # Install dependencies
+cd front-end
 npm install
-
-# Serve API on localhost:8000
-python manage.py runserver
 
 # Run for devlopment
 npm run start
+
+# Serve API on localhost:8000
+python manage.py runserver
 
 # Build for production
 npm run build
