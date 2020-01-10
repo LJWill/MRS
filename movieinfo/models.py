@@ -84,6 +84,8 @@ class Movie(models.Model):
     idmovie = models.BigIntegerField( db_column='idMovie', primary_key=True)  # Field name made lowercase.
     director_directorid = models.ForeignKey(Director, models.DO_NOTHING, db_column='Director_directorId', blank=True,
                                             null=True)  # Field name made lowercase.
+    writer_writerid = models.ForeignKey(Writer, models.DO_NOTHING, db_column='Writer_writerid', blank=True,
+                                            null=True)  # Field name made lowercase.
     country = models.CharField(max_length=45, blank=True, null=True)
     title = models.CharField(max_length=100, blank=True, null=True)
     # language = models.CharField(max_length=45, blank=True, null=True)
