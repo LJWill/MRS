@@ -14,8 +14,8 @@ gender = (
 )
 
 
-class Writer(models.Model):
-    idwriter = models.IntegerField(db_column='idWriter', primary_key=True)  # Field name made lowercase.
+class People(models.Model):
+    idperson = models.IntegerField(db_column='idPerson', primary_key=True)  # Field name made lowercase.
     name = models.CharField(db_column='Name', max_length=45, blank=True, null=True)  # Field name made lowercase.
     gender = models.CharField(db_column='gender', max_length=32, choices=gender, default='male')
     biography = models.TextField(blank=True, null=True)
@@ -26,37 +26,17 @@ class Writer(models.Model):
 
     class Meta:
         managed = True
-        db_table = 'writer'
+        db_table = 'people'
 
-
-class Star(models.Model):
-    idstar = models.IntegerField(db_column='idStar', primary_key=True)  # Field name made lowercase.
-    name = models.CharField(db_column='Name', max_length=45, blank=True, null=True)  # Field name made lowercase.
-    gender = models.CharField(db_column='gender', max_length=32, choices=gender, default='male')
-    biography = models.TextField(blank=True, null=True)
-    birthday = models.DateField(db_column='birthDay', null=True)
-    deathday = models.DateField(db_column='deathDay', null=True)
-    birthplace = models.CharField(db_column='placeofBirth', max_length=100, blank=True, null=True)
-    profileimage = models.CharField(db_column='profileImage', max_length=50, blank=True, null=True)
+class Direct(models.Model):
+    movie_idmovie = models.ForeignKey('Movie', models.DO_NOTHING,
+                                         db_column='Movie_idMovie',)  # Field name made lowercase.
+    people_idperson = models.ForeignKey('People', models.DO_NOTHING, db_column='People_idperson')  # Field name made lowercase.
 
     class Meta:
         managed = True
-        db_table = 'star'
-
-
-class Director(models.Model):
-    iddirector = models.IntegerField(db_column='idDirector', primary_key=True)  # Field name made lowercase.
-    name = models.CharField(db_column='Name', max_length=45, blank=True, null=True)  # Field name made lowercase.
-    gender = models.CharField(db_column='gender', max_length=32, choices=gender, default='male')
-    biography = models.TextField(blank=True, null=True)
-    birthday = models.DateField(db_column='birthDay', null=True)
-    deathday = models.DateField(db_column='deathDay', null=True)
-    birthplace = models.CharField(db_column='placeofBirth', max_length=100, blank=True, null=True)
-    profileimage = models.CharField(db_column='profileImage', max_length=50, blank=True, null=True)
-
-    class Meta:
-        managed = True
-        db_table = 'director'
+        db_table = 'direct'
+        unique_together = (('movie_idmovie', 'people_idperson'),)
 
 
 class Genrelist(models.Model):
@@ -82,10 +62,6 @@ class Genre(models.Model):
 
 class Movie(models.Model):
     idmovie = models.BigIntegerField( db_column='idMovie', primary_key=True)  # Field name made lowercase.
-    director_directorid = models.ForeignKey(Director, models.DO_NOTHING, db_column='Director_directorId', blank=True,
-                                            null=True)  # Field name made lowercase.
-    writer_writerid = models.ForeignKey(Writer, models.DO_NOTHING, db_column='Writer_writerid', blank=True,
-                                            null=True)  # Field name made lowercase.
     country = models.CharField(max_length=45, blank=True, null=True)
     title = models.CharField(max_length=100, blank=True, null=True)
     # language = models.CharField(max_length=45, blank=True, null=True)
@@ -127,7 +103,7 @@ class Collections(models.Model):
 
 class Companies(models.Model):
     idcompanies = models.AutoField(db_column='idCompany', primary_key=True)  # Field name made lowercase.
-    name = models.CharField(db_column='Name', max_length=45, null=True)
+    name = models.CharField(db_column='Name', max_length=100, null=True)
 
     class Meta:
         managed = True
@@ -149,9 +125,26 @@ class CompanyMovie(models.Model):
 class Cast(models.Model):
     movie_idmovie = models.ForeignKey('Movie', models.DO_NOTHING,
                                          db_column='Movie_idMovie',)  # Field name made lowercase.
-    star_idstar = models.ForeignKey('Star', models.DO_NOTHING, db_column='Star_idStar')  # Field name made lowercase.
+    people_idperson = models.ForeignKey('People', models.DO_NOTHING, db_column='people_idperson')  # Field name made lowercase.
 
     class Meta:
         managed = True
         db_table = 'cast'
-        unique_together = (('movie_idmovie', 'star_idstar'),)
+        unique_together = (('movie_idmovie', 'people_idperson'),)
+
+class Ratings(models.Model):
+    movie_idmovie = models.ForeignKey('Movie', models.DO_NOTHING,
+                                         db_column='Movie_idMovie',)  # Field name made lowercase.
+    user_iduser = models.ForeignKey('User', models.DO_NOTHING, db_column='user_iduser')  # Field name made lowercase.
+    rating = models.IntegerField(null= True)
+    class Meta:
+        managed = True
+        db_table = 'ratings'
+        unique_together = (('movie_idmovie', 'user_iduser'),)
+
+class User(models.Model):
+    iduser = models.IntegerField(db_column='idUser', primary_key=True)  # Field name made lowercase.
+    class Meta:
+        managed = True
+        db_table = 'user'
+

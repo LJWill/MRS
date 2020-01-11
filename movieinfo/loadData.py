@@ -81,25 +81,11 @@ class LoadingData:
             print("\r" + 'processing %d out of %d items...' % (count, total), end='')
             count += 1
             department = row["known_for_department"]
-            if department == "Acting":
-                try:
-                    movies.Star.objects.get(idstar=row["id"])
-                    continue
-                except:
-                    new_person = movies.Star.objects.create(idstar=row["id"])
-            elif department == "Directing":
-                try:
-                    movies.Director.objects.get(iddirector=row["id"])
-                    continue
-                except:
-                    new_person = movies.Director.objects.create(iddirector=row["id"])
-            else:
-                try:
-                    movies.Writer.objects.get(idwriter=row["id"])
-                    continue
-                except:
-                    new_person = movies.Writer.objects.create(idwriter=row["id"])
-
+            try:
+                movies.People.objects.get(idperson=row["id"])
+                continue
+            except:
+                new_person = movies.People.objects.create(idperson=row["id"])
             new_person.name = row["name"]
             gender = row["gender"]
             if gender == 0:
@@ -144,8 +130,12 @@ class LoadingData:
             try:
                 movies.Images.objects.get(backdrop=row["backdrop"], movie_idmovie=movie)
             except:
-                new_image = movies.Images.objects.create(backdrop=row["backdrop"], movie_idmovie=movie)
-                new_image.save()
+                backdrops = row["backdrops"]
+                if not pd.isnull(backdrops):
+                    backdrops=backdrops.split(',')
+                    for backdrop in backdrops:
+                        new_image = movies.Images.objects.create(backdrop=backdrop, movie_idmovie=movie)
+                        new_image.save()
 
     def writeCast(self, read_path):
         raw = pd.read_csv(read_path)
@@ -158,26 +148,48 @@ class LoadingData:
                 movie = movies.Movie.objects.get(idmovie=row["id"])
             except:
                 continue
+            directors = row["director"]
+            if not pd.isnull(directors):
+                directors = directors.split(",")
+                for director in directors:
+                    try:
+                        directorobj = movies.People.objects.get(idperson=director)
+                        new_direct = movies.Direct.objects.create(movie_idmovie=movie,people_idperson=directorobj)
+                    except:
+                        print("Director Not existing")
 
-            director = row["director"]
-            if not pd.isnull(director):
-                movie.director_directorid = movies.Director.objects.get(iddirector=director)
-            writer = row["writer"]
-            if not pd.isnull(writer):
-                movie.writer_writerid = movies.Writer.objects.get(idwriter=writer)
             stars = row["cast"]
             if not pd.isnull(stars):
                 stars = stars.split(",")
                 for star in stars:
                     try:
-                        starobj = movies.Star.objects.get(idstar=star)
+                        starobj = movies.People.objects.get(idperson=star)
                     except:
                         continue
                     try:
-                        movies.Cast.objects.get(star_idstar=starobj, movie_idmovie=movie)
+                        movies.Cast.objects.get(people_idperson=starobj, movie_idmovie=movie)
                     except:
-                        new_cast = movies.Cast.objects.create(star_idstar=starobj, movie_idmovie=movie)
+                        new_cast = movies.Cast.objects.create(people_idperson=starobj, movie_idmovie=movie)
                         new_cast.save()
+
+    def writeRatings(self, read_path):
+        raw = pd.read_csv(read_path)
+        count = 1
+        total = raw.shape[0]
+        for index, row in raw.iterrows():
+            print("\r" + 'processing %d out of %d items...' % (count, total), end='')
+            count += 1
+            try:
+                movie = movies.Movie.objects.get(idmovie=row["movieId"])
+            except:
+                continue
+            try:
+                user = movies.User.objects.get(iduser=row["userId"])
+            except:
+                user = movies.User.objects.create(iduser=row["userId"])
+            new_rating = movies.Ratings.objects.create(movie_idmovie=movie,user_iduser=user)
+            new_rating.rating = int(row["rating"]*2)
+            new_rating.save()
 
     def writegenrelist(self, genrename):
         try:
@@ -231,18 +243,20 @@ class LoadingData:
             return new_collection
 
 
-
 if __name__ == '__main__':
     ld = LoadingData()
 
     # read_path = 'origindata/people.csv'
     # ld.writeStuff(read_path)
-
-    read_path = 'origindata/movieDetails.csv'
-    ld.writeMovie(read_path)
+    #
+    # read_path = 'origindata/movieDetail.csv'
+    # ld.writeMovie(read_path)
 
     # read_path = 'origindata/cast.csv'
     # ld.writeCast(read_path)
 
-    # read_path = 'origindata/movieImage.csv'
-    # ld.writeStuff(read_path)
+    read_path = 'origindata/movieImage.csv'
+    ld.writeimage(read_path)
+
+    # read_path = 'origindata/ratingResult.csv'
+    # ld.writeRatings(read_path)
