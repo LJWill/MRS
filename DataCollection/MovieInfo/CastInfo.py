@@ -42,13 +42,13 @@ class CastDetail:
             if not pd.isnull(director):
                 # print(type(director), director)
                 # print(int(director), str(int(director)))
-                temp = str(int(director))
-                casts.append(temp)
-        for writer in person_id["writer"]:
-            # print(type(writer), writer)
-            if not pd.isnull(writer):
-                temp = str(int(writer))
-                casts.append(temp)
+                temp = director.split(',')
+                casts.extend(temp)
+        # for writer in person_id["writer"]:
+        #     # print(type(writer), writer)
+        #     if not pd.isnull(writer):
+        #         temp = str(int(writer))
+        #         casts.append(temp)
 
         casts = list(set(casts))
         #         # print(len(casts))
@@ -114,15 +114,12 @@ class CastDetail:
         temp = json_file.get("crew")
         if temp is not None:
             director = ""
-            writer = ""
             for i in temp:
                 if i.get("job") == "Director":
-                    director = str(i.get("id"))
-                if i.get("job") == "Writer" or i.get("job") == "Original Story" or i.get("job") == "Novel":
-                    writer = str(i.get("id"))
+                    director += (str(i.get("id")) + ',')
+            director = director[:-1]
 
             json_file["director"] = director
-            json_file["writer"] = writer
 
         del json_file["crew"]
 
@@ -131,9 +128,10 @@ class CastDetail:
 
 if __name__ == '__main__':
     md = CastDetail()
-    # read_path = 'Data/casts.csv'
-    # write_path = 'Data/people.csv'
-    read_path = 'Data/linksTest.csv'
-    write_path = 'Data/finalResult/casts.csv'
-    md.movie_casts(read_path, write_path)
-    # md.person_request(read_path, write_path)
+    read_path = 'Data/DataImportTest/cast.csv'
+    write_path = 'Data/DataImportTest/people.csv'
+    md.person_request(read_path, write_path)
+    # read_path = 'Data/DataImportTest/linkTest.csv'
+    # write_path = 'Data/DataImportTest/cast.csv'
+    # md.movie_casts(read_path, write_path)
+

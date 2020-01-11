@@ -72,6 +72,6 @@ class ImageRequest:
 if __name__ == '__main__':
     ir = ImageRequest()
 
-    read_path = 'Data/oldLinkTest.csv'
-    write_path = 'Data/movieImage.csv'
+    read_path = 'Data/DataImportTest/LinkTest.csv'
+    write_path = 'Data/DataImportTest/movieImage.csv'
     ir.movie_image(read_path, write_path)

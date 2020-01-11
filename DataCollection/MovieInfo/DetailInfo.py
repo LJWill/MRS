@@ -158,10 +158,9 @@ class MovieDetail:
 
 if __name__ == '__main__':
     md = MovieDetail()
-
-    read_path = 'Data/oldLinkTest.csv'
-    detail_path = 'Data/movieDetail.csv'
-    id_path = 'Data/newLinkTest.csv'
+    read_path = 'Data/DataImportTest/LinkTest.csv'
+    detail_path = 'Data/DataImportTest/movieDetail.csv'
+    id_path = 'Data/DataImportTest/id.csv'
     md.info_request(read_path, detail_path, id_path)
     # md.reformat_links(read_path, write_path)
     # write_path = 'Data/movieImage.csv'
