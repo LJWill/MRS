@@ -1,8 +1,12 @@
-from rest_framework import generics, permissions
+from rest_framework.views import APIView
+from rest_framework import generics, permissions, viewsets
 from rest_framework.response import Response
 from knox.models import AuthToken
+from knox.auth import TokenAuthentication
 from .serializers import UserSerializer, RegisterSerializer, LoginSerializer
-
+from django.shortcuts import get_object_or_404
+from django.contrib.auth.models import User
+from .models import Account
 
 # Register API
 class RegisterAPI(generics.GenericAPIView):
@@ -32,7 +36,7 @@ class LoginAPI(generics.GenericAPIView):
             "token": AuthToken.objects.create(user)[1]
         })
 
-# Get User API
+# Get UserList API
 class UserAPI(generics.RetrieveAPIView):
     permission_classes = [
         permissions.IsAuthenticated,
@@ -41,3 +45,27 @@ class UserAPI(generics.RetrieveAPIView):
 
     def get_object(self):
         return self.request.user
+
+
+class UserViewSet(viewsets.ViewSet):
+    """
+    A simple ViewSet for listing or retrieving users.
+    """
+    
+    def list(self, request):
+        queryset = Account.objects.all()
+        serializer = UserSerializer(queryset, many=True)
+
+        return Response(serializer.data)
+
+
+    def retrieve(self, request, pk=None):
+        queryset = User.objects.all()
+        user = get_object_or_404(queryset, pk=pk)
+
+        print(user, pk)
+
+        serializer = UserSerializer(user)
+
+        return Response(serializer.data)
+

@@ -9,7 +9,13 @@ from account.models import Account
 class UserSerializer(serializers.ModelSerializer):
   class Meta:
     model = Account
-    fields = ('id', 'username', 'email', 'sex', 'birthdate')
+    fields = (
+        'id', 
+        'username', 
+        'email', 
+        'sex', 
+        'birthdate'
+    )
 
 
 # Register Serializer
@@ -18,7 +24,15 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Account
-        fields = ('id', 'username', 'email', 'password', 'password2', 'sex', 'birthdate')
+        fields = (
+            'id', 
+            'username', 
+            'email', 
+            'password', 
+            'password2', 
+            'sex', 
+            'birthdate'
+        )
         extra_kwargs = {'password': {'write_only': True}}
 
     # def create(self, validated_data):
@@ -43,7 +57,11 @@ class RegisterSerializer(serializers.ModelSerializer):
         account.set_password(password)
         account.save()
 
-        user = User.objects.create_user(self.validated_data['username'], self.validated_data['email'], self.validated_data['password'])
+        user = User.objects.create_user(
+            self.validated_data['username'], 
+            self.validated_data['email'], 
+            self.validated_data['password']
+        )
 
         return user
 
