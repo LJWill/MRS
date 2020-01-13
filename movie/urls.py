@@ -17,17 +17,11 @@ from django.contrib import admin
 from django.urls import path, include, re_path
 from django.views.generic import TemplateView
 
-# urlpatterns = [
-#     path('admin/', admin.site.urls),
-#     path('', include('account.urls')),
-#     re_path(r'^.*', TemplateView.as_view(template_name='index.html')),
-# ]
-
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', TemplateView.as_view(template_name='index.html')),
 
-	# #path to our account's app endpoints
+	#path to our account's app endpoints
     path("api/users/",include("account.urls")),
 
 ]

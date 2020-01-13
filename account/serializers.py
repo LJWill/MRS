@@ -52,6 +52,8 @@ class RegistrationSerializer(serializers.ModelSerializer):
         user = User.objects.create( 
             email = validated_data['email'],
             username = validated_data['username'],
+            sex = validated_data['sex'],
+            birthdate = validated_data['birthdate'],
         )
 
         user.set_password(validated_data['password'])
@@ -61,54 +63,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['email', 'username', 'password', 'password2', 'token']
-
-# # Register Serializer
-# class RegisterSerializer(serializers.ModelSerializer):
-#     password2 = serializers.CharField(style={'input_type': 'password'}, write_only=True)
-
-#     class Meta:
-#         model = Account
-#         fields = (
-#             'id', 
-#             'username', 
-#             'email', 
-#             'password', 
-#             'password2', 
-#             'sex', 
-#             'birthdate'
-#         )
-#         extra_kwargs = {'password': {'write_only': True}}
-
-#     # def create(self, validated_data):
-#     #     user = User.objects.create_user(validated_data['username'], validated_data['email'], validated_data['password'])
-
-#     #     return user
-
-#     def	save(self):
-#         account = Account(
-#             email=self.validated_data['email'],
-#             username=self.validated_data['username'],
-#             sex=self.validated_data['sex'],
-#             birthdate=self.validated_data['birthdate'],
-#         )
-
-#         password = self.validated_data['password']
-#         password2 = self.validated_data['password2']
-
-#         if password != password2:
-#             raise serializers.ValidationError({'password': 'Passwords must match.'})
-
-#         account.set_password(password)
-#         account.save()
-
-#         user = User.objects.create_user(
-#             self.validated_data['username'], 
-#             self.validated_data['email'], 
-#             self.validated_data['password']
-#         )
-
-#         return user
+        fields = ['email', 'username', 'password', 'password2', 'sex', 'birthdate', 'token']
 
 
 # # Login Serializer

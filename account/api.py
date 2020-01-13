@@ -49,7 +49,6 @@ class RegistrationAPI(APIView):
     # permission_classes = (AllowAny)
     serializer_class = RegistrationSerializer
 
-
     def post(self, request):
         user = request.data
 
@@ -57,7 +56,11 @@ class RegistrationAPI(APIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
 
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(
+            serializer.data,
+            status=status.HTTP_201_CREATED
+        )
+
 
 class UserViewSet(viewsets.ViewSet):
     """
@@ -74,9 +77,6 @@ class UserViewSet(viewsets.ViewSet):
     def retrieve(self, request, pk=None):
         queryset = User.objects.all()
         user = get_object_or_404(queryset, pk=pk)
-
-        print(user, pk)
-
         serializer = UserSerializer(user)
 
         return Response(serializer.data)
