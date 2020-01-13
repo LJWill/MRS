@@ -1,40 +1,51 @@
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
-
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from datetime import datetime, timedelta
 from django.conf import settings
 from django.db.models.signals import post_save
 
 
-class MyAccountManager(BaseUserManager):
+class UserManager(BaseUserManager):
 	def create_user(self, email, username, password=None):
 		if not email:
 			raise ValueError('Users must have an email address')
+
 		if not username:
 			raise ValueError('Users must have a username')
 
 		user = self.model(
-			email=self.normalize_email(email),
-			username=username,
+			email = self.normalize_email(email),
+			username = username,
 		)
 
 		user.set_password(password)
 		user.save(using=self._db)
+
 		return user
 
 	def create_superuser(self, email, username, password):
+		"""
+        Create and return a `User` with superuser (admin) permissions.
+        """
+
+		if not password:
+			raise TypeError('Superusers must have a password.')
+		
 		user = self.create_user(
-			email=self.normalize_email(email),
-			password=password,
-			username=username,
+			email = self.normalize_email(email),
+			password = password,
+			username = username,
 		)
+
 		user.is_admin = True
 		user.is_staff = True
 		user.is_superuser = True
-		user.save(using=self._db)
+		user.save(using = self._db)
+
 		return user
 
 
-class Account(AbstractBaseUser):
+class User(AbstractBaseUser, PermissionsMixin):
     
 	gender = (
         ('male', 'Male'),
@@ -48,7 +59,7 @@ class Account(AbstractBaseUser):
 	date_joined		= 	models.DateTimeField(verbose_name='date joined', auto_now_add=True)
 	last_login		= 	models.DateTimeField(verbose_name='last login', auto_now=True)
 	sex 			= 	models.CharField(db_column='gender', max_length=32, choices=gender, default='')
-	birthdate 		= 	models.DateField(db_column='birthDate', null=True)
+	birthdate 		= 	models.DateField(db_column='birth_date', null=True)
 	is_admin		= 	models.BooleanField(default=False)
 	is_active		= 	models.BooleanField(default=True)
 	is_staff		= 	models.BooleanField(default=False)
@@ -58,7 +69,7 @@ class Account(AbstractBaseUser):
 	USERNAME_FIELD = 'email'
 	REQUIRED_FIELDS = ['username']
 
-	objects = MyAccountManager()
+	objects = UserManager()
 
 	def __str__(self):
 		return self.email
@@ -70,3 +81,4 @@ class Account(AbstractBaseUser):
 	# Does this user have permission to view this app? (ALWAYS YES FOR SIMPLICITY)
 	def has_module_perms(self, app_label):
 		return True
+
