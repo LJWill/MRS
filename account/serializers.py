@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from account.models import User
 from rest_framework_jwt.settings import api_settings
+from rest_framework_jwt.serializers import JSONWebTokenSerializer
 
 # User Serializer
 class UserSerializer(serializers.ModelSerializer):
@@ -66,15 +67,54 @@ class RegistrationSerializer(serializers.ModelSerializer):
         fields = ['email', 'username', 'password', 'password2', 'sex', 'birthdate', 'token']
 
 
-# # Login Serializer
-# class LoginSerializer(serializers.Serializer):
-#     username = serializers.CharField()
-#     password = serializers.CharField()
 
-#     def validate(self, data):
-#         user = authenticate(**data)
+# custmized jwt serializer for login
+class CustomJWTSerializer(JSONWebTokenSerializer):
+    username_field = 'username_or_email'
 
-#         if user and user.is_active:
-#             return user
+    def get_token(self, obj):
+        jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
+        jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
 
-#         raise serializers.ValidationError("Incorrect Credentials")
+        payload = jwt_payload_handler(obj)
+        token = jwt_encode_handler(payload)
+
+        return token
+    def validate(self, obj):
+        password = obj.get("password")
+        print(obj)
+        user_obj = User.objects.filter(email=obj.get("username_or_email")).first() or \
+                   User.objects.filter(username=obj.get("username_or_email")).first()
+
+        if user_obj is not None:
+            credentials = {
+                'username': user_obj.username,
+                'password': password
+            }
+
+            print(credentials)
+
+            if all(credentials.values()):
+                user = authenticate(**credentials)
+
+                if user:
+                    if not user.is_active:
+                        msg = ('User account is disabled.')
+                        raise serializers.ValidationError(msg)
+
+                    return {
+                        'token': self.get_token(user),
+                        'user': user
+                    }
+                else:
+                    msg = ('Unable to log in with provided credentials.')
+                    raise serializers.ValidationError(msg)
+
+            else:
+                msg = ('Must include "{username_field}" and "password".')
+                msg = msg.format(username_field=self.username_field)
+                raise serializers.ValidationError(msg)
+
+        else:
+            msg = ('Account with this email/username does not exists')
+            raise serializers.ValidationError(msg)

@@ -14,8 +14,8 @@ class UserManager(BaseUserManager):
 			raise ValueError('Users must have a username')
 
 		user = self.model(
-			email = self.normalize_email(email),
 			username = username,
+			email = self.normalize_email(email),
 		)
 
 		user.set_password(password)
@@ -66,8 +66,8 @@ class User(AbstractBaseUser, PermissionsMixin):
 	is_superuser	= 	models.BooleanField(default=False)
 
 
-	USERNAME_FIELD = 'email'
-	REQUIRED_FIELDS = ['username']
+	USERNAME_FIELD = 'username'
+	REQUIRED_FIELDS = ['email']
 
 	objects = UserManager()
 
