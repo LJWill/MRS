@@ -41,8 +41,8 @@ export const authLogin = (username, password) => {
   return dispatch => {
     dispatch(authStart());
     axios
-      .post("http://localhost:8000/api/auth/login", {
-        username: username,
+      .post("http://localhost:8000/api/users/login", {
+        username_or_email: username,
         password: password
       })
       .then(res => {
@@ -64,7 +64,7 @@ export const authSignup = (username, email, password, password2) => {
   return dispatch => {
     dispatch(authStart());
     axios
-      .post("http://localhost:8000/api/auth/register", {
+      .post("http://localhost:8000/api/users/register", {
         username: username,
         email: email,
         password: password,

@@ -53,8 +53,8 @@ class RegistrationSerializer(serializers.ModelSerializer):
         user = User.objects.create( 
             email = validated_data['email'],
             username = validated_data['username'],
-            sex = validated_data['sex'],
-            birthdate = validated_data['birthdate'],
+            # sex = validated_data['sex'],
+            # birthdate = validated_data['birthdate'],
         )
 
         user.set_password(validated_data['password'])
@@ -80,9 +80,9 @@ class CustomJWTSerializer(JSONWebTokenSerializer):
         token = jwt_encode_handler(payload)
 
         return token
+
     def validate(self, obj):
         password = obj.get("password")
-        print(obj)
         user_obj = User.objects.filter(email=obj.get("username_or_email")).first() or \
                    User.objects.filter(username=obj.get("username_or_email")).first()
 
@@ -91,8 +91,6 @@ class CustomJWTSerializer(JSONWebTokenSerializer):
                 'username': user_obj.username,
                 'password': password
             }
-
-            print(credentials)
 
             if all(credentials.values()):
                 user = authenticate(**credentials)
