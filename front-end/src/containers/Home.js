@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import HeadMenu from '../components/HeadMenu/index';
 import {
   Button,
   Container,
@@ -8,7 +9,6 @@ import {
   Header,
   Icon,
   Image,
-  List,
   Menu,
   Responsive,
   Segment,
@@ -17,12 +17,19 @@ import {
 } from 'semantic-ui-react';
 
 import SampleImg from '../assets/images/sample.png';
+import Carousel from '../components/Carousel/index';
+import SingleLineGridList from '../components/MovieList/index';
 
 const getWidth = () => {
   const isSSR = typeof window === 'undefined';
+
   return isSSR ? Responsive.onlyTablet.minWidth : window.innerWidth;
 };
 
+/* Heads up!
+ * Neither Semantic UI nor Semantic UI React offer a responsive navbar, however, it can be implemented easily.
+ * It can be more complicated, but you can create really flexible markup.
+ */
 class DesktopContainer extends Component {
   state = {};
 
@@ -39,7 +46,18 @@ class DesktopContainer extends Component {
           once={false}
           onBottomPassed={this.showFixedMenu}
           onBottomPassedReverse={this.hideFixedMenu}
-        />
+        >
+          <Segment
+            inverted
+            textAlign="center"
+            style={{ minHeight: 500, padding: '1em 0em 0em 0em' }}
+            vertical
+          >
+            <HeadMenu fixed={fixed} />
+            <Carousel />
+          </Segment>
+        </Visibility>
+
         {children}
       </Responsive>
     );
@@ -67,7 +85,50 @@ class MobileContainer extends Component {
         getWidth={getWidth}
         maxWidth={Responsive.onlyMobile.maxWidth}
       >
-        {children}
+        <Sidebar
+          as={Menu}
+          animation="push"
+          inverted
+          onHide={this.handleSidebarHide}
+          vertical
+          visible={sidebarOpened}
+        >
+          <Menu.Item as="a" active>
+            Home
+          </Menu.Item>
+          <Menu.Item as="a">Work</Menu.Item>
+          <Menu.Item as="a">Company</Menu.Item>
+          <Menu.Item as="a">Careers</Menu.Item>
+          <Menu.Item as="a">Log in</Menu.Item>
+          <Menu.Item as="a">Sign Up</Menu.Item>
+        </Sidebar>
+
+        <Sidebar.Pusher dimmed={sidebarOpened}>
+          <Segment
+            inverted
+            textAlign="center"
+            style={{ minHeight: 350, padding: '1em 0em' }}
+            vertical
+          >
+            <Container>
+              <Menu inverted pointing secondary size="large">
+                <Menu.Item onClick={this.handleToggle}>
+                  <Icon name="sidebar" />
+                </Menu.Item>
+                <Menu.Item position="right">
+                  <Button as="a" inverted>
+                    Log in
+                  </Button>
+                  <Button as="a" inverted style={{ marginLeft: '0.5em' }}>
+                    Sign Up
+                  </Button>
+                </Menu.Item>
+              </Menu>
+            </Container>
+          </Segment>
+
+          {children}
+        </Sidebar.Pusher>
       </Responsive>
     );
   }
@@ -90,6 +151,20 @@ ResponsiveContainer.propTypes = {
 
 const HomepageLayout = () => (
   <ResponsiveContainer>
+    <Segment style={{ padding: '8em 8em' }} vertical>
+      <Header as="h3" style={{ fontSize: '2em' }}>
+       Upcoming Movies
+      </Header>
+      <SingleLineGridList />
+    </Segment>
+
+    <Segment style={{ padding: '8em 8em' }} vertical>
+      <Header as="h3" style={{ fontSize: '2em' }}>
+       Trended
+      </Header>
+      <SingleLineGridList />
+    </Segment>
+
     <Segment style={{ padding: '8em 0em' }} vertical>
       <Grid container stackable verticalAlign="middle">
         <Grid.Row>
@@ -121,6 +196,7 @@ const HomepageLayout = () => (
         </Grid.Row>
       </Grid>
     </Segment>
+
     <Segment style={{ padding: '0em' }} vertical>
       <Grid celled="internally" columns="equal" stackable>
         <Grid.Row textAlign="center">
@@ -144,6 +220,7 @@ const HomepageLayout = () => (
         </Grid.Row>
       </Grid>
     </Segment>
+
     <Segment style={{ padding: '8em 0em' }} vertical>
       <Container text>
         <Header as="h3" style={{ fontSize: '2em' }}>
@@ -158,14 +235,16 @@ const HomepageLayout = () => (
         <Button as="a" size="large">
           Read More
         </Button>
+
         <Divider
           as="h4"
           className="header"
           horizontal
           style={{ margin: '3em 0em', textTransform: 'uppercase' }}
         >
-          <a href="#">Case Studies</a>
+          <a href="/">Case Studies</a>
         </Divider>
+
         <Header as="h3" style={{ fontSize: '2em' }}>
           Did We Tell You About Our Bananas?
         </Header>
@@ -181,4 +260,5 @@ const HomepageLayout = () => (
     </Segment>
   </ResponsiveContainer>
 );
+
 export default HomepageLayout;

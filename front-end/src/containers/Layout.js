@@ -10,10 +10,10 @@ import {
   Menu,
   Segment
 } from 'semantic-ui-react';
-import { Link, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { logout } from '../store/actions/auth';
-import MMenu from '../components/MMenu';
+// import MMenu from '../components/MMenu';
 
 class CustomLayout extends React.Component {
   render() {
@@ -21,7 +21,7 @@ class CustomLayout extends React.Component {
     return (
       <div>
         {/* <MMenu /> */}
-        <Menu fixed="top" inverted>
+        {/* <Menu fixed="top" inverted size='massive' >
           <Container>
             <Link to="/">
               <Menu.Item header>Home</Menu.Item>
@@ -41,7 +41,7 @@ class CustomLayout extends React.Component {
               </React.Fragment>
             )}
           </Container>
-        </Menu>
+        </Menu> */}
 
         {this.props.children}
 
