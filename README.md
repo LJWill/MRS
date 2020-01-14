@@ -18,11 +18,11 @@ npm install
 # Run for devlopment
 npm run start
 
-# Serve API on localhost:8000
-python manage.py runserver
-
 # Build for production
 npm run build
+
+# Serve API on localhost:8000
+python manage.py runserver
 
 # Create .env file in root path and set two fields
 MYSQL_USERNAME=''
