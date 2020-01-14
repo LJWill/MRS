@@ -17,6 +17,7 @@ import {
 } from 'semantic-ui-react';
 
 import SampleImg from '../assets/images/sample.png';
+import Carousel from '../components/Carousel/index.js'
 
 const getWidth = () => {
   const isSSR = typeof window === 'undefined';
@@ -54,7 +55,6 @@ class MobileContainer extends Component {
   state = {};
 
   handleSidebarHide = () => this.setState({ sidebarOpened: false });
-
   handleToggle = () => this.setState({ sidebarOpened: true });
 
   render() {
@@ -90,6 +90,11 @@ ResponsiveContainer.propTypes = {
 
 const HomepageLayout = () => (
   <ResponsiveContainer>
+
+    <Segment style={{ padding: '0em 0em', border:'none'}} vertical>
+        <Carousel />
+    </Segment>
+
     <Segment style={{ padding: '8em 0em' }} vertical>
       <Grid container stackable verticalAlign="middle">
         <Grid.Row>

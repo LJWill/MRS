@@ -1,0 +1,12 @@
+.my-font {
+    color: red
+}
+
+.carousel-image {
+    object-fit: cover;
+}
+
+.custom-dot-group {
+    position: relative;
+    bottom: 35px;
+}

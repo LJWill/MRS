@@ -21,7 +21,7 @@ class CustomLayout extends React.Component {
     return (
       <div>
         {/* <MMenu /> */}
-        <Menu fixed="top" inverted>
+        <Menu fixed="top" inverted size='massive' >
           <Container>
             <Link to="/">
               <Menu.Item header>Home</Menu.Item>
