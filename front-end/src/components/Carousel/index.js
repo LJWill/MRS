@@ -2,6 +2,7 @@ import React from 'react';
 import { CarouselProvider, Slider, Slide, ButtonBack, ButtonNext, Image } from 'pure-react-carousel';
 import 'pure-react-carousel/dist/react-carousel.es.css';
 import CustomDotGroup from './CustomDotGroup'
+import HomePageHeading from './HomePageHeading'
 
 import m1 from '../../assets/images/m1.png';
 import m2 from '../../assets/images/m2.png';
@@ -16,13 +17,14 @@ export default class extends React.Component {
       return (
         <CarouselProvider
           naturalSlideWidth={100}
-          naturalSlideHeight={52}
+          naturalSlideHeight={45}
           totalSlides={5}
           hasMasterSpinner={true}
-          isPlaying={true}
+          isPlaying={false}
         >
           <Slider>
             <Slide index={0}>
+                <HomePageHeading />
                 <Image className='carousel-image' src={m1} />
             </Slide>
             <Slide index={1}>
