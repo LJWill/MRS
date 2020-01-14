@@ -1,6 +1,6 @@
 import os
 import django
-
+from django.db import transaction
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "movie.settings")
 django.setup()
 import pandas as pd
@@ -13,64 +13,65 @@ class LoadingData:
         count = 1
         total = raw.shape[0]
         for index, row in raw.iterrows():
-
             print("\r" + 'processing %d out of %d items...' % (count, total), end='')
             count += 1
-            try:
-                movies.Movie.objects.get(idmovie=row["id"])
-                continue
-            except:
-                new_movie = movies.Movie.objects.create(idmovie=row["id"])
+            with transaction.atomic():
 
-                new_movie.title = row["title"]
+                try:
+                    movies.Movie.objects.get(idmovie=row["id"])
+                    continue
+                except:
+                    new_movie = movies.Movie.objects.create(idmovie=row["id"])
 
-                adult = row["adult"]
-                if not adult:
-                    new_movie.adult = 0
-                else:
-                    new_movie.adult = 1
-                new_movie.budget = row["budget"]
+                    new_movie.title = row["title"]
 
-                genres = row["genres"]
-                if not pd.isnull(genres):
-                    genres = genres.split(",")
-                    for genre in genres:
-                        self.writegenre(new_movie, self.writegenrelist(genre))
+                    adult = row["adult"]
+                    if not adult:
+                        new_movie.adult = 0
+                    else:
+                        new_movie.adult = 1
+                    new_movie.budget = row["budget"]
 
-                companies = row["production_companies"]
-                if not pd.isnull(companies):
-                    companies = companies.split(",")
-                    for company in companies:
-                        self.writeCompanyMovie(new_movie, self.writeCompany(company))
+                    genres = row["genres"]
+                    if not pd.isnull(genres):
+                        genres = genres.split(",")
+                        for genre in genres:
+                            new_movie.genre.add(self.writegenre(genre))
 
-                overview = row["overview"]
-                if not pd.isnull(overview):
-                    new_movie.overview = overview
+                    companies = row["production_companies"]
+                    if not pd.isnull(companies):
+                        companies = companies.split(",")
+                        for company in companies:
+                            new_movie.company.add(self.writeCompany(company))
 
-                poster = row["poster_path"]
-                if not pd.isnull(poster):
-                    new_movie.poster = poster
+                    overview = row["overview"]
+                    if not pd.isnull(overview):
+                        new_movie.overview = overview
 
-                runtime = row["runtime"]
-                if not pd.isnull(runtime):
-                    new_movie.runtime = runtime
+                    poster = row["poster_path"]
+                    if not pd.isnull(poster):
+                        new_movie.poster = poster
 
-                country = row["production_countries"]
-                if not pd.isnull(country):
-                    new_movie.country = country
+                    runtime = row["runtime"]
+                    if not pd.isnull(runtime):
+                        new_movie.runtime = runtime
 
-                releasedate = row["release_date"]
-                if not pd.isnull(releasedate):
-                    new_movie.releasedate = releasedate
+                    country = row["production_countries"]
+                    if not pd.isnull(country):
+                        new_movie.country = country
 
-                collectionname = row["belongs_to_collection"]
-                if not pd.isnull(collectionname):
-                    new_movie.collectionid = self.writeCollections(collectionname)
+                    releasedate = row["release_date"]
+                    if not pd.isnull(releasedate):
+                        new_movie.releasedate = releasedate
 
-                new_movie.revenue = row["revenue"]
-                if row["status"] == "Released":
-                    new_movie.status = True
-                new_movie.save()
+                    collectionname = row["belongs_to_collection"]
+                    if not pd.isnull(collectionname):
+                        new_movie.collectionid = self.writeCollections(collectionname)
+
+                    new_movie.revenue = row["revenue"]
+                    if row["status"] == "Released":
+                        new_movie.status = True
+                    new_movie.save()
 
     def writeStuff(self, read_path):
         raw = pd.read_csv(read_path)
@@ -154,7 +155,7 @@ class LoadingData:
                 for director in directors:
                     try:
                         directorobj = movies.People.objects.get(idperson=director)
-                        new_direct = movies.Direct.objects.create(movie_idmovie=movie,people_idperson=directorobj)
+                        movie.directors.add(directorobj)
                     except:
                         print("Director Not existing")
 
@@ -166,11 +167,7 @@ class LoadingData:
                         starobj = movies.People.objects.get(idperson=star)
                     except:
                         continue
-                    try:
-                        movies.Cast.objects.get(people_idperson=starobj, movie_idmovie=movie)
-                    except:
-                        new_cast = movies.Cast.objects.create(people_idperson=starobj, movie_idmovie=movie)
-                        new_cast.save()
+                    movie.casts.add(starobj)
 
     def writeRatings(self, read_path):
         raw = pd.read_csv(read_path)
@@ -191,22 +188,15 @@ class LoadingData:
             new_rating.rating = int(row["rating"]*2)
             new_rating.save()
 
-    def writegenrelist(self, genrename):
+    def writegenre(self, genrename):
         try:
-            genre = movies.Genrelist.objects.get(genrename=genrename)
+            genre = movies.Genre.objects.get(genrename=genrename)
             return genre
         except:
-            new_genre = movies.Genrelist.objects.create()
+            new_genre = movies.Genre.objects.create()
             new_genre.genrename = genrename
             new_genre.save()
             return new_genre
-
-    def writegenre(self, movie, genrelist):
-        try:
-            movies.Genre.objects.get(genrelist_idgenrelist=genrelist, movie_idmovie=movie)
-        except:
-            new_genere = movies.Genre.objects.create(genrelist_idgenrelist=genrelist, movie_idmovie=movie)
-            new_genere.save()
 
     def writeImage(self, backdrop, movie):
         try:
@@ -225,13 +215,6 @@ class LoadingData:
             new_company.save()
             return new_company
 
-    def writeCompanyMovie(self, movie, companies):
-        try:
-            movies.CompanyMovie.objects.get(companies_idcompanies=companies, movie_idmovie=movie)
-        except:
-            new_genere = movies.CompanyMovie.objects.create(companies_idcompanies=companies, movie_idmovie=movie)
-            new_genere.save()
-
     def writeCollections(self, collection):
         try:
             collection = movies.Collections.objects.get(name=collection)
@@ -248,7 +231,7 @@ if __name__ == '__main__':
 
     # read_path = 'origindata/people.csv'
     # ld.writeStuff(read_path)
-    #
+
     # read_path = 'origindata/movieDetail.csv'
     # ld.writeMovie(read_path)
 
