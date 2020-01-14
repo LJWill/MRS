@@ -55,6 +55,8 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
     ),
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 100,
 }
 
 
@@ -102,7 +104,7 @@ WSGI_APPLICATION = 'movie.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'moviedb1',
+        'NAME': 'moviedb',
         'USER': os.getenv("MYSQL_USERNAME"),
         'PASSWORD': os.getenv("MYSQL_PASSWORD"),
         'HOST': '127.0.0.1',

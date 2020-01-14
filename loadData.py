@@ -229,14 +229,14 @@ class LoadingData:
 if __name__ == '__main__':
     ld = LoadingData()
 
-    # read_path = 'origindata/people.csv'
-    # ld.writeStuff(read_path)
+    read_path = 'origindata/people.csv'
+    ld.writeStuff(read_path)
 
-    # read_path = 'origindata/movieDetail.csv'
-    # ld.writeMovie(read_path)
+    read_path = 'origindata/movieDetail.csv'
+    ld.writeMovie(read_path)
 
-    # read_path = 'origindata/cast.csv'
-    # ld.writeCast(read_path)
+    read_path = 'origindata/cast.csv'
+    ld.writeCast(read_path)
 
     read_path = 'origindata/movieImage.csv'
     ld.writeimage(read_path)

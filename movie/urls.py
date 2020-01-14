@@ -16,6 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include, re_path
 from django.views.generic import TemplateView
+from movieinfo.api import MovieListAPI,MovieDetailAPI
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -23,5 +24,6 @@ urlpatterns = [
 
 	#path to our account's app endpoints
     path("api/users/",include("account.urls")),
+    path("api/movie/", include("movieinfo.urls")),
 
 ]
