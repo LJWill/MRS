@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Container, Menu } from 'semantic-ui-react';
+import { Button, Container, Menu, Input } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 
 let styles = {
@@ -7,6 +7,13 @@ let styles = {
     height: '100%'
   }
 };
+
+const InputExampleIconProps = () => (
+  <Input
+    icon={{ name: 'search', circular: true, link: true }}
+    placeholder="Search..."
+  />
+);
 
 export default class extends React.Component {
   render() {
@@ -37,6 +44,15 @@ export default class extends React.Component {
             </Menu.Item>
           </Link>
 
+          {fixed ? (
+            <Menu.Item position="" header>
+              <div class="ui icon input">
+                <input type="text" placeholder="Search..." />
+                <i aria-hidden="true" class="search inverted circular link icon"></i>
+              </div>
+            </Menu.Item>
+          ) : null}
+
           {authenticated ? (
             <Menu.Item
               position="right"
@@ -47,19 +63,19 @@ export default class extends React.Component {
             </Menu.Item>
           ) : (
             <Menu.Item position="right">
-                <Button as="a" href="/login" inverted={!fixed}>
-                  Log in
-                </Button>
+              <Button as="a" href="/login" inverted={!fixed}>
+                Log in
+              </Button>
 
-                <Button
-                  as="a"
-                  href="/signup"
-                  inverted={!fixed}
-                  primary={fixed}
-                  style={{ marginLeft: '0.5em' }}
-                >
-                  Sign Up
-                </Button>
+              <Button
+                as="a"
+                href="/signup"
+                inverted={!fixed}
+                primary={fixed}
+                style={{ marginLeft: '0.5em' }}
+              >
+                Sign Up
+              </Button>
             </Menu.Item>
           )}
         </Container>
