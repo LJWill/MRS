@@ -10,3 +10,8 @@
     position: relative;
     bottom: 35px;
 }
+
+.dot-button {
+    background: rgba(0,0,0,.6) !important;
+    color: #e0e1e2 !important;
+}
