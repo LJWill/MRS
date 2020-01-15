@@ -1,4 +1,5 @@
 from django.http import Http404
+from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.pagination import PageNumberPagination, LimitOffsetPagination, CursorPagination
 from rest_framework.response import Response
@@ -45,10 +46,20 @@ class MyPageNumber(PageNumberPagination):
     page_size_query_param = 'size'
     max_page_size = None
 
-# class RatingAPI(APIView):
-#     serializer_class = RatingSerializer
-#
-#     def put(self,request):
+class RatingAPI(APIView):
+    serializer_class = RatingSerializer
+
+    def put(self,request,pk):
+        rating = request.data
+        print(rating)
+        serializer = self.serializer_class(data=rating)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(
+            serializer.data,
+            status=status.HTTP_201_CREATED
+        )
+
 
 
 3

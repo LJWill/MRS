@@ -30,5 +30,18 @@ class MovieDetailSerializer(serializers.ModelSerializer):
 
 class RatingSerializer(serializers.ModelSerializer):
 
-    class Metha:
+    class Meta:
         model = Ratings
+        fields = '__all__'
+
+    def create(self, validated_data):
+        # print(validated_data)
+        rating = Ratings.objects.create(
+            movie_idmovie = Movie.objects.get(idmovie=validated_data['movie_idmovie']),
+            user_iduser= User.objects.get(iduser=validated_data['user_iduser']),
+            rating = validated_data['rating']
+        )
+
+        rating.save()
+
+        return rating
