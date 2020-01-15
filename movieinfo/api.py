@@ -3,7 +3,7 @@ from rest_framework.views import APIView
 from rest_framework.pagination import PageNumberPagination, LimitOffsetPagination, CursorPagination
 from rest_framework.response import Response
 from .models import Movie
-from .serializers import MovieDetailSerializer, MovieBriefSerializer
+from .serializers import *
 
 
 class MovieDetailAPI(APIView):
@@ -44,3 +44,11 @@ class MyPageNumber(PageNumberPagination):
     page_query_param = 'page'
     page_size_query_param = 'size'
     max_page_size = None
+
+# class RatingAPI(APIView):
+#     serializer_class = RatingSerializer
+#
+#     def put(self,request):
+
+
+3

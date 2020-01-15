@@ -3,7 +3,7 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, Permis
 from datetime import datetime, timedelta
 from django.conf import settings
 from django.db.models.signals import post_save
-
+from movieinfo.models import User as mmUser
 
 class UserManager(BaseUserManager):
 	def create_user(self, email, username, password=None):
@@ -53,7 +53,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         ('unisex','Unisex'),
         ('transgender','Transgender')
     )
-
+	User_iduser     =   models.ForeignKey(mmUser, primary_key= True, on_delete=models.CASCADE)
 	email 			= 	models.EmailField(verbose_name="email", max_length=60, unique=True)
 	username 		= 	models.CharField(max_length=30, unique=True)
 	date_joined		= 	models.DateTimeField(verbose_name='date joined', auto_now_add=True)

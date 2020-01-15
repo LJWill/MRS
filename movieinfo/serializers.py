@@ -27,3 +27,8 @@ class MovieDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Movie
         fields = '__all__'
+
+class RatingSerializer(serializers.ModelSerializer):
+
+    class Metha:
+        model = Ratings

@@ -11,3 +11,7 @@ build
 static
 package-lock.json
 ./movieinfo/origindata
+.idea/
+Lib/
+Scripts/
+pyvenv.cfg
