@@ -9,8 +9,6 @@ from movieinfo.models import User as mmUser
 # User Serializer
 class UserSerializer(serializers.ModelSerializer):
 
-    # User_iduser = serializers.SlugRelatedField(slug_field='User_iduser', read_only=True)
-
     User_iduser = serializers.PrimaryKeyRelatedField(queryset=mmUser.objects.all())
 
     class Meta:
