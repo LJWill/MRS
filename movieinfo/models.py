@@ -69,7 +69,7 @@ class Companies(models.Model):
 
 class Ratings(models.Model):
     movie_idmovie = models.ForeignKey('Movie', models.DO_NOTHING,
-                                         db_column='Movie_idMovie',)  # Field name made lowercase.
+                                         db_column='Movie_idMovie',related_name='rating_movie')  # Field name made lowercase.
     user_iduser = models.ForeignKey('User', models.DO_NOTHING, db_column='user_iduser')  # Field name made lowercase.
     rating = models.IntegerField(null= True)
     class Meta:
