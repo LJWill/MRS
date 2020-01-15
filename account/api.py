@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from .serializers import UserSerializer, RegistrationSerializer
 from django.shortcuts import get_object_or_404
 from .models import User
-
+from movieinfo import models as md
 # Get UserList API
 class UserAPI(generics.RetrieveAPIView):
     permission_classes = [
@@ -24,7 +24,6 @@ class RegistrationAPI(APIView):
 
     def post(self, request):
         user = request.data
-
         serializer = self.serializer_class(data=user)
         serializer.is_valid(raise_exception=True)
         serializer.save()

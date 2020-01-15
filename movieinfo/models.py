@@ -78,7 +78,7 @@ class Ratings(models.Model):
         unique_together = (('movie_idmovie', 'user_iduser'),)
 
 class User(models.Model):
-    iduser = models.IntegerField(db_column='idUser', primary_key=True)  # Field name made lowercase.
+    iduser = models.AutoField(db_column='idUser', primary_key=True)  # Field name made lowercase.
     class Meta:
         managed = True
         db_table = 'user'

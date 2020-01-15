@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate
 from account.models import User
 from rest_framework_jwt.settings import api_settings
 from rest_framework_jwt.serializers import JSONWebTokenSerializer
+from movieinfo.models import User as mmUser
 
 # User Serializer
 class UserSerializer(serializers.ModelSerializer):
@@ -50,7 +51,8 @@ class RegistrationSerializer(serializers.ModelSerializer):
         if password != password2:
             raise serializers.ValidationError({'password': 'Passwords must match.'})
 
-        user = User.objects.create( 
+        user = User.objects.create(
+            User_iduser = mmUser.objects.create(),
             email = validated_data['email'],
             username = validated_data['username'],
             sex = validated_data['sex'],
