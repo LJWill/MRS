@@ -20,7 +20,7 @@ from movieinfo.api import MovieListAPI,MovieDetailAPI
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    re_path(r'^', TemplateView.as_view(template_name='index.html')),
+    path('', TemplateView.as_view(template_name='index.html')),
 
 	#path to our account's app endpoints
     path("api/users/",include("account.urls")),

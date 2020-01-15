@@ -8,15 +8,20 @@ from movieinfo.models import User as mmUser
 
 # User Serializer
 class UserSerializer(serializers.ModelSerializer):
-  class Meta:
-    model = User
-    fields = (
-        'id', 
-        'username', 
-        'email', 
-        'sex', 
-        'birthdate'
-    )
+
+    # User_iduser = serializers.SlugRelatedField(slug_field='User_iduser', read_only=True)
+
+    User_iduser = serializers.PrimaryKeyRelatedField(queryset=mmUser.objects.all())
+
+    class Meta:
+        model = User
+        fields = (
+            'User_iduser', 
+            'username', 
+            'email', 
+            'sex', 
+            'birthdate'
+        )
 
 
 class RegistrationSerializer(serializers.ModelSerializer):
@@ -31,7 +36,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
         style={'input_type': 'password'},
         write_only=True
     )
-
+    
     token = serializers.SerializerMethodField()
 
     def get_token(self, obj):
@@ -50,7 +55,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
         if password != password2:
             raise serializers.ValidationError({'password': 'Passwords must match.'})
-
+        
         user = User.objects.create(
             User_iduser = mmUser.objects.create(),
             email = validated_data['email'],

@@ -53,7 +53,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         ('unisex','Unisex'),
         ('transgender','Transgender')
     )
-	User_iduser     =   models.ForeignKey(mmUser, primary_key= True, on_delete=models.CASCADE)
+	User_iduser     =   models.ForeignKey(mmUser, db_column='User_iduser', primary_key= True, on_delete=models.CASCADE)
 	email 			= 	models.EmailField(verbose_name="email", max_length=60, unique=True)
 	username 		= 	models.CharField(max_length=30, unique=True)
 	date_joined		= 	models.DateTimeField(verbose_name='date joined', auto_now_add=True)
