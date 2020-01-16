@@ -66,6 +66,9 @@ export default class HeadMenu extends React.Component {
             onClick={() => {
               this.triggerChildDrawer(true);
             }}
+            onHover={() => {
+              this.triggerChildDrawer(true);
+            }}
           > 
             <Icon name="search layout" />
           </Menu.Item>
