@@ -3,6 +3,12 @@ from rest_framework import serializers
 from movieinfo.models import *
 
 
+class FavouriteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = '__all__'
+
+
 class PeopleSerializer(serializers.ModelSerializer):
     class Meta:
         model = People
@@ -11,7 +17,6 @@ class PeopleSerializer(serializers.ModelSerializer):
 
 class MovieBriefSerializer(serializers.ModelSerializer):
     genre = serializers.SlugRelatedField(many=True, slug_field='genrename', read_only=True)
-
     rating_movie = serializers.SerializerMethodField()
 
     def get_rating_movie(self, movie):
@@ -19,6 +24,7 @@ class MovieBriefSerializer(serializers.ModelSerializer):
         serializer = RatingSerializer(instance=ratings,many = True, read_only=True)
         # serializer.is_valid()
         return serializer.data
+
     class Meta:
         model = Movie
         fields = ('idmovie','title', 'poster', 'genre', 'adult','rating_movie')
@@ -28,6 +34,7 @@ class RatingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ratings
         fields = '__all__'
+
 
 class MovieDetailSerializer(serializers.ModelSerializer):
     images = serializers.SlugRelatedField(many=True, slug_field='backdrop', read_only=True)
@@ -43,9 +50,6 @@ class MovieDetailSerializer(serializers.ModelSerializer):
         # serializer.is_valid()
         return serializer.data
 
-
     class Meta:
         model = Movie
         fields = '__all__'
-
-

@@ -41,7 +41,7 @@ class Genre(models.Model):
 class Images(models.Model):
     idimages = models.AutoField(db_column='idImages', primary_key=True)  # Field name made lowercase.
     movie_idmovie = models.ForeignKey('Movie', models.DO_NOTHING,
-                                      db_column='Movie_idMovie',related_name='images')  # Field name made lowercase.
+                                      db_column='Movie_idMovie', related_name='images')  # Field name made lowercase.
     backdrop = models.CharField(max_length=45)
 
     class Meta:
@@ -69,22 +69,19 @@ class Companies(models.Model):
 
 class Ratings(models.Model):
     movie_idmovie = models.ForeignKey('Movie', models.DO_NOTHING,
-                                         db_column='Movie_idMovie',related_name='rating_movie')  # Field name made lowercase.
+                                      db_column='Movie_idMovie',
+                                      related_name='rating_movie')  # Field name made lowercase.
     user_iduser = models.ForeignKey('User', models.DO_NOTHING, db_column='user_iduser')  # Field name made lowercase.
-    rating = models.IntegerField(null= True)
+    rating = models.IntegerField(null=True)
+
     class Meta:
         managed = True
         db_table = 'ratings'
         unique_together = (('movie_idmovie', 'user_iduser'),)
 
-class User(models.Model):
-    iduser = models.AutoField(db_column='idUser', primary_key=True)  # Field name made lowercase.
-    class Meta:
-        managed = True
-        db_table = 'user'
 
 class Movie(models.Model):
-    idmovie = models.BigIntegerField( db_column='idMovie', primary_key=True)  # Field name made lowercase.
+    idmovie = models.BigIntegerField(db_column='idMovie', primary_key=True)  # Field name made lowercase.
     country = models.CharField(max_length=45, blank=True, null=True)
     title = models.CharField(max_length=100, blank=True, null=True)
     # language = models.CharField(max_length=45, blank=True, null=True)
@@ -95,12 +92,22 @@ class Movie(models.Model):
     budget = models.BigIntegerField(blank=True, null=True)
     revenue = models.BigIntegerField(blank=True, null=True)
     runtime = models.SmallIntegerField(blank=True, null=True)
-    status = models.BooleanField(default = False)
+    status = models.BooleanField(default=False)
     collectionid = models.ForeignKey("Collections", models.DO_NOTHING, db_column="Collections_idCollections", null=True)
-    casts = models.ManyToManyField(People, related_name = 'Cast',null=True)
-    directors = models.ManyToManyField(People, related_name = 'Direct',null=True)
-    genre = models.ManyToManyField(Genre,related_name = 'Movie_Genre',null=True)
-    company = models.ManyToManyField(Companies, related_name='Movie_Companies',null=True)
+    casts = models.ManyToManyField(People, related_name='Cast')
+    directors = models.ManyToManyField(People, related_name='Direct')
+    genre = models.ManyToManyField(Genre, related_name='Movie_Genre')
+    company = models.ManyToManyField(Companies, related_name='Movie_Companies')
+
     class Meta:
         managed = True
         db_table = 'movie'
+
+
+class User(models.Model):
+    iduser = models.AutoField(db_column='idUser', primary_key=True)  # Field name made lowercase.
+    favourite = models.ManyToManyField(Movie, related_name='favourite')
+
+    class Meta:
+        managed = True
+        db_table = 'user'

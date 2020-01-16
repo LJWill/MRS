@@ -44,6 +44,22 @@ class MovieListAPI(APIView):
         serializer = self.serializer_class(page_movies, many=True,context = {'iduser':1})
         return Response(serializer.data)
 
+class FavouriteAPI(APIView):
+    serializer_class = FavouriteSerializer
+
+    def put(self,request):
+        favourite = request.data
+        serializer = self.serializer_class(data=favourite)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+
+    def get(self, request):
+        user = User.objects.filter(iduser=request.data['iduser'])
+
+        serializer = self.serializer_class(user,many=True)
+
+        return Response(serializer.data)
 
 class MyPageNumber(PageNumberPagination):
     page_size = 10
