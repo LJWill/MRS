@@ -1,7 +1,6 @@
 import React from 'react'
 import { Container, Divider, Grid, Header, Icon } from 'semantic-ui-react'
 import HeadMenu from '../../components/HeadMenu/index';
-import MyTabs from '../../components/Tab';
 
 const AnotherGridLayout = () => (
   <Container>
@@ -31,8 +30,6 @@ const AnotherGridLayout = () => (
     <HeadMenu />
     <Divider />
 
-
-    <MyTabs /> 
     
     <Header as='h2' inverted textAlign='center'>
       Basic 16

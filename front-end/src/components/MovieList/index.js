@@ -55,12 +55,12 @@ const useStyles = makeStyles(theme => ({
 
 export default function SingleLineGridList() {
   const classes = useStyles();
-{   
-    console.log('--->', m3, m4, m5)
-    tileData.map(tile => {
-        console.log(tile.img)
-    })
-}
+// {   
+//     console.log('--->', m3, m4, m5)
+//     tileData.map(tile => {
+//         console.log(tile.img)
+//     })
+// }
   return (
     <div className={classes.root}>
       <GridList 
