@@ -22,7 +22,7 @@ class MovieDetailAPI(APIView):
         snippet = self.get_object(pk)
         serializer = MovieDetailSerializer(snippet,context = {'iduser':1})
         # serializer.get_rating_movie(1)
-        return Response(serializer.data)
+        return Response(serializer.data,status=status.HTTP_200_OK)
 
     # def post(self, request, format=None):
     #     movie_id = request.data
@@ -42,7 +42,7 @@ class MovieListAPI(APIView):
         page_obj = MyPageNumber()
         page_movies = page_obj.paginate_queryset(movies, request=request, view=self)
         serializer = self.serializer_class(page_movies, many=True,context = {'iduser':1})
-        return Response(serializer.data)
+        return Response(serializer.data,status=status.HTTP_200_OK)
 
 class FavouriteAPI(APIView):
     serializer_class = FavouriteSerializer
@@ -53,19 +53,21 @@ class FavouriteAPI(APIView):
         serializer = self.serializer_class(data=favourite)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        return Response(serializer.data)
+        return Response(serializer.data,
+            status=status.HTTP_201_CREATED)
 
     def delete(self,request):
         favorite = Favourite.objects.get(user_iduser=request.data['user_iduser'],movie_idmovie=request.data['movie_idmovie'])
         favorite.delete()
-        return Response()
+        return Response(status=status.HTTP_200_OK)
 
     def post(self, request):
         favorite = Favourite.objects.filter(user_iduser=request.data['user_iduser'])
 
         serializer = self.serializer_class(favorite,many=True)
 
-        return Response(serializer.data)
+        return Response(serializer.data,
+            status=status.HTTP_200_OK)
 
 class MyPageNumber(PageNumberPagination):
     page_size = 10
