@@ -7,12 +7,18 @@ import Login from "./containers/Login";
 // import Signup from './components/SignUp';
 // import Login from './components/Login';
 import HomepageLayout from './containers/Home';
+import MovieBrowser from './containers/Movie/MovieBrowser'
+import About from './containers/About/index'
+import MovieDetail from './containers/Movie/MovieDetail'
 
 const BaseRouter = () => (
   <Hoc>
     <Route path="/login" component={Login} />
     <Route path="/signup" component={Signup} />
     <Route exact path="/" component={HomepageLayout} />
+    <Route exact path="/movies" component={MovieBrowser} />
+    <Route exact path="/about" component={About} />
+    <Route path="/movie/:movie_id(\d+)" exact component={MovieDetail} />
   </Hoc>
 );
 

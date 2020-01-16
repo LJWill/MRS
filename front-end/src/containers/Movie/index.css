@@ -1,0 +1,18 @@
+
+.movie-backdrop {
+  background-color: black;
+  animation: animateOpacity 1s ease;
+  animation-iteration-count: 1;
+  animation-fill-mode: none;
+  animation-play-state: running;
+  z-index: -1;
+}
+
+.movie {
+  margin-top: 130px;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: gray;
+  position: relative;
+  display: grid;
+  justify-content: start;
+}

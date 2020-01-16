@@ -20,7 +20,7 @@ export default class extends React.Component {
           naturalSlideHeight={45}
           totalSlides={5}
           hasMasterSpinner={true}
-          isPlaying={false}
+          isPlaying={true}
         >
           <Slider>
             <Slide index={0}>

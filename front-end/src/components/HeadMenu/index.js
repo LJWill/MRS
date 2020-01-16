@@ -1,6 +1,9 @@
 import React from 'react';
-import { Button, Container, Menu, Input } from 'semantic-ui-react';
+import { Button, Container, Menu, Input, Image, Icon } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
+import logo1 from '../../assets/images/movie_logo.png';
+import logo2 from '../../assets/images/movie_logo2.png';
+import MovieFilter from '../../components/MovieFilter';
 
 let styles = {
   headerLink: {
@@ -15,7 +18,15 @@ const InputExampleIconProps = () => (
   />
 );
 
-export default class extends React.Component {
+export default class HeadMenu extends React.Component {
+  constructor(props, context) {
+    super(props, context);
+  }
+
+  triggerChildDrawer = (open) => {
+    this.child.toggleDrawer(open);
+  }
+
   render() {
     const { fixed, authenticated } = this.props;
 
@@ -27,31 +38,52 @@ export default class extends React.Component {
         secondary={!fixed}
         size="large"
       >
+        <MovieFilter onRef={ref => (this.child = ref)} />
         <Container>
+          <Link to="/">
+            <Menu.Item style={styles.headerLink} header>
+              <Icon name="video camera layout" />
+            </Menu.Item>
+          </Link>
           <Link to="/">
             <Menu.Item style={styles.headerLink} header>
               Home
             </Menu.Item>
           </Link>
-          <Link to="/">
+          <Link to="/movies">
             <Menu.Item style={styles.headerLink} header>
               Movies
             </Menu.Item>
           </Link>
-          <Link to="/">
+          <Link to="/about">
             <Menu.Item style={styles.headerLink} header>
               About
             </Menu.Item>
           </Link>
+          <Menu.Item
+            style={styles.headerLink}
+            header
+            onClick={() => {
+              this.triggerChildDrawer(true);
+            }}
+            onHover={() => {
+              this.triggerChildDrawer(true);
+            }}
+          > 
+            <Icon name="search layout" />
+          </Menu.Item>
 
-          {fixed ? (
+          {/* {fixed ? (
             <Menu.Item position="" header>
               <div class="ui icon input">
                 <input type="text" placeholder="Search..." />
-                <i aria-hidden="true" class="search inverted circular link icon"></i>
+                <i
+                  aria-hidden="true"
+                  class="search inverted circular link icon"
+                ></i>
               </div>
             </Menu.Item>
-          ) : null}
+          ) : null} */}
 
           {authenticated ? (
             <Menu.Item

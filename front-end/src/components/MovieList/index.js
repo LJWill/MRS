@@ -55,22 +55,30 @@ const useStyles = makeStyles(theme => ({
 
 export default function SingleLineGridList() {
   const classes = useStyles();
-{   
-    console.log('--->', m3, m4, m5)
-    tileData.map(tile => {
-        console.log(tile.img)
-    })
-}
+  // {
+  //     console.log('--->', m3, m4, m5)
+  //     tileData.map(tile => {
+  //         console.log(tile.img)
+  //     })
+  // }
   return (
     <div className={classes.root}>
-      <GridList 
-        className={classes.gridList} 
+      <GridList
+        className={classes.gridList}
         cols={5}
         cellHeight={200}
         spacing={5}
       >
         {tileData.map(tile => (
-          <GridListTile key={tile.author} cols={1.2} rows={1.2}>
+          <GridListTile
+            key={tile.author}
+            cols={1.2}
+            rows={1.2}
+            onClick={() => {
+              console.log('^^^^^^^^^^^^^^^^^^^^^^');
+              window.location.href=`/movie/${tile.id}`
+            }}
+          >
             <img src={tile.img} alt={tile.title} />
             <GridListTileBar
               title={tile.title}

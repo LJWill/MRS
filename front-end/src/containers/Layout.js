@@ -14,6 +14,7 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { logout } from '../store/actions/auth';
 // import MMenu from '../components/MMenu';
+import HeadMenu from '../components/HeadMenu/index';
 
 class CustomLayout extends React.Component {
   render() {
@@ -42,7 +43,6 @@ class CustomLayout extends React.Component {
             )}
           </Container>
         </Menu> */}
-
         {this.props.children}
 
         <Segment

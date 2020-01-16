@@ -153,14 +153,14 @@ const HomepageLayout = () => (
   <ResponsiveContainer>
     <Segment style={{ padding: '8em 8em' }} vertical>
       <Header as="h3" style={{ fontSize: '2em' }}>
-       Upcoming Movies
+        Upcoming Movies
       </Header>
       <SingleLineGridList />
     </Segment>
 
     <Segment style={{ padding: '8em 8em' }} vertical>
       <Header as="h3" style={{ fontSize: '2em' }}>
-       Trended
+        Trended
       </Header>
       <SingleLineGridList />
     </Segment>
