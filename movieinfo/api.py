@@ -49,15 +49,21 @@ class FavouriteAPI(APIView):
 
     def put(self,request):
         favourite = request.data
+        print(favourite)
         serializer = self.serializer_class(data=favourite)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
 
-    def get(self, request):
-        user = User.objects.filter(iduser=request.data['iduser'])
+    def delete(self,request):
+        favorite = Favourite.objects.get(user_iduser=request.data['user_iduser'],movie_idmovie=request.data['movie_idmovie'])
+        favorite.delete()
+        return Response()
 
-        serializer = self.serializer_class(user,many=True)
+    def post(self, request):
+        favorite = Favourite.objects.filter(user_iduser=request.data['user_iduser'])
+
+        serializer = self.serializer_class(favorite,many=True)
 
         return Response(serializer.data)
 

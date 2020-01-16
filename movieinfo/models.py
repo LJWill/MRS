@@ -106,8 +106,17 @@ class Movie(models.Model):
 
 class User(models.Model):
     iduser = models.AutoField(db_column='idUser', primary_key=True)  # Field name made lowercase.
-    favourite = models.ManyToManyField(Movie, related_name='favourite')
 
     class Meta:
         managed = True
         db_table = 'user'
+
+
+class Favourite(models.Model):
+    user_iduser = models.ForeignKey('User', db_column='User_iduser', on_delete=models.CASCADE)
+    movie_idmovie = models.ForeignKey('Movie', db_column='Movie_idmovie', on_delete=models.CASCADE)
+
+    class Meta:
+        managed = True
+        db_table = 'favourite'
+        unique_together = (('movie_idmovie', 'user_iduser'),)

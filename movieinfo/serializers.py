@@ -5,7 +5,7 @@ from movieinfo.models import *
 
 class FavouriteSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
+        model = Favourite
         fields = '__all__'
 
 
