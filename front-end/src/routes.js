@@ -9,6 +9,7 @@ import Login from "./containers/Login";
 import HomepageLayout from './containers/Home';
 import MovieBrowser from './containers/Movie/MovieBrowser'
 import About from './containers/About/index'
+import MovieDetail from './containers/Movie/MovieDetail'
 
 const BaseRouter = () => (
   <Hoc>
@@ -17,6 +18,7 @@ const BaseRouter = () => (
     <Route exact path="/" component={HomepageLayout} />
     <Route exact path="/movies" component={MovieBrowser} />
     <Route exact path="/about" component={About} />
+    <Route path="/movie/:movie_id(\d+)" exact component={MovieDetail} />
   </Hoc>
 );
 

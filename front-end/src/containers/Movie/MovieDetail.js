@@ -1,16 +1,47 @@
 import React from 'react';
+import { Container, Divider, Grid, Header, Icon } from 'semantic-ui-react';
+
+
+const movieData = {
+    adult: false,
+    backdrop_path: "/jOzrELAzFxtMx2I4uDGHOotdfsS.jpg",
+    belongs_to_collection: {id: 10, name: "Star Wars Collection", poster_path: "/iTQHKziZy9pAAY4hHEDCGPaOvFC.jpg", backdrop_path: "/d8duYyyC9J5T825Hg7grmaabfxQ.jpg"},
+    budget: 250000000,
+    genres: "",
+    homepage: "https://www.starwars.com/films/star-wars-episode-ix-the-rise-of-skywalker",
+    id: 181812,
+    imdb_id: "tt2527338",
+    original_language: "en",
+    original_title: "Star Wars: The Rise of Skywalker",
+    overview: "The surviving Resistance faces the First Order once again as the journey of Rey, Finn and Poe Dameron continues. With the power and knowledge of generations behind them, the final battle begins.",
+    popularity: 214.921,
+    poster_path: "/db32LaOibwEliAmSL2jjDF6oDdj.jpg",
+    production_companies: "",
+    production_countries: "",
+    release_date: "2019-12-18",
+    revenue: 956030690,
+    runtime: 142,
+    spoken_languages: "",
+    status: "Released",
+    tagline: "Every generation has a legend",
+    title: "Star Wars: The Rise of Skywalker",
+    video: false,
+    vote_average: 6.6,
+    vote_count: 2464,
+}
 
 class MovieDetail extends React.Component {
+
   render() {
     return (
       <div>
         <div
           className="movie-backdrop w-100 h-100 position-fixed fixed-top"
-          style={{
-            backgroundSize: 'cover',
-            backgroundImage: `linear-gradient(rgba(0,0,0,.5), rgba(0,0,0, .5)), url("${MOVIE_DB_IMAGE_URL.large +
-              movieData.backdrop_path}")`
-          }}
+        //   style={{
+        //     backgroundSize: 'cover',
+        //     backgroundImage: `linear-gradient(rgba(0,0,0,.5), rgba(0,0,0, .5)), url("${MOVIE_DB_IMAGE_URL.large +
+        //       movieData.backdrop_path}")`
+        //   }}
         />
 
         <Container className="d-flex flex-column">
