@@ -55,6 +55,7 @@ class DesktopContainer extends Component {
           >
             <HeadMenu fixed={fixed} />
             <Carousel />
+            
           </Segment>
         </Visibility>
 
@@ -261,4 +262,5 @@ const HomepageLayout = () => (
   </ResponsiveContainer>
 );
 
-export default HomepageLayout;
+
+export default HomepageLayout

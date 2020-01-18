@@ -1,13 +1,29 @@
 import React from 'react';
-import { Button, Container, Menu, Input, Image, Icon } from 'semantic-ui-react';
+import {
+  Button,
+  Container,
+  Menu,
+  Input,
+  Image,
+  Icon,
+  Dropdown
+} from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import logo1 from '../../assets/images/movie_logo.png';
 import logo2 from '../../assets/images/movie_logo2.png';
 import MovieFilter from '../../components/MovieFilter';
+import { connect } from 'react-redux';
+import { logout } from '../../store/actions/auth';
+import { withRouter } from 'react-router-dom';
 
 let styles = {
   headerLink: {
     height: '100%'
+  },
+  userIcon: {
+    position: 'relative',
+    top: '12px',
+    left: '10px'
   }
 };
 
@@ -18,18 +34,17 @@ const InputExampleIconProps = () => (
   />
 );
 
-export default class HeadMenu extends React.Component {
+class HeadMenu extends React.Component {
   constructor(props, context) {
     super(props, context);
   }
 
-  triggerChildDrawer = (open) => {
+  triggerChildDrawer = open => {
     this.child.toggleDrawer(open);
-  }
+  };
 
   render() {
-    const { fixed, authenticated } = this.props;
-
+    const { fixed, authenticated, username } = this.props;
     return (
       <Menu
         fixed={fixed ? 'top' : null}
@@ -39,10 +54,11 @@ export default class HeadMenu extends React.Component {
         size="large"
       >
         <MovieFilter onRef={ref => (this.child = ref)} />
+
         <Container>
           <Link to="/">
             <Menu.Item style={styles.headerLink} header>
-              <Icon name="video camera layout" />
+              <Icon name="video layout" />
             </Menu.Item>
           </Link>
           <Link to="/">
@@ -69,30 +85,31 @@ export default class HeadMenu extends React.Component {
             onHover={() => {
               this.triggerChildDrawer(true);
             }}
-          > 
+          >
             <Icon name="search layout" />
           </Menu.Item>
 
-          {/* {fixed ? (
-            <Menu.Item position="" header>
-              <div class="ui icon input">
-                <input type="text" placeholder="Search..." />
-                <i
-                  aria-hidden="true"
-                  class="search inverted circular link icon"
-                ></i>
-              </div>
-            </Menu.Item>
-          ) : null} */}
-
           {authenticated ? (
-            <Menu.Item
-              position="right"
-              header
-              onClick={() => this.props.logout()}
-            >
-              Logout
-            </Menu.Item>
+            <Menu.Menu position="right">
+              <Icon
+                name="user circle"
+                inverted={!fixed}
+                size="large"
+                style={styles.userIcon}
+              />
+              <Dropdown text={username} clearable labeled item simple>
+                <Dropdown.Menu>
+                  <Dropdown.Item>My Profile</Dropdown.Item>
+                  <Dropdown.Item>My Favourites</Dropdown.Item>
+                  <Dropdown.Item onClick={() => this.props.logout()}>
+                    Logout
+                  </Dropdown.Item>
+                  {/* <Dropdown.Divider />
+                <Dropdown.Header>Header Item</Dropdown.Header>
+                <Dropdown.Item>List Item</Dropdown.Item> */}
+                </Dropdown.Menu>
+              </Dropdown>
+            </Menu.Menu>
           ) : (
             <Menu.Item position="right">
               <Button as="a" href="/login" inverted={!fixed}>
@@ -115,3 +132,20 @@ export default class HeadMenu extends React.Component {
     );
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    authenticated: state.auth.token !== null,
+    username: state.auth.username
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    logout: () => dispatch(logout())
+  };
+};
+
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(HeadMenu)
+);
