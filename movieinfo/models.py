@@ -80,6 +80,7 @@ class Ratings(models.Model):
         unique_together = (('movie_idmovie', 'user_iduser'),)
 
 
+
 class Movie(models.Model):
     idmovie = models.BigIntegerField(db_column='idMovie', primary_key=True)  # Field name made lowercase.
     country = models.CharField(max_length=45, blank=True, null=True)

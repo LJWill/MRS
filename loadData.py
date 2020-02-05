@@ -1,6 +1,7 @@
 import os
 import django
 from django.db import transaction
+
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "movie.settings")
 django.setup()
 import pandas as pd
@@ -133,7 +134,7 @@ class LoadingData:
             except:
                 backdrops = row["backdrops"]
                 if not pd.isnull(backdrops):
-                    backdrops=backdrops.split(',')
+                    backdrops = backdrops.split(',')
                     for backdrop in backdrops:
                         new_image = movies.Images.objects.create(backdrop=backdrop, movie_idmovie=movie)
                         new_image.save()
@@ -184,8 +185,8 @@ class LoadingData:
                 user = movies.User.objects.get(iduser=row["userId"])
             except:
                 user = movies.User.objects.create(iduser=row["userId"])
-            new_rating = movies.Ratings.objects.create(movie_idmovie=movie,user_iduser=user)
-            new_rating.rating = int(row["rating"]*2)
+            new_rating = movies.Ratings.objects.create(movie_idmovie=movie, user_iduser=user)
+            new_rating.rating = int(row["rating"] * 2)
             new_rating.save()
 
     def writegenre(self, genrename):
@@ -229,17 +230,17 @@ class LoadingData:
 if __name__ == '__main__':
     ld = LoadingData()
 
-    read_path = 'origindata/people.csv'
-    ld.writeStuff(read_path)
+    # read_path = 'origindata/people.csv'
+    # ld.writeStuff(read_path)
+    #
+    # read_path = 'origindata/movieDetail.csv'
+    # ld.writeMovie(read_path)
 
-    read_path = 'origindata/movieDetail.csv'
-    ld.writeMovie(read_path)
-
-    read_path = 'origindata/cast.csv'
-    ld.writeCast(read_path)
+    # read_path = 'origindata/cast.csv'
+    # ld.writeCast(read_path)
 
     read_path = 'origindata/movieImage.csv'
     ld.writeimage(read_path)
 
-    # read_path = 'origindata/ratingResult.csv'
-    # ld.writeRatings(read_path)
+    read_path = 'origindata/ratingResult.csv'
+    ld.writeRatings(read_path)
