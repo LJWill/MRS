@@ -64,14 +64,11 @@ class ImageRequest:
         link = pd.read_csv(link_path)
         result = pd.merge(image, link, how='left', left_on='id', right_on='tmdbId')
         result = result.drop(['Unnamed: 0', 'tmdbId', 'movieId', 'imdbId'], axis=1)
-        # result['imdbId'] = result['imdbId'].map(self.padding)
-        # result['tmdbId'] = result['tmdbId'].map(self.tmdb_padding)
         result.rename(columns={'id': 'tmdbId'})
         result.to_csv(write_path)
 
 if __name__ == '__main__':
     ir = ImageRequest()
-
-    read_path = 'Data/DataImportTest/LinkTest.csv'
-    write_path = 'Data/DataImportTest/movieImage.csv'
+    read_path = 'Data/newLinks.csv'
+    write_path = 'Data/movieImages.csv'
     ir.movie_image(read_path, write_path)

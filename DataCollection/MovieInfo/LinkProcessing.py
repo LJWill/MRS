@@ -3,16 +3,6 @@ import requests as rq
 
 class LinkProcessing:
 
-    def padding(self, x):
-        temp = str(int(x))
-        lens = len(temp)
-        if lens < 7:
-            for i in range(0, 7-lens):
-                temp = "0" + temp
-                # print(i)
-        temp = "tt" + temp
-        return temp
-
     def float_int(self, x):
         return int(x)
 
@@ -22,12 +12,11 @@ class LinkProcessing:
         result = link.merge(new_link, how='left', on='imdbId')
         result = result.drop(['Unnamed: 0_y', 'Unnamed: 0_x'], axis=1)
         result['tmdbId'] = result['tmdbId'].map(self.float_int)
-        print(result)
-
+        result.to_csv(write_path)
 
 if __name__ == '__main__':
-    old_path = 'Data/oldLinkTest.csv'
-    new_path = 'Data/newLinkTest.csv'
-    write_path = 'Data/linkResult.csv'
+    id_path = 'Data/finalLinks.csv'
+    newLink_path = 'Data/newLinks.csv'
+    write_path = 'Data/linkResults.csv'
     lp = LinkProcessing()
-    lp.read_link_file(old_path, new_path, write_path)
+    lp.read_link_file(id_path, newLink_path, write_path)

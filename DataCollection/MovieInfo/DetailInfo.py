@@ -15,20 +15,6 @@ class MovieDetail:
         temp = "tt" + temp
         return temp
 
-    def float_int(self, x):
-        temp = x
-        if not pd.isnull(x):
-            temp = int(x)
-        return temp
-
-    def reformat_links(self, link_path, write_path):
-        id = pd.read_csv(link_path)
-        id['imdbId'] = id['imdbId'].map(self.padding)
-        # id['tmdbId'] = id['tmdbId'].map(self.float_int)
-
-        # id = id.drop(['tmdbId'], axis=1)
-        id.to_csv(write_path)
-
     def info_request(self, read_path, detail_path, id_path):
         Id_df = pd.DataFrame()
         result = pd.DataFrame()
@@ -105,16 +91,10 @@ class MovieDetail:
         del json_file["popularity"]
         del json_file["original_title"]
         del json_file["original_language"]
-        del json_file['imdb_id']
+        # del json_file['imdb_id']
         # print(json_file)
 
         return json_file
-
-    def format_detail(self, read_path, write_path):
-        detail = pd.read_csv(read_path)
-        detail = detail.drop(['imdb_id', 'Unnamed: 0'], axis=1)
-        # detail.rename(columns={'id': 'tmdbId'}, inplace=True)
-        detail.to_csv(write_path)
 
     def link_df(self, json_file, id_df, id):
         json = self.id_normalize(json_file, id)
@@ -158,18 +138,7 @@ class MovieDetail:
 
 if __name__ == '__main__':
     md = MovieDetail()
-    read_path = 'Data/DataImportTest/LinkTest.csv'
-    detail_path = 'Data/DataImportTest/movieDetail.csv'
-    id_path = 'Data/DataImportTest/id.csv'
+    read_path = 'Data/newLinks.csv'
+    detail_path = 'Data/movieDetails.csv'
+    id_path = 'Data/finalLinks.csv'
     md.info_request(read_path, detail_path, id_path)
-    # md.reformat_links(read_path, write_path)
-    # write_path = 'Data/movieImage.csv'
-    # md.movie_image(read_path, write_path)
-    # write_path = 'Data/movieDetails.csv'
-    # image_path = 'Data/movieImage.csv'
-    # link_path = 'Data/newlink.csv'
-    # write_path = 'Data/tempResult.csv'
-    # md.image_reformat(image_path, link_path, write_path)
-    # read_path = 'Data/movieDetails.csv'
-    # write_path = 'Data/finalResult/movieDetails.csv'
-    # md.format_detail(read_path, write_path)

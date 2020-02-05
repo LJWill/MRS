@@ -1,8 +1,12 @@
 import pandas as pd
 
-
-
 class Rating:
+
+    def float_int(self, x):
+        if not pd.isnull(x):
+            return int(x)
+        else:
+            return x
 
     def padding(self, x):
         temp = str(x)
@@ -18,19 +22,17 @@ class Rating:
         rating = pd.read_csv(rating_path)
         # print(rating.shape[0])
         id = pd.read_csv(link_path)
-        # print(id.shape[0])
-        id['imdbId'] = id['imdbId'].map(self.padding)
-        id = id.drop(['tmdbId'], axis=1)
-        # print(id)
+        # id['imdbId'] = id['imdbId'].map(self.padding)
+        # id = id.drop(['tmdbId'], axis=1)
+        id = id.drop(['imdbId'], axis=1)
         result = rating.merge(id, how='left', on='movieId')
-        # print(result.shape[0])
-        # result = result.drop(['tmdbId'], axis=1)
+        result = result.drop(['movieId', "Unnamed: 0"], axis=1)
         result.to_csv(write_path)
 
 
 if __name__ == '__main__':
     md = Rating()
     rating_path = 'Data/ratings.csv'
-    link_path = 'Data/linksTest.csv'
-    write_path = 'Data/ratingResult1.csv'
-    md.read_rating(rating_path, link_path, write_path)
+    link_path = 'Data/linkResult.csv'
+    new_rating_path = 'Data/finalRatings.csv'
+    md.read_rating(rating_path, link_path, new_rating_path)

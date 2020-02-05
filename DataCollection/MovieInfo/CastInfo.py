@@ -128,10 +128,12 @@ class CastDetail:
 
 if __name__ == '__main__':
     md = CastDetail()
-    read_path = 'Data/DataImportTest/cast.csv'
-    write_path = 'Data/DataImportTest/people.csv'
-    md.person_request(read_path, write_path)
-    # read_path = 'Data/DataImportTest/linkTest.csv'
-    # write_path = 'Data/DataImportTest/cast.csv'
-    # md.movie_casts(read_path, write_path)
+    link_path = 'Data/finalLinks.csv'
+    cast_path = 'Data/casts.csv'
+    print("start getting casts info:")
+    md.movie_casts(link_path, cast_path)
+    print("start collecting person detail info:")
+    people_path = 'Data/personDetails.csv'
+    md.person_request(cast_path, people_path)
+
 
