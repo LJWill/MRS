@@ -1,5 +1,6 @@
 import pandas as pd
 import requests as rq
+import json
 
 class MovieDetail:
 
@@ -26,7 +27,11 @@ class MovieDetail:
             pay_load = {"api_key": "746243c68b299817578cb792ad88c647"}
             url = url_front + str(id)
             r = rq.get(url, params=pay_load)
-            json_file = r.json()
+            try:
+                json_file = r.json()
+            except json.decoder.JSONDecodeError:
+                print(r)
+                continue
             temp = json_file.get("status_code")
             if temp is not None:
                 print("\r" + 'processing %d out of %d items...' % (i + 1, total), end='')
