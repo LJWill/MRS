@@ -35,40 +35,35 @@ const AnotherGridLayout = () => (
     <Header as="h2" inverted textAlign="center">
       Movie List
     </Header>
-    <Grid>
-      <Grid.Row columns={4}>
-        <Grid.Column>
-          <MovieCard movie_id={1}/>
-        </Grid.Column>
-        <Grid.Column>
-          <MovieCard movie_id={2}/>
-        </Grid.Column>
-        <Grid.Column>
-          <MovieCard movie_id={3}/>
-        </Grid.Column>
-        <Grid.Column>
-          <MovieCard movie_id={4}/>
-        </Grid.Column>
-      </Grid.Row>
-    </Grid>
 
-    <Grid>
-      <Grid.Row columns={4}>
-        <Grid.Column>
-          <MovieCard movie_id={1}/>
-        </Grid.Column>
-        <Grid.Column>
-          <MovieCard movie_id={2}/>
-        </Grid.Column>
-        <Grid.Column>
-          <MovieCard movie_id={3}/>
-        </Grid.Column>
-        <Grid.Column>
-          <MovieCard movie_id={4}/>
-        </Grid.Column>
-      </Grid.Row>
+    <Divider />
+
+    <Grid container columns={4}>
+      <Grid.Column>
+        <MovieCard movie_id={1} />
+      </Grid.Column>
+      <Grid.Column>
+        <MovieCard movie_id={2} />
+      </Grid.Column>
+      <Grid.Column>
+        <MovieCard movie_id={3} />
+      </Grid.Column>
+      <Grid.Column>
+        <MovieCard movie_id={4} />
+      </Grid.Column>
+      <Grid.Column>
+        <MovieCard movie_id={5} />
+      </Grid.Column>
     </Grid>
   </Container>
 );
+
+// const mapStateToProps = ({ movieDetails, auth, watchList }) => ({
+//   movie: movieDetails.movie
+// });
+
+// const mapDispatchToProps = dispatch => ({
+//   getMovie: id => dispatch(actions.getMovie(id))
+// });
 
 export default AnotherGridLayout;

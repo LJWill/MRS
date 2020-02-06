@@ -17,12 +17,20 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import Rating from '@material-ui/lab/Rating';
 
+import m1 from '../assets/images/m1.png'
+import m2 from '../assets/images/m2.png'
+import m3 from '../assets/images/m3.png'
+import m4 from '../assets/images/m4.png'
+import m5 from '../assets/images/m5.png'
+
+
+
 const useStyles = makeStyles(theme => ({
   card: {
     maxWidth: 345,
   },
   media: {
-    height: 0,
+    height: 250,
     paddingTop: '56.25%', // 16:9
   },
   expand: {
@@ -43,7 +51,7 @@ const useStyles = makeStyles(theme => ({
 export default function RecipeReviewCard(obj) {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
-    console.log('*****************', obj.movie_id)
+
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
@@ -51,32 +59,33 @@ export default function RecipeReviewCard(obj) {
   const movie_id = obj.movie_id
 
   return (
-    <Card className={classes.card}>
-      <CardHeader
-        avatar={
-          <Avatar aria-label="recipe" className={classes.avatar}>
-            R
-          </Avatar>
-        }
-        action={
-          <IconButton aria-label="settings">
-            <MoreVertIcon />
-          </IconButton>
-        }
-        title="Shrimp and Chorizo Paella"
-        subheader="September 14, 2016"
-      />
+    <Card className={classes.card} >
+      
       <CardMedia
         className={classes.media}
-        image="/static/images/cards/paella.jpg"
+        image={m2}
         title="Paella dish"
       />
-      <CardContent>
+      <CardHeader
+        // action={
+        //   <IconButton aria-label="settings">
+        //     <MoreVertIcon />
+        //   </IconButton>
+        // }
+        title="Shrimp and Chorizo Paella"
+        subheader="September 14, 2016"
+        avatar={
+          <Avatar aria-label="recipe" className={classes.avatar}>
+            8.7
+          </Avatar>
+        }
+      />
+      {/* <CardContent>
         <Typography variant="body2" color="textSecondary" component="p">
           This impressive paella is a perfect party dish and a fun meal to cook together with your
           guests. Add 1 cup of frozen peas along with the mussels, if you like.
         </Typography>
-      </CardContent>
+      </CardContent> */}
       <CardActions disableSpacing>
         <IconButton aria-label="add to favorites">
           <FavoriteIcon />

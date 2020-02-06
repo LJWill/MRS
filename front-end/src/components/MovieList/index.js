@@ -35,23 +35,6 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-/**
- * The example data is structured as follows:
- *
- * import image from 'path/to/image.jpg';
- * [etc...]
- *
- * const tileData = [
- *   {
- *     img: image,
- *     title: 'Image',
- *     author: 'author',
- *   },
- *   {
- *     [etc...]
- *   },
- * ];
- */
 
 export default function SingleLineGridList() {
   const classes = useStyles();
@@ -69,7 +52,6 @@ export default function SingleLineGridList() {
             cols={1.2}
             rows={1.2}
             onClick={() => {
-              console.log('^^^^^^^^^^^^^^^^^^^^^^');
               window.location.href=`/movie/${tile.id}`
             }}
           >
