@@ -33,6 +33,6 @@ class Rating:
 if __name__ == '__main__':
     md = Rating()
     rating_path = 'Data/ratings.csv'
-    link_path = 'Data/linkResult.csv'
+    link_path = 'Data/linkResults.csv'
     new_rating_path = 'Data/finalRatings.csv'
     md.read_rating(rating_path, link_path, new_rating_path)
