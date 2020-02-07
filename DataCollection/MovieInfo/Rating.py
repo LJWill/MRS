@@ -33,9 +33,9 @@ class Rating:
                 max = len - 1
             rating_slice = rating.iloc[min: max]
             temp_result = rating_slice.merge(id, how='left', on='movieId')
-            result.append(temp_result)
+            temp_result = temp_result.drop(['movieId', "Unnamed: 0"], axis=1)
+            result = result.append(temp_result)
             temp = max
-        result = result.drop(['movieId', "Unnamed: 0"], axis=1)
         result.to_csv(write_path)
 
 
