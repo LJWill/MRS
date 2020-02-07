@@ -35,6 +35,7 @@ class Rating:
             temp_result = rating_slice.merge(id, how='left', on='movieId')
             temp_result = temp_result.drop(['movieId', "Unnamed: 0"], axis=1)
             result = result.append(temp_result)
+            print("\r" + 'processing %d out of %d items...' % (temp + 1, len), end='')
             temp = max
         result.to_csv(write_path)
 
