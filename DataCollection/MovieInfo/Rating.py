@@ -20,12 +20,21 @@ class Rating:
 
     def read_rating(self, rating_path, link_path, write_path):
         rating = pd.read_csv(rating_path)
-        # print(rating.shape[0])
+        result = pd.DataFrame()
         id = pd.read_csv(link_path)
-        # id['imdbId'] = id['imdbId'].map(self.padding)
-        # id = id.drop(['tmdbId'], axis=1)
         id = id.drop(['imdbId'], axis=1)
-        result = rating.merge(id, how='left', on='movieId')
+        len = rating.shape[0]
+        temp = 0
+        while temp < len - 1:
+            min = temp
+            if temp + 10000 < len - 1:
+                max = temp + 10000
+            else:
+                max = len - 1
+            rating_slice = rating.iloc[min: max]
+            temp_result = rating_slice.merge(id, how='left', on='movieId')
+            result.append(temp_result)
+            temp = max
         result = result.drop(['movieId', "Unnamed: 0"], axis=1)
         result.to_csv(write_path)
 
