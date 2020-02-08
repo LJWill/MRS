@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import HeadMenu from '../components/HeadMenu/index';
+import Nav from '../components/HeadMenu/Nav'
+
 import {
   Button,
   Container,
@@ -50,10 +52,12 @@ class DesktopContainer extends Component {
           <Segment
             inverted
             textAlign="center"
-            style={{ minHeight: 500, padding: '1em 0em 0em 0em' }}
+            style={{ minHeight: 500, padding: '0em' }}
             vertical
           >
-            <HeadMenu fixed={fixed} />
+            {/* <HeadMenu fixed={fixed} /> */}
+            <Nav />
+
             <Carousel />
             
           </Segment>
