@@ -1,6 +1,7 @@
 import pandas as pd
 import requests as rq
 import json
+import time
 import math
 
 
@@ -61,6 +62,7 @@ class CastDetail:
         i = 0
         total = len(casts)
         for id in casts:
+            time.sleep(0.01)
             url_front = 'https://api.themoviedb.org/3/person/'
             pay_load = {"api_key": "746243c68b299817578cb792ad88c647"}
             url = url_front + id
@@ -137,10 +139,10 @@ class CastDetail:
 
 if __name__ == '__main__':
     md = CastDetail()
-    link_path = 'Data/finalLinks.csv'
+    # link_path = 'Data/finalLinks.csv'
     cast_path = 'Data/casts.csv'
-    print("start getting casts info:")
-    md.movie_casts(link_path, cast_path)
+    # print("start getting casts info:")
+    # md.movie_casts(link_path, cast_path)
     print("start collecting person detail info:")
     people_path = 'Data/personDetails.csv'
     md.person_request(cast_path, people_path)
