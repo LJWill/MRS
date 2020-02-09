@@ -10,17 +10,18 @@ import m3 from '../../assets/images/m3.png';
 import m4 from '../../assets/images/m4.png';
 import m5 from '../../assets/images/m5.png';
 
-import './index.css'
+import './index.scss'
 
 export default class extends React.Component {
     render() {
       return (
         <CarouselProvider
           naturalSlideWidth={100}
-          naturalSlideHeight={50}
+          naturalSlideHeight={55}
           totalSlides={5}
           hasMasterSpinner={true}
           isPlaying={true}
+          className="myCarouselContainer"
         >
           <Slider>
             <Slide index={0}>

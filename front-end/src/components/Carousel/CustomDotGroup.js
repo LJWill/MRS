@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import { Dot } from "pure-react-carousel";
 import React from "react";
 import { Button, Container } from "semantic-ui-react";
-import './index.css'
+import './index.scss'
 
 const CustomDotGroup = ({ slides, size }) => (
   <Container textAlign="center" className='custom-dot-group'>

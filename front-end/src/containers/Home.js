@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import HeadMenu from '../components/HeadMenu/index';
 import Nav from '../components/HeadMenu/Nav'
+import MovieList from '../components/MovieList/ScrollContainer'
 
 import {
   Button,
@@ -21,6 +22,7 @@ import {
 import SampleImg from '../assets/images/sample.png';
 import Carousel from '../components/Carousel/index';
 import SingleLineGridList from '../components/MovieList/index';
+import Movie from '../components/MovieList/MovieCard';
 
 const getWidth = () => {
   const isSSR = typeof window === 'undefined';
@@ -52,7 +54,7 @@ class DesktopContainer extends Component {
           <Segment
             inverted
             textAlign="center"
-            style={{ minHeight: 500, padding: '0em' }}
+            style={{ minHeight: 500, padding: '0em'}}
             vertical
           >
             {/* <HeadMenu fixed={fixed} /> */}
@@ -156,7 +158,7 @@ ResponsiveContainer.propTypes = {
 
 const HomepageLayout = () => (
   <ResponsiveContainer>
-    <Segment style={{ padding: '8em 8em' }} vertical>
+    {/* <Segment style={{ padding: '8em 8em' }} vertical>
       <Header as="h3" style={{ fontSize: '2em' }}>
         Upcoming Movies
       </Header>
@@ -168,8 +170,10 @@ const HomepageLayout = () => (
         Trended
       </Header>
       <SingleLineGridList />
-    </Segment>
+    </Segment> */}
 
+    <MovieList />
+    
     <Segment style={{ padding: '8em 0em' }} vertical>
       <Grid container stackable verticalAlign="middle">
         <Grid.Row>
