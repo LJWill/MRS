@@ -15,7 +15,7 @@ class LoadingData:
         count = 1
         total = raw.shape[0]
         for index, row in raw.iterrows():
-            print("\r" + 'processing %d out of %d items...' % (count, total), end='')
+            print("\r" +"Movie"+ 'processing %d out of %d items...' % (count, total), end='')
             count += 1
             with transaction.atomic():
 
@@ -81,7 +81,7 @@ class LoadingData:
         total = raw.shape[0]
         for index, row in raw.iterrows():
 
-            print("\r" + 'processing %d out of %d items...' % (count, total), end='')
+            print("\r" +"Stuff" + 'processing %d out of %d items...' % (count, total), end='')
             count += 1
             department = row["known_for_department"]
             try:
@@ -125,7 +125,7 @@ class LoadingData:
         count = 1
         total = raw.shape[0]
         for index, row in raw.iterrows():
-            print("\r" + 'processing %d out of %d items...' % (count, total), end='')
+            print("\r" +"Image" + 'processing %d out of %d items...' % (count, total), end='')
             count += 1
             try:
                 movie = movies.Movie.objects.get(idmovie=row["id"])
@@ -147,7 +147,7 @@ class LoadingData:
         count = 1
         total = raw.shape[0]
         for index, row in raw.iterrows():
-            print("\r" + 'processing %d out of %d items...' % (count, total), end='')
+            print("\r" +"Cast" + 'processing %d out of %d items...' % (count, total), end='')
             count += 1
             try:
                 movie = movies.Movie.objects.get(idmovie=row["id"])
@@ -179,7 +179,7 @@ class LoadingData:
         count = 1
         total = raw.shape[0]
         for index, row in raw.iterrows():
-            print("\r" + 'processing %d out of %d items...' % (count, total), end='')
+            print("\r"  +"Rating"+ 'processing %d out of %d items...' % (count, total), end='')
             count += 1
             try:
                 movie = movies.Movie.objects.get(idmovie=row["movieId"])
@@ -242,7 +242,7 @@ class LoadingData:
 if __name__ == '__main__':
     ld = LoadingData()
 
-    read_path = './DataCollection/MovieInfo/Data/people.csv'
+    read_path = './DataCollection/MovieInfo/Data/personDetails.csv'
     ld.writeStuff(read_path)
 
     read_path = './DataCollection/MovieInfo/Data/movieDetails.csv'
@@ -254,5 +254,5 @@ if __name__ == '__main__':
     read_path = './DataCollection/MovieInfo/Data/movieImages.csv'
     ld.writeimage(read_path)
 
-    read_path = './DataCollection/MovieInfo/Data/ratingResults.csv'
+    read_path = './DataCollection/MovieInfo/Data/finalRatings.csv'
     ld.writeRatings(read_path)
