@@ -84,7 +84,7 @@ class Ratings(models.Model):
 class Movie(models.Model):
     idmovie = models.BigIntegerField(db_column='idMovie', primary_key=True)  # Field name made lowercase.
     country = models.CharField(max_length=45, blank=True, null=True)
-    title = models.CharField(max_length=100, blank=True, null=True)
+    title = models.CharField(max_length=150, blank=True, null=True)
     # language = models.CharField(max_length=45, blank=True, null=True)
     releasedate = models.TextField(db_column='releaseDate')  # Field name made lowercase. This field type is a guess.
     adult = models.IntegerField(null=True)
