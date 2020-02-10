@@ -2,10 +2,9 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStar } from '@fortawesome/free-regular-svg-icons';
-
+import { faStar, faEye } from '@fortawesome/free-regular-svg-icons';
 import { urlTitle, addToList, isSaved, removeFromList } from '../../utils';
-// import { config } from '../config';
+import config from '../../config';
 import { GenericButton, PrimaryButton, Button } from './Button';
 
 const Poster = styled.div`
@@ -102,15 +101,15 @@ export default class Movie extends Component {
             <Wrapper style={this.state.style}>
                 <Content>
                     <h3>{title}</h3>
-                    <p>
+                    {/* <p>
                         <FontAwesomeIcon icon="star" /> {vote_average}
-                    </p>
+                    </p> */}
                     <Link
                         to={`${process.env.PUBLIC_URL}/movie/${encodeURIComponent(
                             urlTitle(title)
                         )}/${id}`}
                     >
-                        <PrimaryButton title="View" icon={<FontAwesomeIcon icon="eye" />} />
+                        <PrimaryButton title="View" icon={<FontAwesomeIcon icon={faEye} />} />
                     </Link>
                     {this.state.isSaved ? (
                         <GenericButton
@@ -126,7 +125,7 @@ export default class Movie extends Component {
                         />
                     )}
                 </Content>
-                {/* <Poster bg={`${config.movieApiConfig.images.secure_base_url}w342${poster_path}`} /> */}
+                <Poster bg={`${config.medium}${poster_path}`} />
             </Wrapper>
         );
     }

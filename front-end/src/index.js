@@ -7,11 +7,15 @@ import { Provider } from "react-redux";
 import thunk from "redux-thunk";
 
 import authReducer from "./store/reducers/auth";
+import movieReducer from "./store/reducers/movie";
+
+
 
 const composeEnhances = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const rootReducer = combineReducers({
-  auth: authReducer
+  auth: authReducer,
+  movieBrowser: movieReducer
 });
 
 const store = createStore(rootReducer, composeEnhances(applyMiddleware(thunk)));

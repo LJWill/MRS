@@ -2,3 +2,12 @@ export const AUTH_START = "AUTH_START";
 export const AUTH_SUCCESS = "AUTH_SUCCESS";
 export const AUTH_FAIL = "AUTH_FAIL";
 export const AUTH_LOGOUT = "AUTH_LOGOUT";
+
+
+export const GET_MOVIE_START = "GET_MOVIE_START";
+export const GET_MOVIE_SUCCESS = "GET_MOVIE_SUCCESS";
+export const GET_MOVIE_FAIL = "GET_MOVIE_FAIL";
+
+export const GET_GENRE_START = "GET_GENRE_START";
+export const GET_GENRE_SUCCESS = "GET_GENRE_SUCCESS";
+export const GET_GENRE_FAIL = "GET_GENRE_FAIL";

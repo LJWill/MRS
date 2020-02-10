@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 export const Button = styled.button`
     background-color: rgba(255, 255, 255, 0.15);
-    border-radius: 30px;
+    border-radius: 10px;
     border: 0;
     color: #fff;
     ${p => p.onClick && 'cursor: pointer;' }
@@ -19,8 +19,8 @@ export const Button = styled.button`
 
     &:before {
         opacity: 0;
-        background: #9067c6;
-        border-radius: 30px;
+        background: #ff00ab;
+        border-radius: 10px;
         content: '';
         height: 100%;
         left: 0;
@@ -34,7 +34,7 @@ export const Button = styled.button`
     }
 
     &:hover {
-        background-color: #9067c6;
+        background-color: #ff00ab;
 
         &:before {
             opacity: 1;
@@ -44,7 +44,7 @@ export const Button = styled.button`
 `;
 
 const Primary = styled(Button)`
-    background-color: #9067c6;
+    background-color: #495285;
 `;
 
 export const GenreButton = props => {

@@ -1,8 +1,10 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import HeadMenu from '../components/HeadMenu/index';
-import Nav from '../components/HeadMenu/Nav'
-import MovieList from '../components/MovieList/ScrollContainer'
+import Nav from '../components/HeadMenu/Nav';
+import MovieList from '../components/MovieList/ScrollContainer';
+import * as movieActions from '../store/actions/movie';
+import { connect } from 'react-redux';
 
 import {
   Button,
@@ -54,14 +56,13 @@ class DesktopContainer extends Component {
           <Segment
             inverted
             textAlign="center"
-            style={{ minHeight: 500, padding: '0em'}}
+            style={{ minHeight: 500, padding: '0em' }}
             vertical
           >
             {/* <HeadMenu fixed={fixed} /> */}
             <Nav />
 
             <Carousel />
-            
           </Segment>
         </Visibility>
 
@@ -156,119 +157,177 @@ ResponsiveContainer.propTypes = {
   children: PropTypes.node
 };
 
-const HomepageLayout = () => (
-  <ResponsiveContainer>
-    {/* <Segment style={{ padding: '8em 8em' }} vertical>
-      <Header as="h3" style={{ fontSize: '2em' }}>
-        Upcoming Movies
-      </Header>
-      <SingleLineGridList />
-    </Segment>
+const filters = ['now_playing', 'popular', 'top_rated', 'upcoming'];
 
-    <Segment style={{ padding: '8em 8em' }} vertical>
-      <Header as="h3" style={{ fontSize: '2em' }}>
-        Trended
-      </Header>
-      <SingleLineGridList />
-    </Segment> */}
+class HomepageLayout extends Component {
+  constructor(props) {
+    super(props);
+  }
 
-    <MovieList />
-    
-    <Segment style={{ padding: '8em 0em' }} vertical>
-      <Grid container stackable verticalAlign="middle">
-        <Grid.Row>
-          <Grid.Column width={8}>
+  componentDidMount() {
+    const { getMovies, getGenres } = this.props;
+
+    getGenres();
+    getMovies({ filters });
+  }
+
+  render() {
+    const { movies, genres } = this.props;
+
+    // let moviesObj = Object.fromEntries(
+    //   Object.entries(movies).map(([i, item]) => {
+    //     return [Object.keys(item)[0], Object.values(item)[0]];
+    //   })
+    // );
+
+    console.log('00000000000', movies[0] && movies[0].now_playing);
+    return (
+      <ResponsiveContainer>
+        {movies[0] && (
+          <MovieList
+            filters={filters}
+            movies={movies[0].now_playing}
+            genres={genres}
+            title={`Now Playing Movies`}
+          />
+        )}
+
+        {movies[1] && (
+          <MovieList
+            filters={filters}
+            movies={movies[1].popular}
+            genres={genres}
+            title={`Most Popular Movies`}
+          />
+        )}
+
+        {movies[2] && (
+          <MovieList
+            filters={filters}
+            movies={movies[2].top_rated}
+            genres={genres}
+            title={`Top Rated Movies`}
+          />
+        )}
+
+        {movies[3] && (
+          <MovieList
+            filters={filters}
+            movies={movies[3].upcoming}
+            genres={genres}
+            title={`Upcoming Movies`}
+          />
+        )}
+
+        <Segment style={{ padding: '8em 0em' }} vertical>
+          <Grid container stackable verticalAlign="middle">
+            <Grid.Row>
+              <Grid.Column width={8}>
+                <Header as="h3" style={{ fontSize: '2em' }}>
+                  We Help Companies and Companions
+                </Header>
+                <p style={{ fontSize: '1.33em' }}>
+                  We can give your company superpowers to do things that they
+                  never thought possible. Let us delight your customers and
+                  empower your needs... through pure data analytics.
+                </p>
+                <Header as="h3" style={{ fontSize: '2em' }}>
+                  We Make Bananas That Can Dance
+                </Header>
+                <p style={{ fontSize: '1.33em' }}>
+                  Yes that's right, you thought it was the stuff of dreams, but
+                  even bananas can be bioengineered.
+                </p>
+              </Grid.Column>
+              <Grid.Column floated="right" width={6}>
+                <Image bordered rounded size="large" src={SampleImg} />
+              </Grid.Column>
+            </Grid.Row>
+            <Grid.Row>
+              <Grid.Column textAlign="center">
+                <Button size="huge">Check Them Out</Button>
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
+        </Segment>
+
+        <Segment style={{ padding: '0em' }} vertical>
+          <Grid celled="internally" columns="equal" stackable>
+            <Grid.Row textAlign="center">
+              <Grid.Column style={{ paddingBottom: '5em', paddingTop: '5em' }}>
+                <Header as="h3" style={{ fontSize: '2em' }}>
+                  "What a Company"
+                </Header>
+                <p style={{ fontSize: '1.33em' }}>
+                  That is what they all say about us
+                </p>
+              </Grid.Column>
+              <Grid.Column style={{ paddingBottom: '5em', paddingTop: '5em' }}>
+                <Header as="h3" style={{ fontSize: '2em' }}>
+                  "I shouldn't have gone with their competitor."
+                </Header>
+                <p style={{ fontSize: '1.33em' }}>
+                  <Image avatar src="/images/avatar/large/nan.jpg" />
+                  <b>Nan</b> Chief Fun Officer Acme Toys
+                </p>
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
+        </Segment>
+
+        <Segment style={{ padding: '8em 0em' }} vertical>
+          <Container text>
             <Header as="h3" style={{ fontSize: '2em' }}>
-              We Help Companies and Companions
+              Breaking The Grid, Grabs Your Attention
             </Header>
             <p style={{ fontSize: '1.33em' }}>
-              We can give your company superpowers to do things that they never
-              thought possible. Let us delight your customers and empower your
-              needs... through pure data analytics.
+              Instead of focusing on content creation and hard work, we have
+              learned how to master the art of doing nothing by providing
+              massive amounts of whitespace and generic content that can seem
+              massive, monolithic and worth your attention.
             </p>
+            <Button as="a" size="large">
+              Read More
+            </Button>
+
+            <Divider
+              as="h4"
+              className="header"
+              horizontal
+              style={{ margin: '3em 0em', textTransform: 'uppercase' }}
+            >
+              <a href="/">Case Studies</a>
+            </Divider>
+
             <Header as="h3" style={{ fontSize: '2em' }}>
-              We Make Bananas That Can Dance
+              Did We Tell You About Our Bananas?
             </Header>
             <p style={{ fontSize: '1.33em' }}>
-              Yes that's right, you thought it was the stuff of dreams, but even
-              bananas can be bioengineered.
+              Yes I know you probably disregarded the earlier boasts as
+              non-sequitur filler content, but it's really true. It took years
+              of gene splicing and combinatory DNA research, but our bananas can
+              really dance.
             </p>
-          </Grid.Column>
-          <Grid.Column floated="right" width={6}>
-            <Image bordered rounded size="large" src={SampleImg} />
-          </Grid.Column>
-        </Grid.Row>
-        <Grid.Row>
-          <Grid.Column textAlign="center">
-            <Button size="huge">Check Them Out</Button>
-          </Grid.Column>
-        </Grid.Row>
-      </Grid>
-    </Segment>
+            <Button as="a" size="large">
+              I'm Still Quite Interested
+            </Button>
+          </Container>
+        </Segment>
+      </ResponsiveContainer>
+    );
+  }
+}
 
-    <Segment style={{ padding: '0em' }} vertical>
-      <Grid celled="internally" columns="equal" stackable>
-        <Grid.Row textAlign="center">
-          <Grid.Column style={{ paddingBottom: '5em', paddingTop: '5em' }}>
-            <Header as="h3" style={{ fontSize: '2em' }}>
-              "What a Company"
-            </Header>
-            <p style={{ fontSize: '1.33em' }}>
-              That is what they all say about us
-            </p>
-          </Grid.Column>
-          <Grid.Column style={{ paddingBottom: '5em', paddingTop: '5em' }}>
-            <Header as="h3" style={{ fontSize: '2em' }}>
-              "I shouldn't have gone with their competitor."
-            </Header>
-            <p style={{ fontSize: '1.33em' }}>
-              <Image avatar src="/images/avatar/large/nan.jpg" />
-              <b>Nan</b> Chief Fun Officer Acme Toys
-            </p>
-          </Grid.Column>
-        </Grid.Row>
-      </Grid>
-    </Segment>
+const mapStateToProps = state => {
+  return {
+    genres: state.movieBrowser.genres,
+    movies: state.movieBrowser.movies
+  };
+};
 
-    <Segment style={{ padding: '8em 0em' }} vertical>
-      <Container text>
-        <Header as="h3" style={{ fontSize: '2em' }}>
-          Breaking The Grid, Grabs Your Attention
-        </Header>
-        <p style={{ fontSize: '1.33em' }}>
-          Instead of focusing on content creation and hard work, we have learned
-          how to master the art of doing nothing by providing massive amounts of
-          whitespace and generic content that can seem massive, monolithic and
-          worth your attention.
-        </p>
-        <Button as="a" size="large">
-          Read More
-        </Button>
+const mapDispatchToProps = dispatch => ({
+  getMovies: (page, filter) => dispatch(movieActions.getMovies(page, filter)),
+  getGenres: () => dispatch(movieActions.getGenres())
+});
 
-        <Divider
-          as="h4"
-          className="header"
-          horizontal
-          style={{ margin: '3em 0em', textTransform: 'uppercase' }}
-        >
-          <a href="/">Case Studies</a>
-        </Divider>
-
-        <Header as="h3" style={{ fontSize: '2em' }}>
-          Did We Tell You About Our Bananas?
-        </Header>
-        <p style={{ fontSize: '1.33em' }}>
-          Yes I know you probably disregarded the earlier boasts as non-sequitur
-          filler content, but it's really true. It took years of gene splicing
-          and combinatory DNA research, but our bananas can really dance.
-        </p>
-        <Button as="a" size="large">
-          I'm Still Quite Interested
-        </Button>
-      </Container>
-    </Segment>
-  </ResponsiveContainer>
-);
-
-
-export default HomepageLayout
+export default connect(mapStateToProps, mapDispatchToProps)(HomepageLayout);
