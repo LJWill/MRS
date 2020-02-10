@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 export const Button = styled.button`
     background-color: rgba(255, 255, 255, 0.15);
-    border-radius: 10px;
+    border-radius: 5px;
     border: 0;
     color: #fff;
     ${p => p.onClick && 'cursor: pointer;' }
@@ -20,7 +20,7 @@ export const Button = styled.button`
     &:before {
         opacity: 0;
         background: #ff00ab;
-        border-radius: 10px;
+        border-radius: 5px;
         content: '';
         height: 100%;
         left: 0;

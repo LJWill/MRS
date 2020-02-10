@@ -25,7 +25,7 @@ const Title = styled.h2`
 `;
 
 const ButtonContainer = styled.div`
-  align-self: flex-end;
+  align-self: center;
   position: absolute;
   height: 50px;
 `;
@@ -79,7 +79,7 @@ class MovieList extends React.Component {
             <Icon name="chevron right" />
           </NavButton>
         </ButtonContainer>
-        <div style={{ overflow: 'hidden' }}>
+        <div style={{ overflow: 'hidden', padding: '20px' }}>
           <MoviesWrapper offset={this.state.listOffset}>
             {movies && movies.map(movie => (
               <MovieCard {...movie} key={movie.id} />
