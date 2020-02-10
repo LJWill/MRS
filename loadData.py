@@ -16,7 +16,8 @@ class LoadingData:
 
 
     def writeMovie(self, read_path):
-        raw = pd.read_csv(read_path)
+        raw = pd.read_csv(read_path,
+                 lineterminator='\n')
         count = 1
         total = raw.shape[0]
         for index, row in raw.iterrows():
