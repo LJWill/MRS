@@ -111,7 +111,7 @@ class LoadingData:
                         new_person.gender = "male"
                     birthday = row["birthday"]
                     if not pd.isnull(birthday):
-                        new_person.birthday = self.dateReg(birthday)
+                        new_person.birthday = birthday
 
                     deathday = row["deathday"]
                     if not pd.isnull(deathday):
