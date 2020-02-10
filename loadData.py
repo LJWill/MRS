@@ -250,8 +250,8 @@ class LoadingData:
 if __name__ == '__main__':
     ld = LoadingData()
 
-    read_path = './DataCollection/MovieInfo/Data/personDetails.csv'
-    ld.writeStuff(read_path)
+    # read_path = './DataCollection/MovieInfo/Data/personDetails.csv'
+    # ld.writeStuff(read_path)
 
     read_path = './DataCollection/MovieInfo/Data/movieDetails.csv'
     ld.writeMovie(read_path)
