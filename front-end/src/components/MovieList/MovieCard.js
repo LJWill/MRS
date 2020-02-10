@@ -114,9 +114,21 @@ export default class Movie extends Component {
 
   render() {
     const { title, vote_average, id, poster_path } = this.props;
+
+    let backgroundColor
+    if (vote_average >= 8) {
+        backgroundColor = 'rgb(78, 173, 31)'
+    }else if (vote_average <=6) {
+        backgroundColor = 'rgb(166, 173, 31)'
+    }else {
+        backgroundColor = '#aa2e85'
+    }
+
     return (
       <Wrapper style={this.state.style}>
-        <Rating>{vote_average.toFixed(1)}</Rating>
+        <Rating
+            style={{backgroundColor: backgroundColor}}
+        >{vote_average.toFixed(1)}</Rating>
         <Content>
           <h3>{title}</h3>
           <Link
