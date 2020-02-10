@@ -11,6 +11,7 @@ import Nav from '../../components/HeadMenu/Nav';
 import { Container, Divider, Grid, Header, Icon } from 'semantic-ui-react';
 import PacmanLoader from 'react-spinners/PacmanLoader';
 import './index.css';
+import ScrollContainer from '../../components/MovieList/ScrollContainer';
 
 const Background = styled.div`
   background-image: url(${p => `${config.large}${p.bg}`});
@@ -233,10 +234,13 @@ class MovieDetail extends Component {
             title="Crew"
           />
         </Credits>
-        {/* {similar.length > 0 && <MovieList title="Similar movies" movies={similar} />} */}
 
-        {console.log('9999999', movieDetail.images)}
         <Gallery images={movieDetail && movieDetail.images} />
+
+        <ScrollContainer
+          title="Recommended movies"
+          movies={movieDetail.recommendations.results}
+        />
       </Wrapper>
     );
   }
