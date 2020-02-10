@@ -29,7 +29,7 @@ class LoadingData:
                     movies.Movie.objects.get(idmovie=int(row["id"]))
                     continue
                 except:
-                    new_movie = movies.Movie.objects.create(idmov1e=row["id"])
+                    new_movie = movies.Movie.objects.create(idmovie=row["id"])
 
                     new_movie.title = row["title"]
 
