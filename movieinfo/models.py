@@ -16,7 +16,7 @@ gender = (
 
 class People(models.Model):
     idperson = models.IntegerField(db_column='idPerson', primary_key=True)  # Field name made lowercase.
-    name = models.CharField(db_column='Name', max_length=45, blank=True, null=True)  # Field name made lowercase.
+    name = models.CharField(db_column='Name', max_length=60, blank=True, null=True)  # Field name made lowercase.
     gender = models.CharField(db_column='gender', max_length=32, choices=gender, default='male')
     biography = models.TextField(blank=True, null=True)
     birthday = models.DateField(db_column='birthDay', null=True)

@@ -20,7 +20,7 @@ class LoadingData:
         count = 1
         total = raw.shape[0]
         for index, row in raw.iterrows():
-            print("\r" +"Movie"+ 'processing %d out of %d items...' % (count, total), end='')
+            print("\r" +"##### Movie "+ 'processing %d out of %d items...' % (count, total), end='')
             count += 1
             with transaction.atomic():
 
@@ -86,7 +86,7 @@ class LoadingData:
         total = raw.shape[0]
         for index, row in raw.iterrows():
 
-            print("\r" +"Stuff" + 'processing %d out of %d items...' % (count, total), end='')
+            print("\r" +"##### Stuff " + 'processing %d out of %d items...' % (count, total), end='')
             count += 1
             department = row["known_for_department"]
             try:
@@ -133,7 +133,7 @@ class LoadingData:
         count = 1
         total = raw.shape[0]
         for index, row in raw.iterrows():
-            print("\r" +"Image" + 'processing %d out of %d items...' % (count, total), end='')
+            print("\r" +"##### Image " + 'processing %d out of %d items...' % (count, total), end='')
             count += 1
             try:
                 movie = movies.Movie.objects.get(idmovie=row["id"])
@@ -155,7 +155,7 @@ class LoadingData:
         count = 1
         total = raw.shape[0]
         for index, row in raw.iterrows():
-            print("\r" +"Cast" + 'processing %d out of %d items...' % (count, total), end='')
+            print("\r" +"##### Cast " + 'processing %d out of %d items...' % (count, total), end='')
             count += 1
             try:
                 movie = movies.Movie.objects.get(idmovie=row["id"])
@@ -187,7 +187,7 @@ class LoadingData:
         count = 1
         total = raw.shape[0]
         for index, row in raw.iterrows():
-            print("\r"  +"Rating"+ 'processing %d out of %d items...' % (count, total), end='')
+            print("\r"  +"##### Rating "+ 'processing %d out of %d items...' % (count, total), end='')
             count += 1
             try:
                 movie = movies.Movie.objects.get(idmovie=row["movieId"])
