@@ -13,11 +13,11 @@ from movieinfo import models as movies
 
 
 class LoadingData:
-    # def dateReg(self, date):
-    #     yourdate = dateutil.parser.parse(date)
-    #     datetimeobject = datetime.strptime(yourdate, '%Y-%m-%d %H:%M:%S')
-    #     newformat = datetimeobject.strftime('%Y-%m-%d')
-    #     return newformat
+    def dateReg(self, date):
+        yourdate = dateutil.parser.parse(date)
+        datetimeobject = datetime.strptime(yourdate, '%Y-%m-%d %H:%M:%S')
+        newformat = datetimeobject.strftime('%Y-%m-%d')
+        return newformat
 
 
     def writeMovie(self, read_path):
@@ -115,6 +115,8 @@ class LoadingData:
 
                     deathday = row["deathday"]
                     if not pd.isnull(deathday):
+                        if type(deathday) == str:
+                            self.dateReg(deathday)
                         new_person.deathday = deathday.strftime('%Y-%m-%d')
 
                     placeofbirth = row["place_of_birth"]
