@@ -1,6 +1,9 @@
 import os
 import django
 from django.db import transaction
+import dateutil.parser
+
+from datetime import datetime
 
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "movie.settings")
@@ -10,6 +13,13 @@ from movieinfo import models as movies
 
 
 class LoadingData:
+    def dateReg(self, date):
+        yourdate = dateutil.parser.parse(date)
+        datetimeobject = datetime.strptime(yourdate, '%Y-%m-%d %H:%M:%S')
+        newformat = datetimeobject.strftime('%Y-%m-%d')
+        return newformat
+
+
     def writeMovie(self, read_path):
         raw = pd.read_csv(read_path)
         count = 1
@@ -101,11 +111,11 @@ class LoadingData:
                         new_person.gender = "male"
                     birthday = row["birthday"]
                     if not pd.isnull(birthday):
-                        new_person.birthday = birthday
+                        new_person.birthday = self.dateReg(birthday)
 
                     deathday = row["deathday"]
                     if not pd.isnull(deathday):
-                        new_person.deathday = deathday
+                        new_person.deathday = self.dateReg(deathday)
 
                     placeofbirth = row["place_of_birth"]
                     if not pd.isnull(placeofbirth):
