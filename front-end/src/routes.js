@@ -18,7 +18,10 @@ const BaseRouter = () => (
     <Route exact path="/" component={HomepageLayout} />
     <Route exact path="/movies" component={MovieBrowser} />
     <Route exact path="/about" component={About} />
-    <Route path="/movie/:movie_id(\d+)" exact component={MovieDetail} />
+    <Route
+      path={'/movie/:movie/:id'}
+      render={props => <MovieDetail key={props.match.params.id} {...props} />}
+    />
   </Hoc>
 );
 

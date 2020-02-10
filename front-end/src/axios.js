@@ -10,9 +10,8 @@ export const axiosMovies = axios.create({
 });
 
 
-
 axiosMovies.interceptors.request.use(conf => {
   conf.params.api_key = config.MOVIE_DB_API_KEY;
-  conf.params.language = "en-US";
+  conf.params.language = conf.params.laguage;
   return conf
 })

@@ -20,7 +20,6 @@ const AnotherGridLayout = () => (
         display: flex;
         flex-direction: column;
         justify-content: center;
-        min-height: 6em;
       }
       p > span {
         opacity: 0.4;

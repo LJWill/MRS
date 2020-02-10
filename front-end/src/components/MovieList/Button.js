@@ -6,7 +6,7 @@ export const Button = styled.button`
     border-radius: 5px;
     border: 0;
     color: #fff;
-    ${p => p.onClick && 'cursor: pointer;' }
+    cursor: pointer;
     font-size: 14px;
     font-weight: 600;
     letter-spacing: 1.2px;

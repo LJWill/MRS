@@ -52,14 +52,18 @@ p {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  min-height: 6em;
+  min-height: 3em;
+  color: #fff
 }
 
 p > span {
-  opacity: 0.4;
+  // opacity: 0.4;
   text-align: center;
 }
 
+.ui.header {
+  color: #4183c4!important
+}
 
 .movieContainer {
   margin-top:104px

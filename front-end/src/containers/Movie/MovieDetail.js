@@ -1,76 +1,256 @@
-import React from 'react';
-import { Container, Divider, Grid, Header, Icon,  } from 'semantic-ui-react';
-import HeadMenu from '../../components/HeadMenu/index';
-import ParallaxBanner from '../../components/ParallaxBanner';
-
+import React, { Component } from 'react';
+import styled from 'styled-components';
+import config from '../../config';
+import { GenreButton } from '../../components/MovieList/Button';
+import CreditsList from '../../components/MovieList/CreditsList';
+import Gallery from '../../components/MovieList/Gallery';
+import { media } from '../../utils';
+import { connect } from 'react-redux';
+import * as movieActions from '../../store/actions/movie';
+import Nav from '../../components/HeadMenu/Nav';
+import { Container, Divider, Grid, Header, Icon } from 'semantic-ui-react';
+import PacmanLoader from 'react-spinners/PacmanLoader';
 import './index.css';
 
-const movieData = {
-  adult: false,
-  backdrop_path: '/jOzrELAzFxtMx2I4uDGHOotdfsS.jpg',
-  belongs_to_collection: {
-    id: 10,
-    name: 'Star Wars Collection',
-    poster_path: '/iTQHKziZy9pAAY4hHEDCGPaOvFC.jpg',
-    backdrop_path: '/d8duYyyC9J5T825Hg7grmaabfxQ.jpg'
-  },
-  budget: 250000000,
-  genres: '',
-  homepage:
-    'https://www.starwars.com/films/star-wars-episode-ix-the-rise-of-skywalker',
-  id: 181812,
-  imdb_id: 'tt2527338',
-  original_language: 'en',
-  original_title: 'Star Wars: The Rise of Skywalker',
-  overview:
-    'The surviving Resistance faces the First Order once again as the journey of Rey, Finn and Poe Dameron continues. With the power and knowledge of generations behind them, the final battle begins.',
-  popularity: 214.921,
-  poster_path: '/db32LaOibwEliAmSL2jjDF6oDdj.jpg',
-  production_companies: '',
-  production_countries: '',
-  release_date: '2019-12-18',
-  revenue: 956030690,
-  runtime: 142,
-  spoken_languages: '',
-  status: 'Released',
-  tagline: 'Every generation has a legend',
-  title: 'Star Wars: The Rise of Skywalker',
-  video: false,
-  vote_average: 6.6,
-  vote_count: 2464
-};
+const Background = styled.div`
+  background-image: url(${p => `${config.large}${p.bg}`});
+  background-position: top center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 85vh;
+  position: relative;
+  top: 0;
+  width: 100%;
+  z-index: 0;
 
-class MovieDetail extends React.Component {
+  &:before {
+    background: linear-gradient(
+      to bottom,
+      rgba(57, 73, 171, 0.1) 0%,
+      rgba(17, 17, 17, 1) 77%
+    );
+    content: '';
+    height: 100%;
+    position: absolute;
+    width: 100%;
+    z-index: -1;
+  }
+`;
+
+const Wrapper = styled.main`
+  align-items: center;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+`;
+
+const MovieWrapper = styled.section`
+  padding: 20px 40px;
+  margin-top: -35%;
+  flex-wrap: wrap;
+  display: flex;
+`;
+
+const Info = styled.div`
+  padding: 0 20px;
+  margin: 0 10px;
+  flex: 1;
+  flex-direction: column;
+  display: flex;
+  z-index: 10;
+`;
+
+const Poster = styled.div`
+  background-image: url(${p => `${config.medium}${p.bg}`});
+  background-position: top center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 500px;
+  margin: 0 20px;
+  width: 300px;
+  z-index: 10;
+
+  ${media.tablet`height: 300px; width: 200px;`};
+`;
+
+const Title = styled.h1`
+  color: #fff;
+  font-size: 56px;
+  margin: 0 0 10px 0;
+`;
+
+const Description = styled.p`
+  color: #fff;
+  font-size: 16px;
+  letter-spacing: 0.25px;
+  line-height: 30px;
+  margin-top: 30px;
+  max-width: 600px;
+`;
+
+const Credits = styled.section`
+  display: flex;
+  max-width: 1150px;
+  padding: 0 30px;
+  width: 100%;
+  z-index: 10;
+`;
+
+const Stat = styled.div`
+  font-size: 32px;
+  display: flex;
+  margin-bottom: 15px;
+  color: #fff;
+  ${media.tablet`font-size: 24px;`}
+
+  svg {
+    margin: 0 10px 0 0;
+  }
+  p {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    margin: 15px;
+    font-weight: 600;
+    flex: 1;
+
+    &:first-of-type {
+      margin-left: 0;
+    }
+  }
+
+  .smallSpan {
+    font-weight: 400;
+    font-size: 14px;
+    color: #ff00ab;
+    margin: 0 0 0 15px;
+  }
+
+  .revenueIcon {
+    margin-right: 20px;
+  }
+`;
+
+class MovieDetail extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { movieDetail: null };
+  }
+
+  componentDidMount() {
+    const movieId = this.props.match.params.id;
+
+    const { getMovieDetail } = this.props;
+    getMovieDetail(movieId);
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.movieDetail !== this.props.movieDetail) {
+      this.setState({ movieDetail: this.props.movieDetail });
+    }
+  }
+
   render() {
-    const MOVIE_DB_IMAGE_URL =
-      'https://image.tmdb.org/t/p/original/eQs5hh9rxrk1m4xHsIz1w11Ngqb.jpg';
+    const { movieDetail } = this.props;
 
+    console.log('------->', movieDetail);
+
+    let isLoading =
+      (movieDetail && movieDetail.isFetching) || !movieDetail.movie;
+
+    if (isLoading) {
+      return (
+        <div className="sweet-loading">
+          <PacmanLoader size={50} color={'#ff00ab'} loading={true} />
+        </div>
+      );
+    }
     return (
-      <div
-        // className="movie-backdrop"
-        // style={{
-        //   backgroundSize: 'cover',
-        //   backgroundImage: `linear-gradient(rgba(0,0,0,.5), rgba(0,0,0, .5)), url("${MOVIE_DB_IMAGE_URL}")`,
-        //   width: '100vw',
-        //   height: '100vh'
-        // }}
-      >
-        <style>
-          {`
-        html, body {
-          background-color: #252839 !important;
-        }
-      `}
-        </style>
+      <Wrapper>
+        <Nav />
+        <Background bg={movieDetail.movie.backdrop_path} />
+        <MovieWrapper>
+          <Poster bg={movieDetail.movie.poster_path} />
+          <Info>
+            <Title>{movieDetail.movie.title}</Title>
+            <p>
+              {movieDetail.movie.release_date.slice(0, 4)} -{' '}
+              {movieDetail.movie.runtime} min
+            </p>
+            <div>
+              {movieDetail.movie.genres.slice(0, 3).map(genre => (
+                <GenreButton title={genre.name} key={genre.name} />
+              ))}
+            </div>
+            <Description>{movieDetail.movie.overview}</Description>
 
-        <HeadMenu />
-        
-        <ParallaxBanner />
+            <Grid columns={3}>
+              <Grid.Row>
+                <Grid.Column>
+                  <Grid.Row>
+                    <Icon name="star" className="statIcon" />{' '}
+                    {movieDetail.movie.vote_average.toFixed(1)}
+                  </Grid.Row>
+                  <Grid.Row>
+                    <span className="smallSpan">Average Rate</span>
+                  </Grid.Row>
+                </Grid.Column>
 
-        <div />
-      </div>
+                <Grid.Column>
+                  <Grid.Row>
+                    <Icon name="hotjar" className="statIcon" />
+                    {movieDetail.movie.popularity}
+                  </Grid.Row>
+                  <Grid.Row>
+                    <span className="smallSpan">Popularity</span>
+                  </Grid.Row>
+                </Grid.Column>
+
+                <Grid.Column>
+                  <Grid.Row>
+                    <Icon
+                      name="money bill alternate outline icon"
+                      className="revenueIcon"
+                    />
+                    {movieDetail.movie.revenue}
+                  </Grid.Row>
+                  <Grid.Row>
+                    <span className="smallSpan">Revenue</span>
+                  </Grid.Row>
+                </Grid.Column>
+              </Grid.Row>
+            </Grid>
+          </Info>
+        </MovieWrapper>
+
+        <Credits>
+          <CreditsList
+            credits={movieDetail && movieDetail.credits.cast}
+            title="Cast"
+          />
+          <CreditsList
+            credits={movieDetail && movieDetail.credits.crew}
+            title="Crew"
+          />
+        </Credits>
+        {/* {similar.length > 0 && <MovieList title="Similar movies" movies={similar} />} */}
+
+        {console.log('9999999', movieDetail.images)}
+        <Gallery images={movieDetail && movieDetail.images} />
+      </Wrapper>
     );
   }
 }
 
-export default MovieDetail;
+const mapStateToProps = state => {
+  return {
+    genres: state.movieBrowser.genres,
+    movieDetail: state.movieDetail
+  };
+};
+
+const mapDispatchToProps = dispatch => ({
+  getMovieDetail: id => dispatch(movieActions.getMovieDetail(id))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(MovieDetail);
