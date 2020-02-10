@@ -15,8 +15,7 @@ from movieinfo import models as movies
 class LoadingData:
     def dateReg(self, date):
         yourdate = dateutil.parser.parse(date)
-        datetimeobject = datetime.strptime(yourdate, '%Y-%m-%d %H:%M:%S')
-        newformat = datetimeobject.strftime('%Y-%m-%d')
+        newformat = yourdate.strftime('%Y-%m-%d')
         return newformat
 
 
