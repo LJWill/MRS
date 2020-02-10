@@ -88,37 +88,38 @@ class LoadingData:
                 movies.People.objects.get(idperson=row["id"])
                 continue
             except:
-                new_person = movies.People.objects.create(idperson=row["id"])
-            with transaction.atomic():
-                new_person.name = row["name"]
-                gender = row["gender"]
-                if gender == 0:
-                    new_person.gender = "notspecified"
-                elif gender == 1:
-                    new_person.gender = "female"
-                else:
-                    new_person.gender = "male"
-                birthday = row["birthday"]
-                if not pd.isnull(birthday):
-                    new_person.birthday = birthday
+                with transaction.atomic():
+                    new_person = movies.People.objects.create(idperson=row["id"])
 
-                deathday = row["deathday"]
-                if not pd.isnull(deathday):
-                    new_person.deathday = deathday
+                    new_person.name = row["name"]
+                    gender = row["gender"]
+                    if gender == 0:
+                        new_person.gender = "notspecified"
+                    elif gender == 1:
+                        new_person.gender = "female"
+                    else:
+                        new_person.gender = "male"
+                    birthday = row["birthday"]
+                    if not pd.isnull(birthday):
+                        new_person.birthday = birthday
 
-                placeofbirth = row["place_of_birth"]
-                if not pd.isnull(placeofbirth):
-                    new_person.birthplace = placeofbirth
+                    deathday = row["deathday"]
+                    if not pd.isnull(deathday):
+                        new_person.deathday = deathday
 
-                biography = row["biography"]
-                if not pd.isnull(biography):
-                    new_person.biography = biography
+                    placeofbirth = row["place_of_birth"]
+                    if not pd.isnull(placeofbirth):
+                        new_person.birthplace = placeofbirth
 
-                profile_path = row["profile_path"]
-                if not pd.isnull(profile_path):
-                    new_person.profileimage = profile_path
+                    biography = row["biography"]
+                    if not pd.isnull(biography):
+                        new_person.biography = biography
 
-                new_person.save()
+                    profile_path = row["profile_path"]
+                    if not pd.isnull(profile_path):
+                        new_person.profileimage = profile_path
+
+                    new_person.save()
 
     def writeimage(self, read_path):
         raw = pd.read_csv(read_path)

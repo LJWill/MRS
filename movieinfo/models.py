@@ -21,7 +21,7 @@ class People(models.Model):
     biography = models.TextField(blank=True, null=True)
     birthday = models.DateField(db_column='birthDay', null=True)
     deathday = models.DateField(db_column='deathDay', null=True)
-    birthplace = models.CharField(db_column='placeofBirth', max_length=100, blank=True, null=True)
+    birthplace = models.CharField(db_column='placeofBirth', max_length=150, blank=True, null=True)
     profileimage = models.CharField(db_column='profileImage', max_length=50, blank=True, null=True)
 
     class Meta:
