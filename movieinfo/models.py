@@ -51,7 +51,7 @@ class Images(models.Model):
 
 class Collections(models.Model):
     idcollections = models.AutoField(db_column='idCollections', primary_key=True)  # Field name made lowercase.
-    name = models.CharField(db_column='Name', max_length=45, null=True)
+    name = models.CharField(db_column='Name', max_length=80, null=True)
 
     class Meta:
         managed = True
