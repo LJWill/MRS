@@ -115,7 +115,7 @@ class LoadingData:
 
                     deathday = row["deathday"]
                     if not pd.isnull(deathday):
-                        if type(deathday) == str:
+                        if isinstance(deathday,str):
                             self.dateReg(deathday)
                         new_person.deathday = deathday.strftime('%Y-%m-%d')
 
