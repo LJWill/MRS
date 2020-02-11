@@ -22,9 +22,11 @@ df = df.drop("_c0")
 
 df = df.groupBy("userId").pivot("tmdbId").sum("rating")
 
-df.show(3)
-
 df.save("MovieInfo/Data/user-item.csv", "com.databricks.spark.csv")
+
+# df.show(3)
+
+# df.save("MovieInfo/Data/user-item.csv", "com.databricks.spark.csv")
 #
 # ratingMatrix = df.pivot_table(index=['userId'], values='rating', columns=['tmdbId'])
 #
