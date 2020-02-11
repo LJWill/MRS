@@ -190,17 +190,10 @@ class LoadingData:
         for index, row in raw.iterrows():
             print("\r"  +"##### Rating "+ 'processing %d out of %d items...' % (count, total), end='')
             count += 1
-            try:
-                movie = movies.Movie.objects.get(idmovie=row["tmdbId"])
-            except:
-                continue
-            try:
-                user = movies.User.objects.get(iduser=row["userId"])
-            except:
-                user = movies.User.objects.create(iduser=row["userId"])
+
             try:
                 with transaction.atomic():
-                    new_rating = movies.Ratings.objects.create(movie_idmovie=movie, user_iduser=user)
+                    new_rating = movies.Ratings.objects.create(movie_idmovie=row["tmdbId"], user_iduser=row["userId"])
                     new_rating.rating = int(row["rating"] * 2)
                     new_rating.save()
             except:
