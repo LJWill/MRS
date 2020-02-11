@@ -31,3 +31,9 @@
   margin-bottom: 15px;
   color: #fff;
 }
+
+.statInfo {
+  font-size: 32px!important;
+  margin: 0px 10px;
+  align-items: center;
+}

@@ -189,8 +189,8 @@ class MovieDetail extends Component {
               <Grid.Row>
                 <Grid.Column>
                   <Grid.Row>
-                    <Icon name="star" className="statIcon" />{' '}
-                    {movieDetail.movie.vote_average.toFixed(1)}
+                    <Icon name="star" className="statIcon" />
+                    <span className="statInfo">{movieDetail.movie.vote_average.toFixed(1)}</span>
                   </Grid.Row>
                   <Grid.Row>
                     <span className="smallSpan">Average Rate</span>
@@ -200,7 +200,7 @@ class MovieDetail extends Component {
                 <Grid.Column>
                   <Grid.Row>
                     <Icon name="hotjar" className="statIcon" />
-                    {movieDetail.movie.popularity}
+                    <span className="statInfo">{movieDetail.movie.popularity}</span>
                   </Grid.Row>
                   <Grid.Row>
                     <span className="smallSpan">Popularity</span>
@@ -213,7 +213,7 @@ class MovieDetail extends Component {
                       name="money bill alternate outline icon"
                       className="revenueIcon"
                     />
-                    {movieDetail.movie.revenue}
+                    <span className="statInfo">{movieDetail.movie.revenue}</span>
                   </Grid.Row>
                   <Grid.Row>
                     <span className="smallSpan">Revenue</span>

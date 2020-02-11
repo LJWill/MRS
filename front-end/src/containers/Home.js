@@ -165,10 +165,10 @@ class HomepageLayout extends Component {
   }
 
   componentDidMount() {
-    const { getMovies, getGenres } = this.props;
+    // const { getMovies, getGenres } = this.props;
 
-    getGenres();
-    getMovies({ filters });
+    // getGenres();
+    // getMovies({ filters });
   }
 
   render() {
@@ -180,7 +180,7 @@ class HomepageLayout extends Component {
     //   })
     // );
 
-    console.log('00000000000', movies[0] && movies[0].now_playing);
+    // console.log('00000000000', movies[0] && movies[0].now_playing);
     return (
       <ResponsiveContainer>
         {movies[0] && (
