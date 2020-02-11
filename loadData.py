@@ -263,5 +263,5 @@ if __name__ == '__main__':
     # read_path = './DataCollection/MovieInfo/Data/movieImages.csv'
     # ld.writeimage(read_path)
 
-    read_path = './DataCollection/MovieInfo/Data/ratingTest.csv'
+    read_path = './DataCollection/MovieInfo/Data/finalRatings.csv'
     ld.writeRatings(read_path)
