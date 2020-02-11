@@ -254,14 +254,14 @@ if __name__ == '__main__':
     # read_path = './DataCollection/MovieInfo/Data/personDetails.csv'
     # ld.writeStuff(read_path)
 
-    read_path = './DataCollection/MovieInfo/Data/movieDetails.csv'
-    ld.writeMovie(read_path)
+    # read_path = './DataCollection/MovieInfo/Data/movieDetails.csv'
+    # ld.writeMovie(read_path)
+    #
+    # read_path = './DataCollection/MovieInfo/Data/casts.csv'
+    # ld.writeCast(read_path)
+    #
+    # read_path = './DataCollection/MovieInfo/Data/movieImages.csv'
+    # ld.writeimage(read_path)
 
-    read_path = './DataCollection/MovieInfo/Data/casts.csv'
-    ld.writeCast(read_path)
-
-    read_path = './DataCollection/MovieInfo/Data/movieImages.csv'
-    ld.writeimage(read_path)
-
-    read_path = './DataCollection/MovieInfo/Data/finalRatings.csv'
+    read_path = './DataCollection/MovieInfo/Data/ratingTest.csv'
     ld.writeRatings(read_path)
