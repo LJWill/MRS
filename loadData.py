@@ -191,7 +191,7 @@ class LoadingData:
             print("\r"  +"##### Rating "+ 'processing %d out of %d items...' % (count, total), end='')
             count += 1
             try:
-                movie = movies.Movie.objects.get(idmovie=row["movieId"])
+                movie = movies.Movie.objects.get(idmovie=row["tmdbId"])
             except:
                 continue
             try:
