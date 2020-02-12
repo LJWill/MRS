@@ -8,6 +8,15 @@ import config from '../../config';
 import { GenericButton, PrimaryButton } from './Button';
 import { Button, Icon } from 'semantic-ui-react';
 
+
+let styles = {
+  buttonGroup: {
+    position: 'absolute',
+    bottom : '40px'
+  },
+};
+
+
 const Poster = styled.div`
   background-color: #fff;
   background-image: url(${p => `${p.bg}`});
@@ -154,7 +163,7 @@ export default class Movie extends Component {
             />
           )} */}
 
-          <Button.Group>
+          <Button.Group style={styles.buttonGroup}>
             <Button color="red" onClick={() => this.add(this.props)}>
               <Icon name="heart" />
               Like

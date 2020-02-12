@@ -54,7 +54,7 @@ const Wrapper = styled.nav`
   ul {
     display: flex;
     margin: 0;
-    padding: 40px 30px;
+    padding: 30px 30px;
     align-items: center;
 
     ${media.tablet`display: none;`};
