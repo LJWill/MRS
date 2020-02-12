@@ -4,6 +4,7 @@ from pyspark.shell import sqlContext
 from pyspark.sql import SparkSession
 
 file_path = "MovieInfo/Data/finalRatings.csv"
+write_path = "MovieInfo/Data/user-item.csv"
 # df = pd.read_csv(file_path)
 # print(df.shape)
 
@@ -22,12 +23,10 @@ df = df.drop("_c0")
 
 df = df.groupBy("userId").pivot("tmdbId").sum("rating")
 
-df.save("MovieInfo/Data/user-item.csv", "com.databricks.spark.csv")
-
-# df.show(3)
-
 # df.save("MovieInfo/Data/user-item.csv", "com.databricks.spark.csv")
-#
+
+df.write.csv(path=write_path, header=True, sep=",", mode='overwrite')
+
 # ratingMatrix = df.pivot_table(index=['userId'], values='rating', columns=['tmdbId'])
 #
 # print(ratingMatrix)
