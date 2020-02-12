@@ -202,7 +202,7 @@ class LoadingData:
 
 
     def writeRatings(self, read_path):
-        raw = pd.read_csv(read_path,chunksize=1000000)
+        raw = pd.read_csv(read_path,chunksize=100000)
         count = 1
         nochunk = 1
 
