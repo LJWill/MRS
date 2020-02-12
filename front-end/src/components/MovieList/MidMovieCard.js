@@ -6,7 +6,7 @@ import { faStar, faEye } from '@fortawesome/free-regular-svg-icons';
 import { urlTitle, addToList, isSaved, removeFromList } from '../../utils';
 import config from '../../config';
 import { GenericButton, PrimaryButton, Button } from './Button';
-import { Flipped } from 'react-flip-toolkit';
+import { Flipper, Flipped } from 'react-flip-toolkit';
 
 const Poster = styled.div`
   background-color: #fff;
@@ -143,7 +143,7 @@ export default class Movie extends Component {
           {this.state.isSaved ? (
             <GenericButton
               title="Favorite"
-              icon={<FontAwesomeIcon icon="star" />}
+            //   icon={<FontAwesomeIcon icon="star" />}
               onClick={() => this.remove(this.props)}
             />
           ) : (

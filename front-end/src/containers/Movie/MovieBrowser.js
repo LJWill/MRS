@@ -151,10 +151,11 @@ class Example extends React.Component {
     movies: null
   };
 
-
   shuffleMovie = () => {
-    // console.log('----------->', this.state.movies);
-    this.setState({movies: _.shuffle(this.state.movies)})
+    this.setState({
+      movies: _.shuffle(this.state.movies),
+      expanded: !this.state.expanded
+    });
   };
 
   componentWillReceiveProps(nextProps) {
@@ -168,9 +169,9 @@ class Example extends React.Component {
     const data = entries[this.index % entries.length];
     this.index += 1;
 
-    let { movies } = this.state
+    let { movies } = this.state;
 
-    // movies && this.shuffleMovie()
+    console.log('----------->', this.state.expanded);
 
     return (
       <div>
@@ -193,14 +194,13 @@ class Example extends React.Component {
   }
 }
 
-
-
-const MovieView = (data) => {
-  console.log('!!!!!!!!!!!!!!!!!', data)
+const MovieView = data => {
   return data.data.map(m => (
-    <Grid.Column>
-      <MidMovieCard {...m} key={m.id} shuffleMovie={data.func} />
-    </Grid.Column>
+    <Flipped flipId={m.id} >
+      <Grid.Column>
+        <MidMovieCard {...m} key={m.id} shuffleMovie={data.func} />
+      </Grid.Column>
+    </Flipped>
   ));
 };
 
