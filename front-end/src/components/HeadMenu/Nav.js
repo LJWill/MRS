@@ -5,7 +5,6 @@ import { media } from '../../utils';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // import { theme } from '../config';
 import { Link } from 'react-router-dom';
-import './index.scss';
 import {
   Container,
   Input,
@@ -32,7 +31,13 @@ let styles = {
   },
   userName: {
     fontSize: '25px'
-  }
+  },
+  accountItem: {
+    position: 'absolute',
+    right: '0',
+    top: '0',
+    height: '100%'
+}
 };
 
 const Wrapper = styled.nav`
@@ -180,7 +185,7 @@ class Nav extends React.Component {
         {currentPage ? <Search /> : <div />}
 
         {authenticated ? (
-          <ul className="accountItem">
+          <ul style={styles.accountItem}>
             <AccountItem>
               <Icon
                 name="user circle"
@@ -207,7 +212,7 @@ class Nav extends React.Component {
             </AccountItem>
           </ul>
         ) : (
-          <ul className="accountItem">
+          <ul  style={styles.accountItem}>
             <AccountItem>
               <Button as="a" href="/login" inverted={!fixed}>
                 Log in

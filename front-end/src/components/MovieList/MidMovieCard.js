@@ -5,8 +5,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar, faEye } from '@fortawesome/free-regular-svg-icons';
 import { urlTitle, addToList, isSaved, removeFromList } from '../../utils';
 import config from '../../config';
-import { GenericButton, PrimaryButton, Button } from './Button';
-import { Flipper, Flipped } from 'react-flip-toolkit';
+import { GenericButton, PrimaryButton } from './Button';
+import { Button, Icon } from 'semantic-ui-react';
 
 const Poster = styled.div`
   background-color: #fff;
@@ -95,7 +95,7 @@ export default class Movie extends Component {
 
   add = movie => {
     console.log('clicked!');
-    this.props.shuffleMovie()
+    this.props.shuffleMovie();
   };
 
   remove = movie => {
@@ -140,7 +140,7 @@ export default class Movie extends Component {
               icon={<FontAwesomeIcon icon={faEye} />}
             />
           </Link>
-          {this.state.isSaved ? (
+          {/* {this.state.isSaved ? (
             <GenericButton
               title="Favorite"
             //   icon={<FontAwesomeIcon icon="star" />}
@@ -152,7 +152,18 @@ export default class Movie extends Component {
               icon={<FontAwesomeIcon icon={faStar} />}
               onClick={() => this.add(this.props)}
             />
-          )}
+          )} */}
+
+          <Button.Group>
+            <Button color="red" onClick={() => this.add(this.props)}>
+              <Icon name="heart" />
+              Like
+            </Button>
+            <Button.Or />
+            <Button color="grey">
+              <Icon name="thumbs down" />
+            </Button>
+          </Button.Group>
         </Content>
         <Poster bg={`${config.medium}${poster_path}`} />
       </Wrapper>
