@@ -81,124 +81,147 @@ class LoadingData:
                         new_movie.status = True
                     new_movie.save()
 
-    def writeStuff(self, read_path):
+    # def writeStuff(self, read_path):
+    #     raw = pd.read_csv(read_path)
+    #     count = 1
+    #     total = raw.shape[0]
+    #     for index, row in raw.iterrows():
+    #
+    #         print("\r" +"##### Stuff " + 'processing %d out of %d items...' % (count, total), end='')
+    #         count += 1
+    #         department = row["known_for_department"]
+    #         try:
+    #             movies.People.objects.get(idperson=row["id"])
+    #             continue
+    #         except:
+    #             with transaction.atomic():
+    #                 new_person = movies.People.objects.create(idperson=row["id"])
+    #
+    #                 new_person.name = row["name"]
+    #                 gender = row["gender"]
+    #                 if gender == 0:
+    #                     new_person.gender = "notspecified"
+    #                 elif gender == 1:
+    #                     new_person.gender = "female"
+    #                 else:
+    #                     new_person.gender = "male"
+    #                 birthday = row["birthday"]
+    #                 if not pd.isnull(birthday):
+    #                     new_person.birthday = birthday
+    #
+    #                 deathday = row["deathday"]
+    #                 if not pd.isnull(deathday):
+    #                     if isinstance(deathday,str):
+    #                         deathday = dateutil.parser.parse(deathday)
+    #                     new_person.deathday = deathday.strftime('%Y-%m-%d')
+    #
+    #                 placeofbirth = row["place_of_birth"]
+    #                 if not pd.isnull(placeofbirth):
+    #                     new_person.birthplace = placeofbirth
+    #
+    #                 biography = row["biography"]
+    #                 if not pd.isnull(biography):
+    #                     new_person.biography = biography
+    #
+    #                 profile_path = row["profile_path"]
+    #                 if not pd.isnull(profile_path):
+    #                     new_person.profileimage = profile_path
+    #
+    #                 new_person.save()
+    #
+    # def writeimage(self, read_path):
+    #     raw = pd.read_csv(read_path)
+    #     count = 1
+    #     total = raw.shape[0]
+    #     for index, row in raw.iterrows():
+    #         print("\r" +"##### Image " + 'processing %d out of %d items...' % (count, total), end='')
+    #         count += 1
+    #         try:
+    #             movie = movies.Movie.objects.get(idmovie=row["id"])
+    #         except:
+    #             continue
+    #         try:
+    #             movies.Images.objects.get(backdrop=row["backdrop"], movie_idmovie=movie)
+    #         except:
+    #             with transaction.atomic():
+    #                 backdrops = row["backdrops"]
+    #                 if not pd.isnull(backdrops):
+    #                     backdrops = backdrops.split(',')
+    #                     for backdrop in backdrops:
+    #                         new_image = movies.Images.objects.create(backdrop=backdrop, movie_idmovie=movie)
+    #                         new_image.save()
+    #
+    # def writeCast(self, read_path):
+    #     raw = pd.read_csv(read_path)
+    #     count = 1
+    #     total = raw.shape[0]
+    #     for index, row in raw.iterrows():
+    #         print("\r" +"##### Cast " + 'processing %d out of %d items...' % (count, total), end='')
+    #         count += 1
+    #         try:
+    #             movie = movies.Movie.objects.get(idmovie=row["id"])
+    #         except:
+    #             continue
+    #         with transaction.atomic():
+    #             directors = row["director"]
+    #             if not pd.isnull(directors):
+    #                 directors = directors.split(",")
+    #                 for director in directors:
+    #                     try:
+    #                         directorobj = movies.People.objects.get(idperson=director)
+    #                         movie.directors.add(directorobj)
+    #                     except:
+    #                         print("Director Not existing")
+    #
+    #             stars = row["cast"]
+    #             if not pd.isnull(stars):
+    #                 stars = stars.split(",")
+    #                 for star in stars:
+    #                     try:
+    #                         starobj = movies.People.objects.get(idperson=star)
+    #                     except:
+    #                         continue
+    #                     movie.casts.add(starobj)
+
+
+    def writeTag(self, read_path):
         raw = pd.read_csv(read_path)
         count = 1
         total = raw.shape[0]
         for index, row in raw.iterrows():
-
-            print("\r" +"##### Stuff " + 'processing %d out of %d items...' % (count, total), end='')
-            count += 1
-            department = row["known_for_department"]
             try:
-                movies.People.objects.get(idperson=row["id"])
-                continue
-            except:
-                with transaction.atomic():
-                    new_person = movies.People.objects.create(idperson=row["id"])
-
-                    new_person.name = row["name"]
-                    gender = row["gender"]
-                    if gender == 0:
-                        new_person.gender = "notspecified"
-                    elif gender == 1:
-                        new_person.gender = "female"
-                    else:
-                        new_person.gender = "male"
-                    birthday = row["birthday"]
-                    if not pd.isnull(birthday):
-                        new_person.birthday = birthday
-
-                    deathday = row["deathday"]
-                    if not pd.isnull(deathday):
-                        if isinstance(deathday,str):
-                            deathday = dateutil.parser.parse(deathday)
-                        new_person.deathday = deathday.strftime('%Y-%m-%d')
-
-                    placeofbirth = row["place_of_birth"]
-                    if not pd.isnull(placeofbirth):
-                        new_person.birthplace = placeofbirth
-
-                    biography = row["biography"]
-                    if not pd.isnull(biography):
-                        new_person.biography = biography
-
-                    profile_path = row["profile_path"]
-                    if not pd.isnull(profile_path):
-                        new_person.profileimage = profile_path
-
-                    new_person.save()
-
-    def writeimage(self, read_path):
-        raw = pd.read_csv(read_path)
-        count = 1
-        total = raw.shape[0]
-        for index, row in raw.iterrows():
-            print("\r" +"##### Image " + 'processing %d out of %d items...' % (count, total), end='')
-            count += 1
-            try:
-                movie = movies.Movie.objects.get(idmovie=row["id"])
+                movie = movies.Movie.objects.get(idmovie=row["tmdbId"])
             except:
                 continue
             try:
-                movies.Images.objects.get(backdrop=row["backdrop"], movie_idmovie=movie)
+                tag = movies.Tags.objects.create(tag= row["tag"])
             except:
-                with transaction.atomic():
-                    backdrops = row["backdrops"]
-                    if not pd.isnull(backdrops):
-                        backdrops = backdrops.split(',')
-                        for backdrop in backdrops:
-                            new_image = movies.Images.objects.create(backdrop=backdrop, movie_idmovie=movie)
-                            new_image.save()
+                tag = movies.Tags.objects.get(tag = row["tag"])
+            movie.tags.add(tag)
 
-    def writeCast(self, read_path):
-        raw = pd.read_csv(read_path)
-        count = 1
-        total = raw.shape[0]
-        for index, row in raw.iterrows():
-            print("\r" +"##### Cast " + 'processing %d out of %d items...' % (count, total), end='')
-            count += 1
-            try:
-                movie = movies.Movie.objects.get(idmovie=row["id"])
-            except:
-                continue
-            with transaction.atomic():
-                directors = row["director"]
-                if not pd.isnull(directors):
-                    directors = directors.split(",")
-                    for director in directors:
-                        try:
-                            directorobj = movies.People.objects.get(idperson=director)
-                            movie.directors.add(directorobj)
-                        except:
-                            print("Director Not existing")
 
-                stars = row["cast"]
-                if not pd.isnull(stars):
-                    stars = stars.split(",")
-                    for star in stars:
-                        try:
-                            starobj = movies.People.objects.get(idperson=star)
-                        except:
-                            continue
-                        movie.casts.add(starobj)
 
     def writeRatings(self, read_path):
-        raw = pd.read_csv(read_path)
+        raw = pd.read_csv(read_path,chunksize=1000000)
         count = 1
-        total = raw.shape[0]
-        querylist = []
-        for index, row in raw.iterrows():
-            print("\r"  +"##### Rating "+ 'processing %d out of %d items...' % (count, total), end='')
-            count += 1
+        nochunk = 1
+        for chunk in raw:
+            total = chunk.shape[0]
+            querylist = []
+            for index, row in chunk.iterrows():
+                print("\r"  +"##### Rating Chunk %d"% (nochunk)+'processing %d out of %d items...' % (count, total), end='')
+                count += 1
 
-            try:
-                with transaction.atomic():
-                    querylist.append(movies.Ratings.objects.create(movie_idmovie=row["tmdbId"], user_iduser=row["userId"]
-                                                                ,rating = int(row["rating"] * 2)))
-            except:
-                continue
-        movies.Ratings.objects.bulk_create(querylist, ignore_conflicts=True)
+                try:
+                    with transaction.atomic():
+                        querylist.append(movies.Ratings(movie_idmovie=int(row["tmdbId"]), user_iduser=row["userId"]
+                                                                    ,rating = int(row["rating"] * 2)))
+                except Exception as e:
+                    print(e)
+
+                    continue
+            movies.Ratings.objects.bulk_create(querylist, ignore_conflicts=True)
+            nochunk += 1
 
     def writegenre(self, genrename):
         try:
@@ -211,13 +234,15 @@ class LoadingData:
                 new_genre.save()
             return new_genre
 
-    def writeImage(self, backdrop, movie):
-        try:
-            movies.Images.objects.get(movie_idmovie=movie, backdrop=backdrop)
-        except:
-            with transaction.atomic():
-                new_images = movies.Images.objects.create(movie_idmovie=movie, backdrop=backdrop)
-                new_images.save()
+
+
+    # def writeImage(self, backdrop, movie):
+    #     try:
+    #         movies.Images.objects.get(movie_idmovie=movie, backdrop=backdrop)
+    #     except:
+    #         with transaction.atomic():
+    #             new_images = movies.Images.objects.create(movie_idmovie=movie, backdrop=backdrop)
+    #             new_images.save()
 
     def writeCompany(self, companyname):
         try:
@@ -250,12 +275,12 @@ if __name__ == '__main__':
 
     # read_path = './DataCollection/MovieInfo/Data/movieDetails.csv'
     # ld.writeMovie(read_path)
-    #
+    # #
     # read_path = './DataCollection/MovieInfo/Data/casts.csv'
     # ld.writeCast(read_path)
     #
     # read_path = './DataCollection/MovieInfo/Data/movieImages.csv'
     # ld.writeimage(read_path)
 
-    read_path = './DataCollection/MovieInfo/Data/finalRatings.csv'
+    read_path = './DataCollection/MovieInfo/Data/ratingTest.csv'
     ld.writeRatings(read_path)
