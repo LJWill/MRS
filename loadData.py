@@ -205,6 +205,7 @@ class LoadingData:
         raw = pd.read_csv(read_path,chunksize=1000000)
         count = 1
         nochunk = 1
+
         for chunk in raw:
             total = chunk.shape[0]
             querylist = []
@@ -214,7 +215,9 @@ class LoadingData:
 
                 try:
                     with transaction.atomic():
-                        querylist.append(movies.Ratings(movie_idmovie=int(row["tmdbId"]), user_iduser=row["userId"]
+                        movie = movies.Movie.objects.get(idmovie=int(row["tmdbId"]))
+                        user = movies.User.objects.get(iduser=row["userId"])
+                        querylist.append(movies.Ratings(movie_idmovie=movie, user_iduser=user
                                                                     ,rating = int(row["rating"] * 2)))
                 except Exception as e:
                     print(e)
