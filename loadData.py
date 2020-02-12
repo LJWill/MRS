@@ -215,10 +215,12 @@ class LoadingData:
 
                 try:
                     with transaction.atomic():
-                        movie = movies.Movie.objects.get(idmovie=int(row["tmdbId"]))
-                        user = movies.User.objects.get(iduser=row["userId"])
-                        querylist.append(movies.Ratings(movie_idmovie=movie, user_iduser=user
-                                                                    ,rating = int(row["rating"] * 2)))
+                        movieid = row["tmdbId"]
+                        if pd.notnull(movieid):
+                            movie = movies.Movie.objects.get(idmovie=int(movieid))
+                            user = movies.User.objects.get(iduser=row["userId"])
+                            querylist.append(movies.Ratings(movie_idmovie=movie, user_iduser=user
+                                                                        ,rating = int(row["rating"] * 2)))
                 except Exception as e:
                     print(e)
 
