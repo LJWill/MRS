@@ -6,6 +6,7 @@ import { faStar, faEye } from '@fortawesome/free-regular-svg-icons';
 import { urlTitle, addToList, isSaved, removeFromList } from '../../utils';
 import config from '../../config';
 import { GenericButton, PrimaryButton, Button } from './Button';
+import { Flipped } from 'react-flip-toolkit';
 
 const Poster = styled.div`
   background-color: #fff;
@@ -51,11 +52,11 @@ const Wrapper = styled.article`
   border: 2px solid transparent;
   color: #ddd;
   flex-shrink: 0;
-  height: 400px;
+  height: 320px;
   margin: 5px;
   position: relative;
   transition: border 0.2s;
-  width: 250px;
+  width: 200px;
   transition: all 0.6s;
 
   &:hover {
@@ -93,8 +94,8 @@ export default class Movie extends Component {
   }
 
   add = movie => {
-    addToList(movie);
-    this.setState({ isSaved: true });
+    console.log('clicked!');
+    this.props.shuffleMovie()
   };
 
   remove = movie => {
@@ -115,20 +116,18 @@ export default class Movie extends Component {
   render() {
     const { title, vote_average, id, poster_path } = this.props;
 
-    let backgroundColor
+    let backgroundColor;
     if (vote_average >= 8) {
-        backgroundColor = 'rgb(78, 173, 31)'
-    }else if (vote_average <=6) {
-        backgroundColor = 'rgb(166, 173, 31)'
-    }else {
-        backgroundColor = '#aa2e85'
+      backgroundColor = 'rgb(78, 173, 31)';
+    } else if (vote_average <= 6) {
+      backgroundColor = 'rgb(166, 173, 31)';
+    } else {
+      backgroundColor = '#aa2e85';
     }
 
     return (
       <Wrapper style={this.state.style}>
-        <Rating
-            style={{backgroundColor}}
-        >{vote_average.toFixed(1)}</Rating>
+        <Rating style={{ backgroundColor }}>{vote_average.toFixed(1)}</Rating>
         <Content>
           <h3>{title}</h3>
           <Link

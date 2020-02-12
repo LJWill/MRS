@@ -19,7 +19,6 @@ import HeadMenu from '../components/HeadMenu/index';
 class CustomLayout extends React.Component {
   render() {
     const { authenticated } = this.props;
-    console.log('88888888888', this.props)
     return (
       <div>
         {/* <MMenu /> */}

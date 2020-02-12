@@ -1,17 +1,16 @@
 import React from 'react';
 import _ from 'lodash';
+import shuffle from 'lodash/shuffle';
 import { Container, Divider, Grid, Header, Icon } from 'semantic-ui-react';
-import MovieCard from '../../components/MovieList/MovieCard';
+import MidMovieCard from '../../components/MovieList/MidMovieCard';
 import Nav from '../../components/HeadMenu/Nav';
 import { connect } from 'react-redux';
+import { Flipper, Flipped } from 'react-flip-toolkit';
 
-import shuffle from 'lodash/shuffle';
-import throttle from 'lodash/throttle';
 import FlipMove from 'react-flip-move';
 import './MovieBrowser.scss';
 
 class MovieBrowser extends React.Component {
-
   constructor(props) {
     super(props);
 
@@ -67,7 +66,7 @@ class MovieBrowser extends React.Component {
   render() {
     const { selected, items } = this.state;
 
-    console.log('[[[[[[[[[[[[', this.props)
+    console.log('[[[[[[[[[[[[', this.props);
     const selectedKeys = Object.keys(items).filter(key => items[key].selected);
     const remainingKeys = Object.keys(items).filter(
       key => !items[key].selected
@@ -111,168 +110,132 @@ class MovieBrowser extends React.Component {
   }
 }
 
-class ListItem extends React.Component {
-  render() {
-    const listClass = `list-item card ${this.props.view}`;
-    const style = { zIndex: 100 - this.props.index };
+const letters = 'reactfliptoolkit'.split('');
 
-    return (
-      <li id={this.props.id} className={listClass} style={style}>
-        <h3>{this.props.name}</h3>
-        <button onClick={this.props.clickHandler}>
-          <i className="fa fa-close" />
-        </button>
-      </li>
-    );
-  }
+const entries = [
+  [
+    [0, 1, 2, 3, 4],
+    [5, 6, 7, 8],
+    [9, 10, 11, 12, 13, 14, 15]
+  ],
+  // catlike fort pilot
+  [
+    [3, 2, 4, 6, 7, 13, 1],
+    [5, 10, 0, 9],
+    [8, 14, 12, 11, 15]
+  ],
+  // fickle lotto tapir
+  [
+    [5, 7, 3, 13, 6, 1],
+    [12, 10, 4, 9, 11],
+    [15, 2, 8, 14, 0]
+  ],
+  [
+    [0, 1, 2, 3, 4],
+    [5, 6, 7, 8],
+    [9, 10, 11, 12, 13, 14, 15]
+  ]
+];
+
+const colors = ['#ff4f66', '#7971ea', '#5900d8'];
+const getColor = letter => {
+  if (letter < 5) return colors[0];
+  else if (letter < 9) return colors[1];
+  else return colors[2];
 };
 
-class Shuffle extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      removedArticles: [],
-      view: 'grid',
-      order: 'asc',
-      sortingMethod: 'chronological',
-      enterLeaveAnimation: 'accordianVertical',
-      movies: this.props.movies[0]
-    };
+class Example extends React.Component {
+  index = 0;
+  state = {
+    expanded: false,
+    movies: null
+  };
 
-    this.toggleList = this.toggleList.bind(this);
-    this.toggleGrid = this.toggleGrid.bind(this);
-    this.toggleSort = this.toggleSort.bind(this);
-    this.sortRotate = this.sortRotate.bind(this);
-    this.sortShuffle = this.sortShuffle.bind(this);
-  }
 
-  toggleList() {
-    this.setState({
-      view: 'list',
-      enterLeaveAnimation: 'accordianVertical'
-    });
-  }
+  shuffleMovie = () => {
+    // console.log('----------->', this.state.movies);
+    this.setState({movies: _.shuffle(this.state.movies)})
+  };
 
-  toggleGrid() {
-    this.setState({
-      view: 'grid',
-      enterLeaveAnimation: 'accordianHorizontal'
-    });
-  }
-
-  toggleSort() {
-    const sortAsc = (a, b) => a.timestamp - b.timestamp;
-    const sortDesc = (a, b) => b.timestamp - a.timestamp;
-
-    this.setState({
-      order: (this.state.order === 'asc' ? 'desc' : 'asc'),
-      sortingMethod: 'chronological',
-      articles: this.state.articles.sort(
-        this.state.order === 'asc' ? sortDesc : sortAsc
-      )
-    });
-  }
-
-  sortShuffle() {
-    this.setState({
-      sortingMethod: 'shuffle',
-      articles: shuffle(this.state.articles)
-    });
-  }
-
-  moveArticle(source, dest, id) {
-    const sourceArticles = this.state[source].slice();
-    let destArticles = this.state[dest].slice();
-
-    if ( !sourceArticles.length ) return;
-
-    // Find the index of the article clicked.
-    // If no ID is provided, the index is 0
-    const i = id ? sourceArticles.findIndex(article => article.id === id) : 0;
-
-    // If the article is already removed, do nothing.
-    if ( i === -1 ) return;
-
-    destArticles = [].concat( sourceArticles.splice(i, 1), destArticles );
-
-    this.setState({
-      [source]: sourceArticles,
-      [dest]: destArticles,
-    });
-  }
-
-  sortRotate() {
-    const articles = this.state.articles.slice();
-    articles.unshift(articles.pop())
-
-    this.setState({
-      sortingMethod: 'rotate',
-      articles
-    });
-  }
-
-  renderMovies() {
-    console.log('[[[[[', this.props)
-    return this.state.movies.map( (movie, i) => {
-      return (
-        <ListItem
-          key={movie.id}
-          view={this.state.view}
-          index={i}
-          clickHandler={throttle(() => this.moveArticle('movies', 'removedMovies', movie.id), 800)}
-          {...movie}
-        />
-      );
-    });
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.movies !== this.props.movies) {
+      // get now playing movies
+      this.setState({ movies: nextProps.movies[0].now_playing });
+    }
   }
 
   render() {
-    return (
-      <div id="shuffle" className={this.state.view}>
-        {/* <header>
-          <div className="abs-right">
-            <Toggle
-              clickHandler={this.sortShuffle}
-              text="Shuffle" icon="random"
-              active={this.state.sortingMethod === 'shuffle'}
-            />
-          </div>
-        </header> */}
-        <div>
-          <FlipMove
-            staggerDurationBy="30"
-            duration={500}
-            enterAnimation={this.state.enterLeaveAnimation}
-            leaveAnimation={this.state.enterLeaveAnimation}
-            typeName="ul"
-          >
-            { this.renderMovies() }
+    const data = entries[this.index % entries.length];
+    this.index += 1;
 
-            {/* <footer key="foot">
-              <div className="abs-right">
-                <Toggle
-                  clickHandler={() => (
-                    this.moveArticle('removedArticles', 'articles')
-                  )}
-                  text="Add Item"
-                  icon="plus"
-                  active={this.state.removedArticles.length > 0}
-                />
-                <Toggle
-                  clickHandler={() => (
-                    this.moveArticle('articles', 'removedArticles')
-                  )}
-                  text="Remove Item"
-                  icon="close"
-                  active={this.state.articles.length > 0}
-                />
-              </div>
-            </footer> */}
-          </FlipMove>
-        </div>
+    let { movies } = this.state
+
+    // movies && this.shuffleMovie()
+
+    return (
+      <div>
+        <Nav />
+        <Container className="movieContainer">
+          <Flipper flipKey={this.state.expanded} spring="gentle">
+            {/* <main onClick={() => this.setState({ expanded: !this.state.expanded })}>
+          <Expanded data={data} />
+        </main> */}
+
+            {movies && (
+              <Grid container columns={5}>
+                <MovieView data={movies} func={this.shuffleMovie} />
+              </Grid>
+            )}
+          </Flipper>
+        </Container>
       </div>
     );
   }
+}
+
+
+
+const MovieView = (data) => {
+  console.log('!!!!!!!!!!!!!!!!!', data)
+  return data.data.map(m => (
+    <Grid.Column>
+      <MidMovieCard {...m} key={m.id} shuffleMovie={data.func} />
+    </Grid.Column>
+  ));
+};
+
+const Word = ({ word }) => {
+  return (
+    <ul className="expandedList">
+      {word.map(index => {
+        const letter = letters[index];
+        const flipId = `letter-${index}`;
+        return (
+          <Flipped flipId={flipId}>
+            <li
+              style={{
+                backgroundColor: getColor(index)
+              }}
+            >
+              <Flipped inverseFlipId={flipId} scale transformOrigin="50% 50%">
+                <span>{letter}</span>
+              </Flipped>
+            </li>
+          </Flipped>
+        );
+      })}
+    </ul>
+  );
+};
+
+const Expanded = ({ data }) => {
+  return (
+    <div className="expandedContainer">
+      {data.map(word => (
+        <Word word={word} />
+      ))}
+    </div>
+  );
 };
 
 const mapStateToProps = state => {
@@ -282,6 +245,4 @@ const mapStateToProps = state => {
   };
 };
 
-
-export default connect(mapStateToProps)(MovieBrowser);
-
+export default connect(mapStateToProps)(Example);
