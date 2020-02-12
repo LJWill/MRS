@@ -168,3 +168,49 @@ export const getRecommendations = id => {
     }
   });
 };
+
+
+
+// dispatch user movie action
+
+export const userMovieLike = (movie) => {
+  return {
+    type: actionTypes.USER_MOVIE_LIKE,
+    movie
+  };
+};
+
+export const userMovieDisLike = (movie) => {
+  return {
+    type: actionTypes.USER_MOVIE_DISLIKE,
+    movie
+  };
+};
+
+
+export const userMovieSuccess = movie => {
+  return {
+    type: actionTypes.USER_MOVIE_SUCCESS,
+    movie
+  };
+};
+
+export const userMovieFail = error => {
+  return {
+    type: actionTypes.USER_MOVIE_FAIL,
+    error: error
+  };
+};
+
+
+export const dispatchUserMovie = (movie, userAction) => {
+
+  return dispatch => {
+    // axios.get(`/movie/${id}`, {
+    //   params: {}
+    // });
+
+    dispatch(userMovieSuccess(movie))
+
+  };
+};

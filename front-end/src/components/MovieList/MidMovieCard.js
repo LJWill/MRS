@@ -104,7 +104,12 @@ export default class Movie extends Component {
 
   add = movie => {
     console.log('clicked!');
-    this.props.shuffleMovie();
+    // let newData = movie.map(item => ({
+    //   ...item,
+    //   userAction: 'Like'
+    // }))
+    let newData = Object.assign({userAction: 'Like'}, movie)
+    this.props.shuffleMovie(newData);
   };
 
   remove = movie => {

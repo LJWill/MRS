@@ -38,7 +38,7 @@ const Wrapper = styled.nav`
   background: ${p =>
     p.onTop ? '#495285' : 'linear-gradient(#495285, 50%, transparent);'};
   color: #fff;
-  height: 'auto';
+  height: 272px;
   position: fixed;
   top: 0;
   transition: background-color 0.8s;

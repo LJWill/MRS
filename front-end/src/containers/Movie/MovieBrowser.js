@@ -1,12 +1,12 @@
 import React from 'react';
 import _ from 'lodash';
-import shuffle from 'lodash/shuffle';
 import { Container, Divider, Grid, Header, Icon } from 'semantic-ui-react';
 import MidMovieCard from '../../components/MovieList/MidMovieCard';
 import DisplayNav from '../../components/HeadMenu/DisplayNav';
 import { connect } from 'react-redux';
 import { Flipper, Flipped } from 'react-flip-toolkit';
 import FlipMove from 'react-flip-move';
+import * as movieActions from '../../store/actions/movie';
 import './MovieBrowser.scss';
 
 class MovieBrowser extends React.Component {
@@ -116,11 +116,15 @@ class Example extends React.Component {
     movies: null
   };
 
-  shuffleMovie = () => {
+  shuffleMovie = (movie) => {
     this.setState({
       movies: _.shuffle(this.state.movies),
       expanded: !this.state.expanded
     });
+
+    console.log(movie)
+    this.props.userMovieLike(movie)
+
   };
 
   componentWillReceiveProps(nextProps) {
@@ -138,7 +142,7 @@ class Example extends React.Component {
 
     return (
       <div>
-        <DisplayNav movies={this.state.movies}/>
+        <DisplayNav movies={this.props.userMovies}/>
         <Container className="movieContainer">
           <Flipper flipKey={this.state.expanded} spring="gentle">
             {movies && (
@@ -167,8 +171,15 @@ const MovieView = data => {
 const mapStateToProps = state => {
   return {
     genres: state.movieBrowser.genres,
-    movies: state.movieBrowser.movies
+    movies: state.movieBrowser.movies,
+    userMovies: state.userMovie.userMovies
   };
 };
 
-export default connect(mapStateToProps)(Example);
+const mapDispatchToProps = dispatch => ({
+  userMovieLike: (movie) => dispatch(movieActions.userMovieLike(movie)),
+  userMovieDisLike: (movie) => dispatch(movieActions.userMovieDisLike(movie))
+});
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Example);

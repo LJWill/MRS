@@ -14,7 +14,7 @@ const MoviesWrapper = styled.div`
   justify-content: space-between;
   transform: ${p => `translate3d(${p.offset}px, 0px, 0px)`};
   transition: transform 0.6s;
-  width: 100vw;
+  width: 98.5vw;
   overflow-x: auto;
 
   &::-webkit-scrollbar {
