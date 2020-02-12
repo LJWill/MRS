@@ -187,17 +187,18 @@ class LoadingData:
         raw = pd.read_csv(read_path)
         count = 1
         total = raw.shape[0]
+        querylist = []
         for index, row in raw.iterrows():
             print("\r"  +"##### Rating "+ 'processing %d out of %d items...' % (count, total), end='')
             count += 1
 
             try:
                 with transaction.atomic():
-                    new_rating = movies.Ratings.objects.create(movie_idmovie=row["tmdbId"], user_iduser=row["userId"])
-                    new_rating.rating = int(row["rating"] * 2)
-                    new_rating.save()
+                    querylist.append(movies.Ratings.objects.create(movie_idmovie=row["tmdbId"], user_iduser=row["userId"]
+                                                                ,rating = int(row["rating"] * 2)))
             except:
                 continue
+        movies.Ratings.objects.bulk_create(querylist, ignore_conflicts=True)
 
     def writegenre(self, genrename):
         try:
