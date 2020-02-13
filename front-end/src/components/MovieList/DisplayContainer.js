@@ -17,7 +17,7 @@ const MoviesWrapper = styled.div`
   width: 98.5vw;
   overflow-x: auto;
   padding-top: 10px;
-  
+
   &::-webkit-scrollbar {
     display: none;
   }
@@ -68,7 +68,7 @@ class MovieList extends React.Component {
 
   render() {
     const { movies } = this.props;
-
+    console.log('99999999999', this.props)
     return (
       <List>
         {/* <ButtonContainer>
@@ -82,7 +82,7 @@ class MovieList extends React.Component {
         <div style={{ overflow: 'hidden', padding: '10px' }}>
           <MoviesWrapper offset={this.state.listOffset}>
             {movies && movies.map(movie => (
-              <SmallMovieCard {...movie} key={movie.id} onTop={this.props.onTop}/>
+              <SmallMovieCard {...movie} key={movie.id} onTop={this.props.onTop} func={this.props.func}/>
             ))}
           </MoviesWrapper>
         </div>

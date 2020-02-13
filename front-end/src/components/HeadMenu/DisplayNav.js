@@ -130,7 +130,6 @@ class Nav extends React.Component {
 
   render() {
     const { authenticated, username } = this.props;
-
     const fixed = true;
 
     return (
@@ -198,7 +197,7 @@ class Nav extends React.Component {
           </Grid.Row>
 
           <Grid.Row>
-            <DisplayContainer movies={this.props.movies} onTop={this.state.onTop}/>
+            <DisplayContainer movies={this.props.movies} onTop={this.state.onTop} func={this.props.func}/>
           </Grid.Row>
         </Wrapper>
       </div>

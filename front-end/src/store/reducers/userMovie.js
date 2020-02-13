@@ -8,13 +8,13 @@ const initialState = {
   userMovies: []
 };
 
-const userMovieLike = (state, action) => {
+const userMovieAction = (state, action) => {
   return updateObject(state, {
     userMovies: [...state.userMovies, action.movie]
   });
 };
 
-const userMovieDisLike = (state, action) => {
+const userMovieRemove = (state, action) => {
   return updateObject(state, {
     userMovies: action.movie
   });
@@ -38,10 +38,10 @@ const userMovieFail = (state, action) => {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case actionTypes.USER_MOVIE_LIKE:
-      return userMovieLike(state, action);
-    case actionTypes.USER_MOVIE_DISLIKE:
-      return userMovieDisLike(state, action);
+    case actionTypes.USER_MOVIE_ACTION:
+      return userMovieAction(state, action);
+    case actionTypes.USER_MOVIE_REMOVE:
+      return userMovieRemove(state, action);
     case actionTypes.USER_MOVIE_SUCCESS:
       return userMovieSuccess(state, action);
     case actionTypes.USER_MOVIE_FAIL:

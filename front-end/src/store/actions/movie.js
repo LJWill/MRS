@@ -173,16 +173,16 @@ export const getRecommendations = id => {
 
 // dispatch user movie action
 
-export const userMovieLike = (movie) => {
+export const userMovieAction = (movie) => {
   return {
-    type: actionTypes.USER_MOVIE_LIKE,
+    type: actionTypes.USER_MOVIE_ACTION,
     movie
   };
 };
 
-export const userMovieDisLike = (movie) => {
+export const userMovieRemove = (movie) => {
   return {
-    type: actionTypes.USER_MOVIE_DISLIKE,
+    type: actionTypes.USER_MOVIE_REMOVE,
     movie
   };
 };

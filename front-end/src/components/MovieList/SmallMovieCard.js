@@ -128,25 +128,12 @@ export default class Movie extends Component {
     };
   }
 
-  add = movie => {
-    console.log('clicked!');
-    this.props.shuffleMovie();
-  };
 
   remove = movie => {
-    removeFromList(movie);
-    this.setState({ isSaved: false });
-    if (this.props.inFavorites) {
-      this.setState(
-        { style: { opacity: 0, transform: 'rotateY(70deg)' } },
-        () => {
-          setTimeout(() => {
-            this.props.removeFromFavorites(movie.id);
-          }, 500);
-        }
-      );
-    }
+    console.log('removed', this.props)
+    this.props.func(movie)
   };
+
 
   render() {
     const { title, poster_path, onTop, userAction } = this.props;
@@ -154,14 +141,12 @@ export default class Movie extends Component {
     return (
       <Wrapper style={this.state.style}>
         <FrontContent>
-          {/* <Icon name="like" size="big" />
-          <Icon name="thumbs down outline" size="big" /> */}
           <CoverIcon data={userAction}/>
         </FrontContent>
 
         <Content>
-          <h6>{title}</h6>
-          <Delete>
+          <h5>{title}</h5>
+          <Delete onClick={() => {this.remove(this.props)}}>
             <Icon name="delete" size="big" />
           </Delete>
         </Content>

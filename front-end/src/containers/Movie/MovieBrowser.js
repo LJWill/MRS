@@ -123,9 +123,22 @@ class Example extends React.Component {
     });
 
     console.log(movie)
-    this.props.userMovieLike(movie)
+    this.props.userMovieAction(movie)
 
   };
+
+
+  anotherShuffleMovie = (movie) => {
+    this.setState({
+      movies: _.shuffle(this.state.movies),
+      expanded: !this.state.expanded
+    });
+
+    console.log(movie)
+    // this.props.userMovieRemove(movie)
+
+  };
+
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.movies !== this.props.movies) {
@@ -142,7 +155,7 @@ class Example extends React.Component {
 
     return (
       <div>
-        <DisplayNav movies={this.props.userMovies}/>
+        <DisplayNav movies={this.props.userMovies} func={this.anotherShuffleMovie}/>
         <Container className="movieContainer">
           <Flipper flipKey={this.state.expanded} spring="gentle">
             {movies && (
@@ -177,8 +190,8 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  userMovieLike: (movie) => dispatch(movieActions.userMovieLike(movie)),
-  userMovieDisLike: (movie) => dispatch(movieActions.userMovieDisLike(movie))
+  userMovieAction: (movie) => dispatch(movieActions.userMovieAction(movie)),
+  userMovieRemove: (movie) => dispatch(movieActions.userMovieRemove(movie))
 });
 
 
