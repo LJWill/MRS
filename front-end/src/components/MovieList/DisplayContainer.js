@@ -71,14 +71,6 @@ class MovieList extends React.Component {
 
     return (
       <List>
-        {/* <ButtonContainer>
-          <NavButton onClick={() => this.handleClick('left')}>
-            <Icon name="chevron left" />
-          </NavButton>
-          <NavButton onClick={() => this.handleClick('right')}>
-            <Icon name="chevron right" />
-          </NavButton>
-        </ButtonContainer> */}
         <div style={{ overflow: 'hidden', padding: '0 10px 10px 10px' }}>
           <MoviesWrapper offset={this.state.listOffset}>
             {movies && movies.map(movie => (

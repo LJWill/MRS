@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStar, faEye } from '@fortawesome/free-regular-svg-icons';
-import { urlTitle, addToList, isSaved, removeFromList } from '../../utils';
+import { urlTitle, isSaved, removeFromList } from '../../utils';
 import config from '../../config';
 import { Button, Icon, Popup } from 'semantic-ui-react';
+import { connect } from 'react-redux';
+import * as movieActions from '../../store/actions/movie';
 
 const styles = {
   buttonGroup: {
@@ -93,7 +92,7 @@ const Wrapper = styled.article`
   }
 `;
 
-export default class Movie extends Component {
+class MidMovieCard extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -102,16 +101,25 @@ export default class Movie extends Component {
     };
   }
 
-  like = (e, movie) => {
+  like = (e, data) => {
     e.stopPropagation();
-    let newData = Object.assign({ userAction: 'Like' }, movie);
+    if(data.authenticated){
+      let newData = Object.assign({ userAction: 'Like' }, data);
     this.props.shuffleMovie(newData);
+    }else{
+      window.location.href = '/login'
+    }
+    
   };
 
-  dislike = (e, movie) => {
+  dislike = (e, data) => {
     e.stopPropagation();
-    let newData = Object.assign({ userAction: 'DisLike' }, movie);
+    if(data.authenticated){
+      let newData = Object.assign({ userAction: 'DisLike' }, data);
     this.props.shuffleMovie(newData);
+    }else{
+      window.location.href = '/login'
+    }
   };
 
   jumpTo = (title, id) => {
@@ -178,3 +186,19 @@ export default class Movie extends Component {
     );
   }
 }
+
+
+const mapStateToProps = state => {
+  return {
+    movies: state.movieBrowser.movies,
+    userMovies: state.userMovie.userMovies,
+    authenticated: state.auth.token !== null
+  };
+};
+
+const mapDispatchToProps = dispatch => ({
+  userMovieAction: movie => dispatch(movieActions.userMovieAction(movie)),
+  userMovieRemove: movie => dispatch(movieActions.userMovieRemove(movie))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(MidMovieCard);

@@ -306,7 +306,7 @@ class HomepageLayout extends Component {
 const mapStateToProps = state => {
   return {
     genres: state.movieBrowser.genres,
-    movies: state.movieBrowser.movies
+    movies: state.movieBrowser.movies,
   };
 };
 

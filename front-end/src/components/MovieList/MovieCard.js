@@ -60,6 +60,7 @@ const Wrapper = styled.article`
   transition: border 0.2s;
   width: 250px;
   transition: all 0.6s;
+  cursor: pointer;
 
   &:hover {
     border: 2px solid #ddd;
@@ -127,6 +128,12 @@ class Movie extends Component {
     }
   };
 
+  jumpTo = (title, id) => {
+    window.location.href = `/movie/${encodeURIComponent(
+      urlTitle(title)
+    )}/${id}`
+  }
+
   render() {
     const { title, vote_average, id, poster_path } = this.props;
 
@@ -140,34 +147,40 @@ class Movie extends Component {
     }
 
     return (
-      <Link
-        to={`${process.env.PUBLIC_URL}/movie/${encodeURIComponent(
-          urlTitle(title)
-        )}/${id}`}
-      >
         <Popup
           trigger={
             <Wrapper style={this.state.style}>
               <Rating style={{ backgroundColor }}>
                 {vote_average.toFixed(1)}
               </Rating>
-              <Content>
+              <Content onClick={() => this.jumpTo(title, id)}>
                 <h3>{title}</h3>
-                <Link to={`/movies`}>
-                  {this.state.isSaved ? (
-                    <GenericButton
-                      title="Favorite"
-                      icon={<FontAwesomeIcon icon="star" />}
-                      onClick={() => this.remove(this.props)}
-                    />
-                  ) : (
-                    <GenericButton
-                      title="Favorite"
-                      icon={<FontAwesomeIcon icon={faStar} />}
-                      onClick={() => this.add(this.props)}
-                    />
-                  )}
-                </Link>
+                {this.props.authenticated ? (
+                  <Link to={`/movies`}>
+                    {this.state.isSaved ? (
+                      <GenericButton
+                        title="Favorite"
+                        icon={<FontAwesomeIcon icon="star" />}
+                        onClick={() => this.remove(this.props)}
+                      />
+                    ) : (
+                      <GenericButton
+                        title="Favorite"
+                        icon={<FontAwesomeIcon icon={faStar} />}
+                        onClick={() => this.add(this.props)}
+                      />
+                    )}
+                  </Link>
+                ) : (
+                  <GenericButton
+                    title="Favorite"
+                    icon={<FontAwesomeIcon icon={faStar} />}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      window.location.href = '/login';
+                    }}
+                  />
+                )}
               </Content>
               <Poster bg={`${config.medium}${poster_path}`} />
             </Wrapper>
@@ -177,16 +190,15 @@ class Movie extends Component {
         >
           <Popup.Header>Click to view more info</Popup.Header>
         </Popup>
-      </Link>
     );
   }
 }
 
 const mapStateToProps = state => {
   return {
-    genres: state.movieBrowser.genres,
     movies: state.movieBrowser.movies,
-    userMovies: state.userMovie.userMovies
+    userMovies: state.userMovie.userMovies,
+    authenticated: state.auth.token !== null
   };
 };
 

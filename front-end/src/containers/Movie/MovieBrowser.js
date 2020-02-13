@@ -106,7 +106,7 @@ const mapStateToProps = state => {
   return {
     // genres: state.movieBrowser.genres,
     movies: state.movieBrowser.movies,
-    userMovies: state.userMovie.userMovies
+    userMovies: state.userMovie.userMovies,
   };
 };
 
