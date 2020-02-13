@@ -5,13 +5,29 @@ const initialState = {
   isFetching: false,
   error: null,
   userAction: null,
-  userMovies: []
+  userMovies: [] 
 };
 
+const containObj = (obj, list) => {
+  let result = false
+  list.map(item => {
+    if(obj.id === item.id){
+      result = true
+    }
+  })
+  return result
+}
+
 const userMovieAction = (state, action) => {
-  return updateObject(state, {
-    userMovies: [...state.userMovies, action.movie]
-  });
+  if (!containObj(action.movie, state.userMovies)) {
+    return updateObject(state, {
+      userMovies: [...state.userMovies, action.movie]
+    })
+  }else {
+    return updateObject(state, {
+      userMovies: state.userMovies
+    });
+  }
 };
 
 const userMovieRemove = (state, action) => {

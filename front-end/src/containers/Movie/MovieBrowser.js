@@ -135,7 +135,7 @@ class Example extends React.Component {
     });
 
     console.log(movie)
-    // this.props.userMovieRemove(movie)
+    this.props.userMovieRemove(movie)
 
   };
 

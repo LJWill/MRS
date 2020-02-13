@@ -68,7 +68,7 @@ class MovieList extends React.Component {
 
   render() {
     const { movies } = this.props;
-    console.log('99999999999', this.props)
+
     return (
       <List>
         {/* <ButtonContainer>
