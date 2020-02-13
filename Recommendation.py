@@ -30,23 +30,23 @@ class Recommender:
         algo_KNNWithZScore = KNNWithZScore()
         list_algos.append((algo_KNNWithZScore,"KNNWithZScore"))
 
-        algo_KNNBaseline =KNNBaseline()
-        list_algos.append((algo_KNNBaseline,"KNNBaseline"))
-
-        algo_SVD =SVD()
-        list_algos.append((algo_SVD,"SVD"))
-
-        algo_SVDpp = SVDpp()
-        list_algos.append((algo_SVDpp,"SVDpp"))
-
-        algo_NMF = NMF()
-        list_algos.append((algo_NMF,"NMF"))
-
-        algo_CoClustering = CoClustering()
-        list_algos.append((algo_CoClustering,"CoClustering"))
-
-        algo_SlopeOne = SlopeOne()
-        list_algos.append((algo_SlopeOne,"SlopeOne"))
+        # algo_KNNBaseline =KNNBaseline()
+        # list_algos.append((algo_KNNBaseline,"KNNBaseline"))
+        #
+        # algo_SVD =SVD()
+        # list_algos.append((algo_SVD,"SVD"))
+        # 
+        # algo_SVDpp = SVDpp()
+        # list_algos.append((algo_SVDpp,"SVDpp"))
+        #
+        # algo_NMF = NMF()
+        # list_algos.append((algo_NMF,"NMF"))
+        #
+        # algo_CoClustering = CoClustering()
+        # list_algos.append((algo_CoClustering,"CoClustering"))
+        #
+        # algo_SlopeOne = SlopeOne()
+        # list_algos.append((algo_SlopeOne,"SlopeOne"))
 
         for algo,name in list_algos:
             algo = self.train(trainset,testset, algo,name)

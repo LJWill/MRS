@@ -184,20 +184,20 @@ class LoadingData:
     #                     movie.casts.add(starobj)
 
 
-    def writeTag(self, read_path):
-        raw = pd.read_csv(read_path)
-        count = 1
-        total = raw.shape[0]
-        for index, row in raw.iterrows():
-            try:
-                movie = movies.Movie.objects.get(idmovie=row["tmdbId"])
-            except:
-                continue
-            try:
-                tag = movies.Tags.objects.create(tag= row["tag"])
-            except:
-                tag = movies.Tags.objects.get(tag = row["tag"])
-            movie.tags.add(tag)
+    # def writeTag(self, read_path):
+    #     raw = pd.read_csv(read_path)
+    #     count = 1
+    #     total = raw.shape[0]
+    #     for index, row in raw.iterrows():
+    #         try:
+    #             movie = movies.Movie.objects.get(idmovie=row["tmdbId"])
+    #         except:
+    #             continue
+    #         try:
+    #             tag = movies.Tags.objects.create(tag= row["tag"])
+    #         except:
+    #             tag = movies.Tags.objects.get(tag = row["tag"])
+    #         movie.tags.add(tag)
 
 
 
