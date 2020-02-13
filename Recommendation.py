@@ -20,6 +20,7 @@ class Recommender:
         reader = Reader(rating_scale=(1, 10), line_format='user item rating')
         data = Dataset.load_from_df(df, reader)
         trainset, testset = train_test_split(data, test_size=.25)
+        print("l")
         list_algos = []
         # algo_KNNBasic = KNNBasic()
         # list_algos.append((algo_KNNBasic,"KNNBasic"))
@@ -35,18 +36,18 @@ class Recommender:
         #
         algo_SVD =SVD()
         list_algos.append((algo_SVD,"SVD"))
-        #
-        # algo_SVDpp = SVDpp()
-        # list_algos.append((algo_SVDpp,"SVDpp"))
-        #
-        # algo_NMF = NMF()
-        # list_algos.append((algo_NMF,"NMF"))
-        #
-        # algo_CoClustering = CoClustering()
-        # list_algos.append((algo_CoClustering,"CoClustering"))
-        #
-        # algo_SlopeOne = SlopeOne()
-        # list_algos.append((algo_SlopeOne,"SlopeOne"))
+
+        algo_SVDpp = SVDpp()
+        list_algos.append((algo_SVDpp,"SVDpp"))
+
+        algo_NMF = NMF()
+        list_algos.append((algo_NMF,"NMF"))
+
+        algo_CoClustering = CoClustering()
+        list_algos.append((algo_CoClustering,"CoClustering"))
+
+        algo_SlopeOne = SlopeOne()
+        list_algos.append((algo_SlopeOne,"SlopeOne"))
 
         for algo,name in list_algos:
             algo = self.train(trainset,testset, algo,name)
@@ -59,7 +60,9 @@ class Recommender:
         pred = algo.predict(testset[0][0], testset[0][1]
                             , verbose=True)
         endtime = datetime.now()
-        print(name + ": " + str((endtime - starttime).seconds))
+
+        print(name + ": %d seconds"%(endtime - starttime).seconds)
+        dump.dump(name, algo=algo, verbose= 0)
         return algo
 
 
