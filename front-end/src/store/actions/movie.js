@@ -181,7 +181,6 @@ export const userMovieAction = (movie) => {
 };
 
 export const userMovieRemove = (movie) => {
-  console.log('999999', movie)
   return {
     type: actionTypes.USER_MOVIE_REMOVE,
     movie

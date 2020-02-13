@@ -151,8 +151,6 @@ class Example extends React.Component {
 
     let { movies } = this.state;
 
-    console.log('----------->', this.state.expanded);
-
     return (
       <div>
         <DisplayNav movies={this.props.userMovies} func={this.anotherShuffleMovie}/>

@@ -154,8 +154,6 @@ class MovieDetail extends Component {
   render() {
     const { movieDetail } = this.props;
 
-    console.log('------->', movieDetail);
-
     let isLoading =
       (movieDetail && movieDetail.isFetching) || !movieDetail.movie;
 
