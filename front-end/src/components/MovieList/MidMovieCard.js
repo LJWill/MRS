@@ -54,10 +54,6 @@ const Content = styled.div`
   position: absolute;
   text-align: center;
   width: 100%;
-
-  ${Button} {
-    margin: 5px 0;
-  }
 `;
 
 const Wrapper = styled.article`
@@ -71,7 +67,7 @@ const Wrapper = styled.article`
   width: 200px;
   transition: all 0.6s;
   cursor: pointer;
-  
+
   &:hover {
     border: 2px solid #ddd;
 
@@ -106,14 +102,14 @@ export default class Movie extends Component {
     };
   }
 
-  like = movie => {
-    console.log('clicked!');
+  like = (e, movie) => {
+    e.stopPropagation();
     let newData = Object.assign({ userAction: 'Like' }, movie);
     this.props.shuffleMovie(newData);
   };
 
-  dislike = movie => {
-    console.log('clicked!');
+  dislike = (e, movie) => {
+    e.stopPropagation();
     let newData = Object.assign({ userAction: 'DisLike' }, movie);
     this.props.shuffleMovie(newData);
   };
@@ -154,30 +150,24 @@ export default class Movie extends Component {
     return (
       <Popup
         trigger={
-          <Wrapper style={this.state.style} onClick={() => this.jumpTo(title, id)}>
-            {/* <Link
-              to={`${process.env.PUBLIC_URL}/movie/${encodeURIComponent(
-                urlTitle(title)
-              )}/${id}`}
-            > */}
+          <Wrapper style={this.state.style}>
               <Rating style={{ backgroundColor }}>
                 {vote_average.toFixed(1)}
               </Rating>
-              <Content>
+              <Content  onClick={() => this.jumpTo(title, id)}>
                 <h3>{title}</h3>
                 <Button.Group style={styles.buttonGroup}>
-                  <Button color="red" onClick={() => this.like(this.props)}>
+                  <Button color="red" onClick={(e) => this.like(e, this.props)}>
                     <Icon name="heart" />
                     Like
                   </Button>
                   <Button.Or />
-                  <Button color="grey" onClick={() => this.dislike(this.props)}>
+                  <Button color="grey" onClick={(e) => this.dislike(e, this.props)}>
                     <Icon name="thumbs down" />
                   </Button>
                 </Button.Group>
               </Content>
               <Poster bg={`${config.medium}${poster_path}`} />
-            {/* </Link> */}
           </Wrapper>
         }
         position="top center"

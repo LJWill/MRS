@@ -79,7 +79,7 @@ class MovieList extends React.Component {
             <Icon name="chevron right" />
           </NavButton>
         </ButtonContainer> */}
-        <div style={{ overflow: 'hidden', padding: '10px' }}>
+        <div style={{ overflow: 'hidden', padding: '0 10px 10px 10px' }}>
           <MoviesWrapper offset={this.state.listOffset}>
             {movies && movies.map(movie => (
               <SmallMovieCard {...movie} key={movie.id} onTop={this.props.onTop} func={this.props.func}/>

@@ -23,6 +23,12 @@ class MovieBrowser extends React.Component {
 
     console.log(movie);
     this.props.userMovieAction(movie);
+
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth'
+    });
   };
 
   anotherShuffleMovie = movie => {
@@ -33,14 +39,25 @@ class MovieBrowser extends React.Component {
 
     console.log(movie);
     this.props.userMovieRemove(movie);
+
+
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth'
+    });
   };
 
   componentDidMount() {
-    window.scrollTo(0, 0);
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth'
+    });
   }
 
   componentWillMount() {
-    let m = this.props.movies[0]
+    let m = this.props.movies[0];
     // console.log('++++++++++', m && m.now_playing);
     m && this.setState({ movies: m.now_playing });
   }

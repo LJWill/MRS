@@ -139,11 +139,16 @@ class MovieDetail extends Component {
   }
 
   componentDidMount() {
-    window.scrollTo(0, 0);
     const movieId = this.props.match.params.id;
     const { getMovieDetail } = this.props;
 
     getMovieDetail(movieId);
+
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth'
+    });
   }
 
   componentDidUpdate(prevProps, prevState) {
