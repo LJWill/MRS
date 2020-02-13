@@ -9,10 +9,10 @@ class FavouriteSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class PeopleSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = People
-        fields = ('idperson', 'name', 'profileimage')
+# class PeopleSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = People
+#         fields = ('idperson', 'name', 'profileimage')
 
 
 class MovieBriefSerializer(serializers.ModelSerializer):
@@ -46,8 +46,8 @@ class MovieDetailSerializer(serializers.ModelSerializer):
     images = serializers.SlugRelatedField(many=True, slug_field='backdrop', read_only=True)
     company = serializers.SlugRelatedField(many=True, slug_field='name', read_only=True)
     genre = serializers.SlugRelatedField(many=True, slug_field='genrename', read_only=True)
-    casts = PeopleSerializer(many=True)
-    directors = PeopleSerializer(many=True)
+    # casts = PeopleSerializer(many=True)
+    # directors = PeopleSerializer(many=True)
     rating_movie = serializers.SerializerMethodField()
     collectionid = CollectionSerializer()
 

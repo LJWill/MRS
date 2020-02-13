@@ -34,14 +34,14 @@ class Recommender:
         # algo_KNNBaseline =KNNBaseline()
         # list_algos.append((algo_KNNBaseline,"KNNBaseline"))
         #
-        algo_SVD =SVD()
-        list_algos.append((algo_SVD,"SVD"))
+        # algo_SVD =SVD()
+        # list_algos.append((algo_SVD,"SVD"))
+        #
+        # algo_SVDpp = SVDpp()
+        # list_algos.append((algo_SVDpp,"SVDpp"))
 
-        algo_SVDpp = SVDpp()
-        list_algos.append((algo_SVDpp,"SVDpp"))
-
-        algo_NMF = NMF()
-        list_algos.append((algo_NMF,"NMF"))
+        # algo_NMF = NMF()
+        # list_algos.append((algo_NMF,"NMF"))
 
         algo_CoClustering = CoClustering()
         list_algos.append((algo_CoClustering,"CoClustering"))
