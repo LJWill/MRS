@@ -16,30 +16,16 @@ const MoviesWrapper = styled.div`
   transform: ${p => `translate3d(${p.offset}px, 0px, 0px)`};
   transition: transform 0.6s;
   width: 97.5vw;
+  overflow-x: scroll;
+  padding-top: 10px;
 `;
 
 const Title = styled.h2`
   color: #fff;
   text-align: left;
-  height:50px
-`;
-
-const ButtonContainer = styled.div`
-  align-self: center;
-  position: absolute;
   height: 50px;
 `;
 
-const NavButton = styled.button`
-  background-color: #222;
-  border-radius: 50%;
-  border: none;
-  color: #fff;
-  cursor: pointer;
-  font-size: 18px;
-  margin: 5px;
-  padding: 15px 15px;
-`;
 
 class MovieList extends React.Component {
   constructor(props) {
@@ -66,24 +52,13 @@ class MovieList extends React.Component {
   render() {
     const { movies, genres } = this.props;
 
-    console.log('+++++', movies)
-
     return (
       <List>
         <Title>{this.props.title}</Title>
-        <ButtonContainer>
-          <NavButton onClick={() => this.handleClick('left')}>
-            <Icon name="chevron left" />
-          </NavButton>
-          <NavButton onClick={() => this.handleClick('right')}>
-            <Icon name="chevron right" />
-          </NavButton>
-        </ButtonContainer>
         <div style={{ overflow: 'hidden', padding: '20px' }}>
           <MoviesWrapper offset={this.state.listOffset}>
-            {movies && movies.map(movie => (
-              <MovieCard {...movie} key={movie.id} />
-            ))}
+            {movies &&
+              movies.map(movie => <MovieCard {...movie} key={movie.id} />)}
           </MoviesWrapper>
         </div>
       </List>

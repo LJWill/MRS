@@ -6,6 +6,8 @@ import { faStar, faEye } from '@fortawesome/free-regular-svg-icons';
 import { urlTitle, addToList, isSaved, removeFromList } from '../../utils';
 import config from '../../config';
 import { GenericButton, PrimaryButton, Button } from './Button';
+import * as movieActions from '../../store/actions/movie';
+import { connect } from 'react-redux';
 
 const Poster = styled.div`
   background-color: #fff;
@@ -83,7 +85,7 @@ const Wrapper = styled.article`
   }
 `;
 
-export default class Movie extends Component {
+class Movie extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -93,8 +95,12 @@ export default class Movie extends Component {
   }
 
   add = movie => {
-    addToList(movie);
-    this.setState({ isSaved: true });
+    // addToList(movie);
+    // this.setState({ isSaved: true });
+    let newData = Object.assign({userAction: 'Like'}, movie)
+    this.props.userMovieAction(newData)
+
+    console.log(newData)
   };
 
   remove = movie => {
@@ -141,6 +147,9 @@ export default class Movie extends Component {
               icon={<FontAwesomeIcon icon={faEye} />}
             />
           </Link>
+          <Link
+            to={`/movies`}
+          >
           {this.state.isSaved ? (
             <GenericButton
               title="Favorite"
@@ -154,9 +163,27 @@ export default class Movie extends Component {
               onClick={() => this.add(this.props)}
             />
           )}
+          </Link>
         </Content>
         <Poster bg={`${config.medium}${poster_path}`} />
       </Wrapper>
     );
   }
 }
+
+
+const mapStateToProps = state => {
+  return {
+    genres: state.movieBrowser.genres,
+    movies: state.movieBrowser.movies,
+    userMovies: state.userMovie.userMovies
+  };
+};
+
+const mapDispatchToProps = dispatch => ({
+  userMovieAction: (movie) => dispatch(movieActions.userMovieAction(movie)),
+  userMovieRemove: (movie) => dispatch(movieActions.userMovieRemove(movie))
+});
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Movie);
