@@ -9,7 +9,8 @@ import * as movieActions from '../../store/actions/movie';
 const styles = {
   buttonGroup: {
     position: 'absolute',
-    bottom: '40px'
+    bottom: '40px',
+    height: '40px'
   },
   toolTip: {
     borderRadius: '5px',
@@ -103,7 +104,7 @@ class MidMovieCard extends Component {
 
   like = (e, data) => {
     e.stopPropagation();
-    if(data.authenticated){
+    if(!data.authenticated){
       let newData = Object.assign({ userAction: 'Like' }, data);
     this.props.shuffleMovie(newData);
     }else{
@@ -114,7 +115,7 @@ class MidMovieCard extends Component {
 
   dislike = (e, data) => {
     e.stopPropagation();
-    if(data.authenticated){
+    if(!data.authenticated){
       let newData = Object.assign({ userAction: 'DisLike' }, data);
     this.props.shuffleMovie(newData);
     }else{

@@ -3,6 +3,7 @@ import faker from 'faker';
 import React, { Component } from 'react';
 import { Search, Grid, Header, Segment } from 'semantic-ui-react';
 
+
 const source = _.times(5, () => ({
   title: faker.company.companyName(),
   description: faker.company.catchPhrase(),
