@@ -24,18 +24,18 @@ class Recommender:
         algo_KNNBasic = KNNBasic()
         list_algos.append((algo_KNNBasic,"KNNBasic"))
 
-        algo_KNNWithMeans = KNNWithMeans()
-        list_algos.append((algo_KNNWithMeans,"KNNWithMeans"))
-
-        algo_KNNWithZScore = KNNWithZScore()
-        list_algos.append((algo_KNNWithZScore,"KNNWithZScore"))
+        # algo_KNNWithMeans = KNNWithMeans()
+        # list_algos.append((algo_KNNWithMeans,"KNNWithMeans"))
+        #
+        # algo_KNNWithZScore = KNNWithZScore()
+        # list_algos.append((algo_KNNWithZScore,"KNNWithZScore"))
 
         # algo_KNNBaseline =KNNBaseline()
         # list_algos.append((algo_KNNBaseline,"KNNBaseline"))
         #
         # algo_SVD =SVD()
         # list_algos.append((algo_SVD,"SVD"))
-        # 
+        #
         # algo_SVDpp = SVDpp()
         # list_algos.append((algo_SVDpp,"SVDpp"))
         #

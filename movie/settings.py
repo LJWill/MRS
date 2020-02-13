@@ -106,7 +106,7 @@ DATABASES = {
         'NAME': 'moviedb',
         'USER': "root",
         'PASSWORD': "admin",
-        'HOST': '127.0.0.1',
+        'HOST': '45.113.232.220',
         'PORT': '3306',
     }
 }
