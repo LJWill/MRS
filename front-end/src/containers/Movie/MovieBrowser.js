@@ -110,35 +110,42 @@ class MovieBrowser extends React.Component {
 }
 
 
+
 class Example extends React.Component {
   state = {
     expanded: false,
     movies: null
   };
 
-  shuffleMovie = (movie) => {
+  shuffleMovie = movie => {
     this.setState({
       movies: _.shuffle(this.state.movies),
       expanded: !this.state.expanded
     });
 
-    console.log(movie)
-    this.props.userMovieAction(movie)
-
+    console.log(movie);
+    this.props.userMovieAction(movie);
   };
 
-
-  anotherShuffleMovie = (movie) => {
+  anotherShuffleMovie = movie => {
     this.setState({
       movies: _.shuffle(this.state.movies),
       expanded: !this.state.expanded
     });
 
-    console.log(movie)
-    this.props.userMovieRemove(movie)
-
+    console.log(movie);
+    this.props.userMovieRemove(movie);
   };
 
+  componentDidMount() {
+    window.scrollTo(0, 0);
+  }
+
+  componentWillMount() {
+    let m = this.props.movies[0]
+    // console.log('++++++++++', m && m.now_playing);
+    m && this.setState({ movies: m.now_playing });
+  }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.movies !== this.props.movies) {
@@ -148,12 +155,14 @@ class Example extends React.Component {
   }
 
   render() {
-
     let { movies } = this.state;
 
     return (
       <div>
-        <DisplayNav movies={this.props.userMovies} func={this.anotherShuffleMovie}/>
+        <DisplayNav
+          movies={this.props.userMovies}
+          func={this.anotherShuffleMovie}
+        />
         <Container className="movieContainer">
           <Flipper flipKey={this.state.expanded} spring="gentle">
             {movies && (
@@ -178,19 +187,17 @@ const MovieView = data => {
   ));
 };
 
-
 const mapStateToProps = state => {
   return {
-    genres: state.movieBrowser.genres,
+    // genres: state.movieBrowser.genres,
     movies: state.movieBrowser.movies,
     userMovies: state.userMovie.userMovies
   };
 };
 
 const mapDispatchToProps = dispatch => ({
-  userMovieAction: (movie) => dispatch(movieActions.userMovieAction(movie)),
-  userMovieRemove: (movie) => dispatch(movieActions.userMovieRemove(movie))
+  userMovieAction: movie => dispatch(movieActions.userMovieAction(movie)),
+  userMovieRemove: movie => dispatch(movieActions.userMovieRemove(movie))
 });
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(Example);

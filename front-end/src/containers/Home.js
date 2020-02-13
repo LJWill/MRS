@@ -23,7 +23,6 @@ import {
 
 import SampleImg from '../assets/images/sample.png';
 import Carousel from '../components/Carousel/index';
-import SingleLineGridList from '../components/MovieList/index';
 import Movie from '../components/MovieList/MovieCard';
 
 const getWidth = () => {

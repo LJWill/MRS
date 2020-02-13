@@ -11,12 +11,19 @@ import MovieBrowser from './containers/Movie/MovieBrowser'
 import About from './containers/About/index'
 import MovieDetail from './containers/Movie/MovieDetail'
 
-const BaseRouter = () => (
+const BaseRouter = (data) => (
   <Hoc>
     <Route path="/login" component={Login} />
     <Route path="/signup" component={Signup} />
     <Route exact path="/" component={HomepageLayout} />
     <Route exact path="/movies" component={MovieBrowser} />
+    {/* <Route
+      path={'/movies'}
+      render={props => {
+        console.log('-------------> ', data)
+        return <MovieBrowser {...data} />
+      }}
+    /> */}
     <Route exact path="/about" component={About} />
     <Route
       path={'/movie/:movie/:id'}
