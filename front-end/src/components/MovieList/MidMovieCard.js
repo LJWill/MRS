@@ -5,17 +5,20 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar, faEye } from '@fortawesome/free-regular-svg-icons';
 import { urlTitle, addToList, isSaved, removeFromList } from '../../utils';
 import config from '../../config';
-import { GenericButton, PrimaryButton } from './Button';
-import { Button, Icon } from 'semantic-ui-react';
+import { Button, Icon, Popup } from 'semantic-ui-react';
 
-
-let styles = {
+const styles = {
   buttonGroup: {
     position: 'absolute',
-    bottom : '40px'
+    bottom: '40px'
   },
+  toolTip: {
+    borderRadius: '5px',
+    opacity: 0.7,
+    padding: '1em',
+    position: 'absolute'
+  }
 };
-
 
 const Poster = styled.div`
   background-color: #fff;
@@ -67,7 +70,8 @@ const Wrapper = styled.article`
   transition: border 0.2s;
   width: 200px;
   transition: all 0.6s;
-
+  cursor: pointer;
+  
   &:hover {
     border: 2px solid #ddd;
 
@@ -104,16 +108,21 @@ export default class Movie extends Component {
 
   like = movie => {
     console.log('clicked!');
-    let newData = Object.assign({userAction: 'Like'}, movie)
+    let newData = Object.assign({ userAction: 'Like' }, movie);
     this.props.shuffleMovie(newData);
   };
 
   dislike = movie => {
     console.log('clicked!');
-    let newData = Object.assign({userAction: 'DisLike'}, movie)
+    let newData = Object.assign({ userAction: 'DisLike' }, movie);
     this.props.shuffleMovie(newData);
   };
 
+  jumpTo = (title, id) => {
+    window.location.href = `/movie/${encodeURIComponent(
+      urlTitle(title)
+    )}/${id}`
+  }
 
   remove = movie => {
     removeFromList(movie);
@@ -143,47 +152,39 @@ export default class Movie extends Component {
     }
 
     return (
-      <Wrapper style={this.state.style}>
-        <Rating style={{ backgroundColor }}>{vote_average.toFixed(1)}</Rating>
-        <Content>
-          <h3>{title}</h3>
-          <Link
-            to={`${process.env.PUBLIC_URL}/movie/${encodeURIComponent(
-              urlTitle(title)
-            )}/${id}`}
-          >
-            <PrimaryButton
-              title="View"
-              icon={<FontAwesomeIcon icon={faEye} />}
-            />
-          </Link>
-          {/* {this.state.isSaved ? (
-            <GenericButton
-              title="Favorite"
-            //   icon={<FontAwesomeIcon icon="star" />}
-              onClick={() => this.remove(this.props)}
-            />
-          ) : (
-            <GenericButton
-              title="Favorite"
-              icon={<FontAwesomeIcon icon={faStar} />}
-              onClick={() => this.add(this.props)}
-            />
-          )} */}
-
-          <Button.Group style={styles.buttonGroup}>
-            <Button color="red" onClick={() => this.like(this.props)}>
-              <Icon name="heart" />
-              Like
-            </Button>
-            <Button.Or />
-            <Button color="grey" onClick={() => this.dislike(this.props)}>
-              <Icon name="thumbs down" />
-            </Button>
-          </Button.Group>
-        </Content>
-        <Poster bg={`${config.medium}${poster_path}`} />
-      </Wrapper>
+      <Popup
+        trigger={
+          <Wrapper style={this.state.style} onClick={() => this.jumpTo(title, id)}>
+            {/* <Link
+              to={`${process.env.PUBLIC_URL}/movie/${encodeURIComponent(
+                urlTitle(title)
+              )}/${id}`}
+            > */}
+              <Rating style={{ backgroundColor }}>
+                {vote_average.toFixed(1)}
+              </Rating>
+              <Content>
+                <h3>{title}</h3>
+                <Button.Group style={styles.buttonGroup}>
+                  <Button color="red" onClick={() => this.like(this.props)}>
+                    <Icon name="heart" />
+                    Like
+                  </Button>
+                  <Button.Or />
+                  <Button color="grey" onClick={() => this.dislike(this.props)}>
+                    <Icon name="thumbs down" />
+                  </Button>
+                </Button.Group>
+              </Content>
+              <Poster bg={`${config.medium}${poster_path}`} />
+            {/* </Link> */}
+          </Wrapper>
+        }
+        position="top center"
+        style={styles.toolTip}
+      >
+        <Popup.Header>Click to view more info</Popup.Header>
+      </Popup>
     );
   }
 }

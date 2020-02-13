@@ -114,7 +114,7 @@ const Wrapper = styled.article`
 
 const CoverIcon = ({data}) => {
   if (data === 'Like') {
-    return (<Icon name="like" size="big" />);
+    return (<Icon name="like" size="big" color="red"/>);
   }else{
     return (<Icon name="thumbs down outline" size="big" />);
   }

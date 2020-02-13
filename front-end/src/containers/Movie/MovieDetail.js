@@ -8,7 +8,7 @@ import { media } from '../../utils';
 import { connect } from 'react-redux';
 import * as movieActions from '../../store/actions/movie';
 import Nav from '../../components/HeadMenu/Nav';
-import { Container, Divider, Grid, Header, Icon } from 'semantic-ui-react';
+import { Grid, Icon, Dimmer, Loader, Image, Segment } from 'semantic-ui-react';
 import PacmanLoader from 'react-spinners/PacmanLoader';
 import './index.css';
 import ScrollContainer from '../../components/MovieList/ScrollContainer';
@@ -139,9 +139,10 @@ class MovieDetail extends Component {
   }
 
   componentDidMount() {
+    window.scrollTo(0, 0);
     const movieId = this.props.match.params.id;
-
     const { getMovieDetail } = this.props;
+
     getMovieDetail(movieId);
   }
 
@@ -159,9 +160,10 @@ class MovieDetail extends Component {
 
     if (isLoading) {
       return (
-        <div className="sweet-loading">
+        <Dimmer active>
+          {/* <Loader>Loading</Loader> */}
           <PacmanLoader size={50} color={'#ff00ab'} loading={true} />
-        </div>
+        </Dimmer>
       );
     }
     return (
@@ -188,7 +190,9 @@ class MovieDetail extends Component {
                 <Grid.Column>
                   <Grid.Row>
                     <Icon name="star" className="statIcon" />
-                    <span className="statInfo">{movieDetail.movie.vote_average.toFixed(1)}</span>
+                    <span className="statInfo">
+                      {movieDetail.movie.vote_average.toFixed(1)}
+                    </span>
                   </Grid.Row>
                   <Grid.Row>
                     <span className="smallSpan">Average Rate</span>
@@ -198,14 +202,16 @@ class MovieDetail extends Component {
                 <Grid.Column>
                   <Grid.Row>
                     <Icon name="hotjar" className="statIcon" />
-                    <span className="statInfo">{movieDetail.movie.popularity}</span>
+                    <span className="statInfo">
+                      {movieDetail.movie.popularity}
+                    </span>
                   </Grid.Row>
                   <Grid.Row>
                     <span className="smallSpan">Popularity</span>
                   </Grid.Row>
                 </Grid.Column>
 
-                <Grid.Column>
+                {/* <Grid.Column>
                   <Grid.Row>
                     <Icon
                       name="money bill alternate outline icon"
@@ -216,7 +222,7 @@ class MovieDetail extends Component {
                   <Grid.Row>
                     <span className="smallSpan">Revenue</span>
                   </Grid.Row>
-                </Grid.Column>
+                </Grid.Column> */}
               </Grid.Row>
             </Grid>
           </Info>

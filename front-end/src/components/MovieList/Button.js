@@ -10,10 +10,13 @@ export const Button = styled.button`
     font-size: 14px;
     font-weight: 600;
     letter-spacing: 1.2px;
-    margin: 5px 8px 5px 0;
-    min-width: 135px;
-    padding: 15px 25px;
-    position: relative;
+    width: 60%;
+    padding: 15px 20px;
+    position: absolute;
+    bottom: 40px;
+    left: 0;
+    right: 0;
+    margin: 0 auto!important;
     text-transform: uppercase;
     transition: background-color 0.7s;
 
