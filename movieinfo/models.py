@@ -14,19 +14,19 @@ gender = (
 )
 
 
-class People(models.Model):
-    idperson = models.IntegerField(db_column='idPerson', primary_key=True)  # Field name made lowercase.
-    name = models.CharField(db_column='Name', max_length=60, blank=True, null=True)  # Field name made lowercase.
-    gender = models.CharField(db_column='gender', max_length=32, choices=gender, default='male')
-    biography = models.TextField(blank=True, null=True)
-    birthday = models.DateField(db_column='birthDay', null=True)
-    deathday = models.DateField(db_column='deathDay', null=True)
-    birthplace = models.CharField(db_column='placeofBirth', max_length=150, blank=True, null=True)
-    profileimage = models.CharField(db_column='profileImage', max_length=50, blank=True, null=True)
-
-    class Meta:
-        managed = True
-        db_table = 'people'
+# class People(models.Model):
+#     idperson = models.IntegerField(db_column='idPerson', primary_key=True)  # Field name made lowercase.
+#     name = models.CharField(db_column='Name', max_length=60, blank=True, null=True)  # Field name made lowercase.
+#     gender = models.CharField(db_column='gender', max_length=32, choices=gender, default='male')
+#     biography = models.TextField(blank=True, null=True)
+#     birthday = models.DateField(db_column='birthDay', null=True)
+#     deathday = models.DateField(db_column='deathDay', null=True)
+#     birthplace = models.CharField(db_column='placeofBirth', max_length=150, blank=True, null=True)
+#     profileimage = models.CharField(db_column='profileImage', max_length=50, blank=True, null=True)
+#
+#     class Meta:
+#         managed = True
+#         db_table = 'people'
 
 
 class Genre(models.Model):
@@ -38,15 +38,15 @@ class Genre(models.Model):
         db_table = 'genre'
 
 
-class Images(models.Model):
-    idimages = models.AutoField(db_column='idImages', primary_key=True)  # Field name made lowercase.
-    movie_idmovie = models.ForeignKey('Movie', models.DO_NOTHING,
-                                      db_column='Movie_idMovie', related_name='images')  # Field name made lowercase.
-    backdrop = models.CharField(max_length=45)
-
-    class Meta:
-        managed = True
-        db_table = 'images'
+# class Images(models.Model):
+#     idimages = models.AutoField(db_column='idImages', primary_key=True)  # Field name made lowercase.
+#     movie_idmovie = models.ForeignKey('Movie', models.DO_NOTHING,
+#                                       db_column='Movie_idMovie', related_name='images')  # Field name made lowercase.
+#     backdrop = models.CharField(max_length=45)
+#
+#     class Meta:
+#         managed = True
+#         db_table = 'images'
 
 
 class Collections(models.Model):
@@ -80,6 +80,13 @@ class Ratings(models.Model):
         unique_together = (('movie_idmovie', 'user_iduser'),)
 
 
+class Tags(models.Model):
+    idtag = models.AutoField(db_column='idTag', primary_key=True)  # Field name made lowercase.
+    tag = models.CharField(db_column='Tag', max_length=80)  # Field name made lowercase.
+
+    class Meta:
+        managed = True
+        db_table = 'tags'
 
 class Movie(models.Model):
     idmovie = models.BigIntegerField(db_column='idMovie', primary_key=True)  # Field name made lowercase.
@@ -95,9 +102,10 @@ class Movie(models.Model):
     runtime = models.SmallIntegerField(blank=True, null=True)
     status = models.BooleanField(default=False)
     collectionid = models.ForeignKey("Collections", models.DO_NOTHING, db_column="Collections_idCollections", null=True)
-    casts = models.ManyToManyField(People, related_name='Cast')
-    directors = models.ManyToManyField(People, related_name='Direct')
+    # casts = models.ManyToManyField(People, related_name='Cast')
+    # directors = models.ManyToManyField(People, related_name='Direct')
     genre = models.ManyToManyField(Genre, related_name='Movie_Genre')
+    tags = models.ManyToManyField(Tags, related_name='Movie_Tags')
     company = models.ManyToManyField(Companies, related_name='Movie_Companies')
 
     class Meta:
