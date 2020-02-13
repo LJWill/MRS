@@ -102,15 +102,18 @@ export default class Movie extends Component {
     };
   }
 
-  add = movie => {
+  like = movie => {
     console.log('clicked!');
-    // let newData = movie.map(item => ({
-    //   ...item,
-    //   userAction: 'Like'
-    // }))
     let newData = Object.assign({userAction: 'Like'}, movie)
     this.props.shuffleMovie(newData);
   };
+
+  dislike = movie => {
+    console.log('clicked!');
+    let newData = Object.assign({userAction: 'DisLike'}, movie)
+    this.props.shuffleMovie(newData);
+  };
+
 
   remove = movie => {
     removeFromList(movie);
@@ -169,12 +172,12 @@ export default class Movie extends Component {
           )} */}
 
           <Button.Group style={styles.buttonGroup}>
-            <Button color="red" onClick={() => this.add(this.props)}>
+            <Button color="red" onClick={() => this.like(this.props)}>
               <Icon name="heart" />
               Like
             </Button>
             <Button.Or />
-            <Button color="grey">
+            <Button color="grey" onClick={() => this.dislike(this.props)}>
               <Icon name="thumbs down" />
             </Button>
           </Button.Group>

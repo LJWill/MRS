@@ -1,25 +1,27 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStar, faEye } from '@fortawesome/free-regular-svg-icons';
-import { urlTitle, addToList, isSaved, removeFromList } from '../../utils';
+import { isSaved, removeFromList } from '../../utils';
 import config from '../../config';
-import { GenericButton, PrimaryButton } from './Button';
 import { Button, Icon } from 'semantic-ui-react';
 
 const Poster = styled.div`
   background-color: #fff;
-  background-image: url(${p => `${p.bg}`});
+  background: linear-gradient(
+      rgba(0, 0, 0, 0.4),
+      rgba(0, 0, 0, 0.4),
+      rgba(0, 0, 0, 0.4),
+      rgba(0, 0, 0, 0.4)
+    ),
+    url(${p => `${p.bg}`});
   background-repeat: no-repeat;
   background-size: cover;
-  background: linear-gradient(url(${p => `${p.bg}`}), 50%, transparent);
   height: 100%;
   position: absolute;
   transition: 0.8s;
   width: 100%;
   z-index: -2;
-  opacity: ${ p => p.onTop ?  '1' : '0.3' };
+  opacity: ${p => (p.onTop ? '1' : '0.3')};
 `;
 
 const Content = styled.div`
@@ -38,6 +40,34 @@ const Content = styled.div`
   }
 `;
 
+const FrontContent = styled.div`
+  align-items: center;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  text-align: center;
+  width: 100%;
+
+  ${Button} {
+    margin: 5px 0;
+  }
+`;
+
+const Delete = styled.div`
+  position: absolute;
+  top: -15px;
+  right: -15px;
+  padding: 5.5px 0px 5px 4px;
+  background: black;
+  color: #fff;
+  font-size: 11px;
+  border-radius: 100%;
+  transition: 0.6s;
+  cursor: pointer;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.05), 0 7px 20px rgba(0, 0, 0, 0.14);
+`;
+
 const Wrapper = styled.article`
   border: 2px solid transparent;
   color: #ddd;
@@ -49,31 +79,46 @@ const Wrapper = styled.article`
   width: 100px;
   transition: all 0.6s;
 
-//   &:hover {
-//     border: 2px solid #ddd;
+  &:hover {
+    border: 2px solid #ddd;
 
-//     ${Poster} {
-//       filter: blur(10px);
-//     }
+    ${Poster} {
+      filter: blur(10px);
+    }
 
-//     ${Content} {
-//       display: flex;
-//     }
+    ${Content} {
+      display: flex;
+    }
 
-//     &:before {
-//       background-color: #000;
-//       content: '';
-//       height: 100%;
-//       left: 0;
-//       opacity: 0.5;
-//       position: absolute;
-//       top: 0;
-//       width: 100%;
-//       z-index: -1;
-//     }
-//   }
+    ${FrontContent} {
+      display: none;
+    }
+
+    ${Delete} {
+      transition: all 0.6s;
+    }
+
+    // &:before {
+    //   background-color: linear-gradient(0deg,rgba(0,0,0,.8),transparent,transparent,transparent);
+    //   content: '';
+    //   height: 100%;
+    //   left: 0;
+    //   opacity: 0.5;
+    //   position: absolute;
+    //   top: 0;
+    //   width: 100%;
+    //   z-index: -1;
+    // }
+  }
 `;
 
+const CoverIcon = ({data}) => {
+  if (data === 'Like') {
+    return (<Icon name="like" size="big" />);
+  }else{
+    return (<Icon name="thumbs down outline" size="big" />);
+  }
+}
 export default class Movie extends Component {
   constructor(props) {
     super(props);
@@ -104,15 +149,24 @@ export default class Movie extends Component {
   };
 
   render() {
-    const { title, poster_path, onTop } = this.props;
+    const { title, poster_path, onTop, userAction } = this.props;
 
     return (
       <Wrapper style={this.state.style}>
-        <Content>
-          <h3>{title}</h3>
+        <FrontContent>
+          {/* <Icon name="like" size="big" />
+          <Icon name="thumbs down outline" size="big" /> */}
+          <CoverIcon data={userAction}/>
+        </FrontContent>
 
+        <Content>
+          <h6>{title}</h6>
+          <Delete>
+            <Icon name="delete" size="big" />
+          </Delete>
         </Content>
-        <Poster bg={`${config.medium}${poster_path}`} onTop={onTop}/>
+
+        <Poster bg={`${config.medium}${poster_path}`} onTop={onTop} />
       </Wrapper>
     );
   }

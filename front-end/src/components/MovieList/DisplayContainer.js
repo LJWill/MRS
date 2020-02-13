@@ -11,12 +11,13 @@ const List = styled.section`
 
 const MoviesWrapper = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   transform: ${p => `translate3d(${p.offset}px, 0px, 0px)`};
   transition: transform 0.6s;
   width: 98.5vw;
   overflow-x: auto;
-
+  padding-top: 10px;
+  
   &::-webkit-scrollbar {
     display: none;
   }
