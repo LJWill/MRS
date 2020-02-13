@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import config from '../../config';
-import { GenreButton } from '../../components/MovieList/Button';
+import { GenreButton1 } from '../../components/MovieList/Button';
 import CreditsList from '../../components/MovieList/CreditsList';
 import Gallery from '../../components/MovieList/Gallery';
 import { media } from '../../utils';
@@ -185,7 +185,7 @@ class MovieDetail extends Component {
             </p>
             <div>
               {movieDetail.movie.genres.slice(0, 3).map(genre => (
-                <GenreButton title={genre.name} key={genre.name} />
+                <GenreButton1 title={genre.name} key={genre.name} />
               ))}
             </div>
             <Description>{movieDetail.movie.overview}</Description>
