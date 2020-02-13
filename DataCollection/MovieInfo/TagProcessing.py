@@ -48,8 +48,8 @@ class TagProcessing:
         result.to_csv(write_path)
 
 if __name__ == '__main__':
-    link_path = 'newData/linkResults.csv'
-    tag_path = 'newData/genome-scores.csv'
-    write_path = 'newData/genomeResults.csv'
+    link_path = 'Data/linkResults.csv'
+    tag_path = 'Data/genome-scores.csv'
+    write_path = 'Data/tagResults.csv'
     tp = TagProcessing()
     tp.read_link_file(link_path, tag_path, write_path)
