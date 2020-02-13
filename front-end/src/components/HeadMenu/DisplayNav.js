@@ -1,16 +1,23 @@
 import React from 'react';
 import styled from 'styled-components';
-import Search from './Search';
 import { media } from '../../utils';
 import { Link } from 'react-router-dom';
-import { Container, Grid, Button, Dropdown, Icon } from 'semantic-ui-react';
+import Search from './Search';
+import {
+  Grid,
+  Button,
+  Dropdown,
+  Icon,
+  Header,
+  Segment
+} from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { logout } from '../../store/actions/auth';
 import { withRouter } from 'react-router-dom';
 import { ReactComponent as SiteLogo } from '../../assets/images/clapperboard.svg';
 import DisplayContainer from '../MovieList/DisplayContainer';
 
-let styles = {
+const styles = {
   headerLink: {
     height: '100%'
   },
@@ -146,7 +153,8 @@ class Nav extends React.Component {
               </NavItem>
             </ul>
 
-            <Search />
+              <Search style={styles.searchBar} />
+
 
             {authenticated ? (
               <ul style={styles.accountItem}>
@@ -197,7 +205,11 @@ class Nav extends React.Component {
           </Grid.Row>
 
           <Grid.Row>
-            <DisplayContainer movies={this.props.movies} onTop={this.state.onTop} func={this.props.func}/>
+            <DisplayContainer
+              movies={this.props.movies}
+              onTop={this.state.onTop}
+              func={this.props.func}
+            />
           </Grid.Row>
         </Wrapper>
       </div>

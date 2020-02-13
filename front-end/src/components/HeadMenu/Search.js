@@ -1,66 +1,70 @@
+import _ from 'lodash';
+import faker from 'faker';
 import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom';
-import styled from 'styled-components';
-import { Icon } from 'semantic-ui-react';
-import { media } from '../../utils';
+import { Search, Grid, Header, Segment } from 'semantic-ui-react';
 
-const Form = styled.form`
-    align-items: center;
-    display: flex;
-    margin: 0 px;
-    width: 100vw;
+const source = _.times(5, () => ({
+  title: faker.company.companyName(),
+  description: faker.company.catchPhrase(),
+  image: faker.internet.avatar(),
+  price: faker.finance.amount(0, 100, 2, '$')
+}));
 
-    ${media.tablet`display: none;`};
-`;
+const initialState = { isLoading: false, results: [], value: '' };
 
-const Button = styled.button`
-    color: #fff;
-    border: none;
-    background-color: black;
-    height: 37px;
-    width: 40px;
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
-    font-size: 18px;
-`;
+const styles = {
+  searchBar: {
+    alignItems: 'center',
+    display: 'flex'
+  }
+};
+export default class SearchExampleStandard extends Component {
+  state = initialState;
 
-const Input = styled.input`
-    min-width: 50%;
-    padding: 10px 15px;
-    border: none;
-    border-top-left-radius: 5px;
-    border-bottom-left-radius: 5px;
-    outline: none;
-    font-size: 14px;
-`;
+  handleResultSelect = (e, { result }) =>
+    this.setState({ value: result.title });
 
-class Search extends Component {
-    constructor(props) {
-        super(props);
-        this.state = { value: '' };
-    }
+  handleSearchChange = (e, { value }) => {
+    this.setState({ isLoading: true, value });
 
-    handleSubmit = e => {
-        e.preventDefault();
-        const { value } = this.state;
-        console.log(this.props);
-        this.props.history.push(`${process.env.PUBLIC_URL}/search/${value}`);
-    };
+    setTimeout(() => {
+      if (this.state.value.length < 1) return this.setState(initialState);
 
-    render() {
-        return (
-            <Form onSubmit={this.handleSubmit}>
-                <Input
-                    type="search"
-                    placeholder="Search for a movie"
-                    onChange={e => this.setState({ value: e.currentTarget.value })}
-                />
-                <Button>
-                    <Icon name="search layout" />
-                </Button>
-            </Form>
-        );
-    }
+      const re = new RegExp(_.escapeRegExp(this.state.value), 'i');
+      const isMatch = result => re.test(result.title);
+
+      this.setState({
+        isLoading: false,
+        results: _.filter(source, isMatch)
+      });
+    }, 300);
+  };
+
+  render() {
+    const { isLoading, value, results } = this.state;
+
+    return (
+      <Grid.Column width={12} style={styles.searchBar}>
+        <style>
+        {`
+            .ui.search .prompt {
+                border-radius: 500rem;
+                width:500px
+            }
+        `}
+        </style>
+        <Search
+          fluid
+          loading={isLoading}
+          onResultSelect={this.handleResultSelect}
+          onSearchChange={_.debounce(this.handleSearchChange, 500, {
+            leading: true
+          })}
+          results={results}
+          value={value}
+          {...this.props}
+        />
+      </Grid.Column>
+    );
+  }
 }
-
-export default withRouter(Search);
