@@ -21,8 +21,8 @@ class Recommender:
         data = Dataset.load_from_df(df, reader)
         trainset, testset = train_test_split(data, test_size=.25)
         list_algos = []
-        algo_KNNBasic = KNNBasic()
-        list_algos.append((algo_KNNBasic,"KNNBasic"))
+        # algo_KNNBasic = KNNBasic()
+        # list_algos.append((algo_KNNBasic,"KNNBasic"))
 
         # algo_KNNWithMeans = KNNWithMeans()
         # list_algos.append((algo_KNNWithMeans,"KNNWithMeans"))
@@ -33,8 +33,8 @@ class Recommender:
         # algo_KNNBaseline =KNNBaseline()
         # list_algos.append((algo_KNNBaseline,"KNNBaseline"))
         #
-        # algo_SVD =SVD()
-        # list_algos.append((algo_SVD,"SVD"))
+        algo_SVD =SVD()
+        list_algos.append((algo_SVD,"SVD"))
         #
         # algo_SVDpp = SVDpp()
         # list_algos.append((algo_SVDpp,"SVDpp"))
