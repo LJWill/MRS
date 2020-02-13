@@ -138,11 +138,11 @@ class MovieDetail extends Component {
     this.state = { movieDetail: null };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     const movieId = this.props.match.params.id;
     const { getMovieDetail } = this.props;
 
-    getMovieDetail(movieId);
+    await getMovieDetail(movieId);
 
     window.scrollTo({
       top: 0,
