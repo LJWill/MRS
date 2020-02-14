@@ -1,4 +1,9 @@
 import pandas as pd
+import pyspark
+from pyspark import SparkConf, SparkContext
+from pyspark.sql import SparkSession
+from pyspark.mllib.linalg.distributed import CoordinateMatrix, IndexedRow, IndexedRowMatrix, RowMatrix
+
 
 class TagProcessing:
 
@@ -47,9 +52,45 @@ class TagProcessing:
             temp = max
         result.to_csv(write_path)
 
+    def pivot_similarity(self, tag_path, write_path):
+        spark = SparkSession.builder.\
+            appName("Python Spark create RDD example")\
+            .config("spark.some.config.option", "some-value") \
+            .getOrCreate()
+
+        # spark.conf.set('spark.sql.pivotMaxValues', u'70000')
+
+        df = spark.read.format('com.databricks.spark.csv').options(header='true', inferschema='true').load(tag_path,
+                                                                                                           header=True)
+
+        df = df.drop("_c0")
+
+        df = df.groupBy("tmdbId").pivot("tagId").sum("relevance")
+
+        df.write.csv(path=write_path, header=True, sep=",", mode='overwrite')
+
+    def similarity_processing(self, tag_path):
+        conf = SparkConf().setAppName("Test").setMaster("local")
+        sc = SparkContext(conf=conf)
+        spark = SparkSession.builder.config(conf=conf).getOrCreate()
+        df = spark.read.format('com.databricks.spark.csv').options(header='true', inferschema='true').load(tag_path, header=True)
+        df = df.drop("tagId")
+        print(df.columns)
+        rdd = df.rdd.map(list)
+        mat = RowMatrix(rdd)
+        print(mat.numCols(), mat.numRows())
+        cs = mat.columnSimilarities()
+        for x in cs.entries.collect():
+            print(x)
+        print(cs.numRows(), cs.numCols())
+
 if __name__ == '__main__':
-    link_path = 'Data/linkResults.csv'
-    tag_path = 'Data/genome-scores.csv'
-    write_path = 'Data/tagResults.csv'
+
+    link_path = 'newData/linkResults.csv'
+    tag_path = 'newData/genome-scores.csv'
+    result_path = 'newData/tagResults.csv'
+    pivot_path = 'newData/pivot.csv'
     tp = TagProcessing()
-    tp.read_link_file(link_path, tag_path, write_path)
+    # tp.read_link_file(link_path, tag_path, result_path)
+    tp.pivot_similarity(result_path, pivot_path)
+    # tp.similarity_processing(pivot_path)
