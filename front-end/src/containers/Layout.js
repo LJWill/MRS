@@ -17,32 +17,15 @@ import { logout } from '../store/actions/auth';
 import HeadMenu from '../components/HeadMenu/index';
 
 class CustomLayout extends React.Component {
+
+  componentDidMount() {
+    // window.scrollTo(0, 0);
+  }
+
   render() {
     const { authenticated } = this.props;
     return (
       <div>
-        {/* <MMenu /> */}
-        {/* <Menu fixed="top" inverted size='massive' >
-          <Container>
-            <Link to="/">
-              <Menu.Item header>Home</Menu.Item>
-            </Link>
-            {authenticated ? (
-              <Menu.Item header onClick={() => this.props.logout()}>
-                Logout
-              </Menu.Item>
-            ) : (
-              <React.Fragment>
-                <Link to="/login">
-                  <Menu.Item header>Login</Menu.Item>
-                </Link>
-                <Link to="/signup">
-                  <Menu.Item header>Signup</Menu.Item>
-                </Link>
-              </React.Fragment>
-            )}
-          </Container>
-        </Menu> */}
         {this.props.children}
 
         <Segment

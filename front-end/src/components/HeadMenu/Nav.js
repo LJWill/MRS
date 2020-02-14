@@ -1,14 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import Search from './Search';
 import { media } from '../../utils';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// import { theme } from '../config';
 import { Link } from 'react-router-dom';
 import {
-  Container,
-  Input,
-  Image,
   Button,
   Dropdown,
   Icon
@@ -162,16 +156,9 @@ class Nav extends React.Component {
 
     const fixed = true;
 
-    const currentPage = window.location.href.split('/').slice(-1)[0];
-
     return (
       <Wrapper onTop={this.state.onTop}>
         <Logo />
-        {/* <ul>
-          {routes.map(route => (
-            <NavItem key={route.path}></NavItem>
-          ))}
-        </ul> */}
 
         <ul>
           <NavItem>
@@ -182,7 +169,6 @@ class Nav extends React.Component {
           </NavItem>
         </ul>
 
-        {currentPage ? <Search /> : <div />}
 
         {authenticated ? (
           <ul style={styles.accountItem}>

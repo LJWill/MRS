@@ -11,6 +11,7 @@ const filters = ['now_playing', 'popular', 'top_rated', 'upcoming'];
 
 class App extends Component {
   componentDidMount() {
+    
     this.props.onTryAutoSignup();
 
     const { getMovies, getGenres } = this.props;
