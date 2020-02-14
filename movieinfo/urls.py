@@ -4,8 +4,8 @@ from .api import *
 
 urlpatterns = [
   path('movies/', MovieListAPI.as_view()),
-  path('movieInfo/<int:pk>/', MovieDetailAPI.as_view()),
-  path('movieInfo/rating/', RatingAPI.as_view()),
-  path('movieInfo/favourite/', UserHistoryAPI.as_view()),
+  path('info/<int:pk>/', MovieDetailAPI.as_view()),
+  path('info/rating/', RatingAPI.as_view()),
+  path('info/userhistory/', UserHistoryAPI.as_view()),
 
 ]
