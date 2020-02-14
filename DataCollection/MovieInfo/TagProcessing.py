@@ -88,8 +88,8 @@ if __name__ == '__main__':
 
     link_path = 'newData/linkResults.csv'
     tag_path = 'newData/genome-scores.csv'
-    result_path = 'newData/tagResults.csv'
-    pivot_path = 'newData/pivot.csv'
+    result_path = 'Data/tagResults.csv'
+    pivot_path = 'Data/pivot.csv'
     tp = TagProcessing()
     # tp.read_link_file(link_path, tag_path, result_path)
     tp.pivot_similarity(result_path, pivot_path)
