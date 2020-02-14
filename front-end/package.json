@@ -10,6 +10,7 @@
     "@material-ui/icons": "^4.5.1",
     "@material-ui/lab": "^4.0.0-alpha.39",
     "axios": "^0.19.2",
+    "faker": "^4.1.0",
     "loadash": "^1.0.0",
     "node-sass": "^4.13.1",
     "pure-react-carousel": "^1.24.1",

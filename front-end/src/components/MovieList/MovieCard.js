@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar, faEye } from '@fortawesome/free-regular-svg-icons';
-import { urlTitle, addToList, isSaved, removeFromList } from '../../utils';
+import { urlTitle, isSaved, removeFromList } from '../../utils';
 import config from '../../config';
-import { GenericButton, PrimaryButton, Button } from './Button';
+import { GenericButton, Button } from './Button';
 import * as movieActions from '../../store/actions/movie';
 import { connect } from 'react-redux';
+import { Popup } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
 
 const Poster = styled.div`
   background-color: #fff;
@@ -59,6 +60,7 @@ const Wrapper = styled.article`
   transition: border 0.2s;
   width: 250px;
   transition: all 0.6s;
+  cursor: pointer;
 
   &:hover {
     border: 2px solid #ddd;
@@ -85,6 +87,16 @@ const Wrapper = styled.article`
   }
 `;
 
+const style = {
+  toolTip: {
+    borderRadius: '5px',
+    opacity: 0.7,
+    padding: '1em',
+    position: 'absolute',
+    top: '-50px'
+  }
+};
+
 class Movie extends Component {
   constructor(props) {
     super(props);
@@ -94,13 +106,11 @@ class Movie extends Component {
     };
   }
 
-  add = movie => {
-    // addToList(movie);
-    // this.setState({ isSaved: true });
-    let newData = Object.assign({userAction: 'Like'}, movie)
-    this.props.userMovieAction(newData)
+  add = (e, movie) => {
+    e.stopPropagation();
+    let newData = Object.assign({ userAction: 'Like' }, movie);
+    this.props.userMovieAction(newData);
 
-    console.log(newData)
   };
 
   remove = movie => {
@@ -118,72 +128,76 @@ class Movie extends Component {
     }
   };
 
+  jumpTo = (title, id) => {
+    window.location.href = `/movie/${encodeURIComponent(
+      urlTitle(title)
+    )}/${id}`;
+  };
+
   render() {
     const { title, vote_average, id, poster_path } = this.props;
 
-    let backgroundColor
+    let backgroundColor;
     if (vote_average >= 8) {
-        backgroundColor = 'rgb(78, 173, 31)'
-    }else if (vote_average <=6) {
-        backgroundColor = 'rgb(166, 173, 31)'
-    }else {
-        backgroundColor = '#aa2e85'
+      backgroundColor = 'rgb(78, 173, 31)';
+    } else if (vote_average <= 6) {
+      backgroundColor = 'rgb(166, 173, 31)';
+    } else {
+      backgroundColor = '#aa2e85';
     }
 
     return (
-      <Wrapper style={this.state.style}>
-        <Rating
-            style={{backgroundColor}}
-        >{vote_average.toFixed(1)}</Rating>
-        <Content>
-          <h3>{title}</h3>
-          <Link
-            to={`${process.env.PUBLIC_URL}/movie/${encodeURIComponent(
-              urlTitle(title)
-            )}/${id}`}
+      <Popup
+        trigger={
+          <Wrapper
+            style={this.state.style}
+            onClick={() => this.jumpTo(title, id)}
           >
-            <PrimaryButton
-              title="View"
-              icon={<FontAwesomeIcon icon={faEye} />}
-            />
-          </Link>
-          <Link
-            to={`/movies`}
-          >
-          {this.state.isSaved ? (
-            <GenericButton
-              title="Favorite"
-              icon={<FontAwesomeIcon icon="star" />}
-              onClick={() => this.remove(this.props)}
-            />
-          ) : (
-            <GenericButton
-              title="Favorite"
-              icon={<FontAwesomeIcon icon={faStar} />}
-              onClick={() => this.add(this.props)}
-            />
-          )}
-          </Link>
-        </Content>
-        <Poster bg={`${config.medium}${poster_path}`} />
-      </Wrapper>
+            <Rating style={{ backgroundColor }}>
+              {vote_average.toFixed(1)}
+            </Rating>
+            <Content>
+              <h3>{title}</h3>
+              {this.props.authenticated ? (
+                <GenericButton
+                  title="Favorite"
+                  icon={<FontAwesomeIcon icon={faStar} />}
+                  onClick={e => this.add(e, this.props)}
+                />
+              ) : (
+                <GenericButton
+                  title="Favorite"
+                  icon={<FontAwesomeIcon icon={faStar} />}
+                  onClick={e => {
+                    e.stopPropagation();
+                    window.location.href = '/login';
+                  }}
+                />
+              )}
+            </Content>
+            <Poster bg={`${config.medium}${poster_path}`} />
+          </Wrapper>
+        }
+        position="bottom center"
+        style={style.toolTip}
+      >
+        <Popup.Header>Click to view more info</Popup.Header>
+      </Popup>
     );
   }
 }
 
-
 const mapStateToProps = state => {
   return {
-    genres: state.movieBrowser.genres,
     movies: state.movieBrowser.movies,
-    userMovies: state.userMovie.userMovies
+    userMovies: state.userMovie.userMovies,
+    authenticated: state.auth.token !== null
   };
 };
 
 const mapDispatchToProps = dispatch => ({
-  userMovieAction: (movie) => dispatch(movieActions.userMovieAction(movie)),
-  userMovieRemove: (movie) => dispatch(movieActions.userMovieRemove(movie))
+  userMovieAction: movie => dispatch(movieActions.userMovieAction(movie)),
+  userMovieRemove: movie => dispatch(movieActions.userMovieRemove(movie))
 });
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(Movie);

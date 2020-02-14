@@ -5,113 +5,10 @@ import MidMovieCard from '../../components/MovieList/MidMovieCard';
 import DisplayNav from '../../components/HeadMenu/DisplayNav';
 import { connect } from 'react-redux';
 import { Flipper, Flipped } from 'react-flip-toolkit';
-import FlipMove from 'react-flip-move';
 import * as movieActions from '../../store/actions/movie';
 import './MovieBrowser.scss';
 
 class MovieBrowser extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      items: {
-        A: { selected: false },
-        B: { selected: false },
-        C: { selected: false },
-        D: { selected: false },
-        E: { selected: false },
-        F: { selected: false },
-        G: { selected: false },
-        H: { selected: false },
-        I: { selected: false },
-        J: { selected: false },
-        K: { selected: false },
-        L: { selected: false },
-        M: { selected: false },
-        N: { selected: false },
-        O: { selected: false },
-        P: { selected: false },
-        Q: { selected: false },
-        R: { selected: false },
-        S: { selected: false },
-        T: { selected: false },
-        U: { selected: false },
-        V: { selected: false },
-        W: { selected: false },
-        X: { selected: false },
-        Y: { selected: false },
-        Z: { selected: false }
-      }
-    };
-  }
-
-  selectItem(key) {
-    this.setState({
-      items: {
-        ...this.state.items,
-        [key]: { selected: !this.state.items[key].selected }
-      }
-    });
-  }
-
-  renderItem(key) {
-    return (
-      <div className="utem" onClick={() => this.selectItem(key)} key={key}>
-        {key}
-      </div>
-    );
-  }
-
-  render() {
-    const { selected, items } = this.state;
-
-    console.log('[[[[[[[[[[[[', this.props);
-    const selectedKeys = Object.keys(items).filter(key => items[key].selected);
-    const remainingKeys = Object.keys(items).filter(
-      key => !items[key].selected
-    );
-
-    return (
-      <div>
-        <DisplayNav />
-
-        <Container className="movieContainer">
-          {/* <MyTabs /> */}
-          {/* <Header as="h2" inverted textAlign="center">
-          Movie List
-        </Header> */}
-          <Divider />
-
-          <hr />
-          <FlipMove className="selected">
-            {selectedKeys.length === 0 && (
-              <div className="placeholder">Please select an item below</div>
-            )}
-            {selectedKeys.map(key => this.renderItem(key))}
-          </FlipMove>
-          <hr />
-
-          <FlipMove
-            className="items"
-            duration={350}
-            staggerDurationBy={20}
-            staggerDelayBy={20}
-          >
-            <FlipMove>
-              {Object.keys(items)
-                // .filter(key => !items[key].selected)
-                .map(key => this.renderItem(key))}
-            </FlipMove>
-          </FlipMove>
-        </Container>
-      </div>
-    );
-  }
-}
-
-
-
-class Example extends React.Component {
   state = {
     expanded: false,
     movies: null
@@ -123,8 +20,13 @@ class Example extends React.Component {
       expanded: !this.state.expanded
     });
 
-    console.log(movie);
     this.props.userMovieAction(movie);
+
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth'
+    });
   };
 
   anotherShuffleMovie = movie => {
@@ -133,16 +35,25 @@ class Example extends React.Component {
       expanded: !this.state.expanded
     });
 
-    console.log(movie);
     this.props.userMovieRemove(movie);
+
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth'
+    });
   };
 
   componentDidMount() {
-    window.scrollTo(0, 0);
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth'
+    });
   }
 
   componentWillMount() {
-    let m = this.props.movies[0]
+    let m = this.props.movies[0];
     // console.log('++++++++++', m && m.now_playing);
     m && this.setState({ movies: m.now_playing });
   }
@@ -191,7 +102,7 @@ const mapStateToProps = state => {
   return {
     // genres: state.movieBrowser.genres,
     movies: state.movieBrowser.movies,
-    userMovies: state.userMovie.userMovies
+    userMovies: state.userMovie.userMovies,
   };
 };
 
@@ -200,4 +111,4 @@ const mapDispatchToProps = dispatch => ({
   userMovieRemove: movie => dispatch(movieActions.userMovieRemove(movie))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Example);
+export default connect(mapStateToProps, mapDispatchToProps)(MovieBrowser);

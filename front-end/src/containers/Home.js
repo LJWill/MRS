@@ -163,23 +163,9 @@ class HomepageLayout extends Component {
     super(props);
   }
 
-  componentDidMount() {
-    // const { getMovies, getGenres } = this.props;
-
-    // getGenres();
-    // getMovies({ filters });
-  }
 
   render() {
     const { movies, genres } = this.props;
-
-    // let moviesObj = Object.fromEntries(
-    //   Object.entries(movies).map(([i, item]) => {
-    //     return [Object.keys(item)[0], Object.values(item)[0]];
-    //   })
-    // );
-
-    // console.log('00000000000', movies[0] && movies[0].now_playing);
     return (
       <ResponsiveContainer>
         {movies[0] && (
@@ -320,7 +306,7 @@ class HomepageLayout extends Component {
 const mapStateToProps = state => {
   return {
     genres: state.movieBrowser.genres,
-    movies: state.movieBrowser.movies
+    movies: state.movieBrowser.movies,
   };
 };
 

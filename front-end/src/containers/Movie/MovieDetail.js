@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import config from '../../config';
-import { GenreButton } from '../../components/MovieList/Button';
+import { GenreButton1 } from '../../components/MovieList/Button';
 import CreditsList from '../../components/MovieList/CreditsList';
 import Gallery from '../../components/MovieList/Gallery';
 import { media } from '../../utils';
 import { connect } from 'react-redux';
 import * as movieActions from '../../store/actions/movie';
 import Nav from '../../components/HeadMenu/Nav';
-import { Container, Divider, Grid, Header, Icon } from 'semantic-ui-react';
+import { Grid, Icon, Dimmer, Loader, Image, Segment } from 'semantic-ui-react';
 import PacmanLoader from 'react-spinners/PacmanLoader';
 import './index.css';
 import ScrollContainer from '../../components/MovieList/ScrollContainer';
@@ -138,11 +138,17 @@ class MovieDetail extends Component {
     this.state = { movieDetail: null };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     const movieId = this.props.match.params.id;
-
     const { getMovieDetail } = this.props;
-    getMovieDetail(movieId);
+
+    await getMovieDetail(movieId);
+
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth'
+    });
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -159,9 +165,10 @@ class MovieDetail extends Component {
 
     if (isLoading) {
       return (
-        <div className="sweet-loading">
+        <Dimmer active>
+          {/* <Loader>Loading</Loader> */}
           <PacmanLoader size={50} color={'#ff00ab'} loading={true} />
-        </div>
+        </Dimmer>
       );
     }
     return (
@@ -178,7 +185,7 @@ class MovieDetail extends Component {
             </p>
             <div>
               {movieDetail.movie.genres.slice(0, 3).map(genre => (
-                <GenreButton title={genre.name} key={genre.name} />
+                <GenreButton1 title={genre.name} key={genre.name} />
               ))}
             </div>
             <Description>{movieDetail.movie.overview}</Description>
@@ -188,7 +195,9 @@ class MovieDetail extends Component {
                 <Grid.Column>
                   <Grid.Row>
                     <Icon name="star" className="statIcon" />
-                    <span className="statInfo">{movieDetail.movie.vote_average.toFixed(1)}</span>
+                    <span className="statInfo">
+                      {movieDetail.movie.vote_average.toFixed(1)}
+                    </span>
                   </Grid.Row>
                   <Grid.Row>
                     <span className="smallSpan">Average Rate</span>
@@ -198,14 +207,16 @@ class MovieDetail extends Component {
                 <Grid.Column>
                   <Grid.Row>
                     <Icon name="hotjar" className="statIcon" />
-                    <span className="statInfo">{movieDetail.movie.popularity}</span>
+                    <span className="statInfo">
+                      {movieDetail.movie.popularity}
+                    </span>
                   </Grid.Row>
                   <Grid.Row>
                     <span className="smallSpan">Popularity</span>
                   </Grid.Row>
                 </Grid.Column>
 
-                <Grid.Column>
+                {/* <Grid.Column>
                   <Grid.Row>
                     <Icon
                       name="money bill alternate outline icon"
@@ -216,7 +227,7 @@ class MovieDetail extends Component {
                   <Grid.Row>
                     <span className="smallSpan">Revenue</span>
                   </Grid.Row>
-                </Grid.Column>
+                </Grid.Column> */}
               </Grid.Row>
             </Grid>
           </Info>

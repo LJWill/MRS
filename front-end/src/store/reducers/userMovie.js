@@ -28,6 +28,7 @@ const userMovieAction = (state, action) => {
       userMovies: state.userMovies
     });
   }
+
 };
 
 const userMovieRemove = (state, action) => {
