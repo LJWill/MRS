@@ -22,8 +22,8 @@ class Recommender:
         trainset, testset = train_test_split(data, test_size=.25)
         print("l")
         list_algos = []
-        # algo_KNNBasic = KNNBasic()
-        # list_algos.append((algo_KNNBasic,"KNNBasic"))
+        algo_KNNBasic = KNNBasic(sim_options={"user_based": False})
+        list_algos.append((algo_KNNBasic,"KNNBasic"))
 
         # algo_KNNWithMeans = KNNWithMeans()
         # list_algos.append((algo_KNNWithMeans,"KNNWithMeans"))
@@ -43,11 +43,11 @@ class Recommender:
         # algo_NMF = NMF()
         # list_algos.append((algo_NMF,"NMF"))
 
-        algo_CoClustering = CoClustering()
-        list_algos.append((algo_CoClustering,"CoClustering"))
-
-        algo_SlopeOne = SlopeOne()
-        list_algos.append((algo_SlopeOne,"SlopeOne"))
+        # algo_CoClustering = CoClustering()
+        # list_algos.append((algo_CoClustering,"CoClustering"))
+        #
+        # algo_SlopeOne = SlopeOne()
+        # list_algos.append((algo_SlopeOne,"SlopeOne"))
 
         for algo,name in list_algos:
             algo = self.train(trainset,testset, algo,name)
