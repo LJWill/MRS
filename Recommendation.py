@@ -19,6 +19,7 @@ class Recommender:
         df = pd.DataFrame(list(movies.Ratings.objects.raw(
             'SELECT id, User_iduser, Movie_idmovie, rating FROM ratings where movie_idMovie in (SELECT Movie_idmovie from ratings group by Movie_idmovie HAVING count(*) > 5)'
         )))
+        df.to_csv("ratings.csv")
         df = df[["User_iduser","Movie_idmovie","rating"]]
         print("Data retrieved")
         # df = pd.read_csv("ratings.csv")
