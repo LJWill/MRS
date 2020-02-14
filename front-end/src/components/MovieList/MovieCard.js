@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar, faEye } from '@fortawesome/free-regular-svg-icons';
-import { urlTitle, addToList, isSaved, removeFromList } from '../../utils';
+import { urlTitle, isSaved, removeFromList } from '../../utils';
 import config from '../../config';
-import { GenericButton, PrimaryButton, Button } from './Button';
+import { GenericButton, Button } from './Button';
 import * as movieActions from '../../store/actions/movie';
 import { connect } from 'react-redux';
 import { Popup } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
 
 const Poster = styled.div`
   background-color: #fff;
@@ -106,11 +106,11 @@ class Movie extends Component {
     };
   }
 
-  add = movie => {
+  add = (e, movie) => {
+    e.stopPropagation();
     let newData = Object.assign({ userAction: 'Like' }, movie);
     this.props.userMovieAction(newData);
 
-    console.log(newData);
   };
 
   remove = movie => {
@@ -131,8 +131,8 @@ class Movie extends Component {
   jumpTo = (title, id) => {
     window.location.href = `/movie/${encodeURIComponent(
       urlTitle(title)
-    )}/${id}`
-  }
+    )}/${id}`;
+  };
 
   render() {
     const { title, vote_average, id, poster_path } = this.props;
@@ -147,49 +147,42 @@ class Movie extends Component {
     }
 
     return (
-        <Popup
-          trigger={
-            <Wrapper style={this.state.style}>
-              <Rating style={{ backgroundColor }}>
-                {vote_average.toFixed(1)}
-              </Rating>
-              <Content onClick={() => this.jumpTo(title, id)}>
-                <h3>{title}</h3>
-                {this.props.authenticated ? (
-                  <Link to={`/movies`}>
-                    {this.state.isSaved ? (
-                      <GenericButton
-                        title="Favorite"
-                        icon={<FontAwesomeIcon icon="star" />}
-                        onClick={() => this.remove(this.props)}
-                      />
-                    ) : (
-                      <GenericButton
-                        title="Favorite"
-                        icon={<FontAwesomeIcon icon={faStar} />}
-                        onClick={() => this.add(this.props)}
-                      />
-                    )}
-                  </Link>
-                ) : (
-                  <GenericButton
-                    title="Favorite"
-                    icon={<FontAwesomeIcon icon={faStar} />}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      window.location.href = '/login';
-                    }}
-                  />
-                )}
-              </Content>
-              <Poster bg={`${config.medium}${poster_path}`} />
-            </Wrapper>
-          }
-          position="bottom center"
-          style={style.toolTip}
-        >
-          <Popup.Header>Click to view more info</Popup.Header>
-        </Popup>
+      <Popup
+        trigger={
+          <Wrapper
+            style={this.state.style}
+            onClick={() => this.jumpTo(title, id)}
+          >
+            <Rating style={{ backgroundColor }}>
+              {vote_average.toFixed(1)}
+            </Rating>
+            <Content>
+              <h3>{title}</h3>
+              {this.props.authenticated ? (
+                <GenericButton
+                  title="Favorite"
+                  icon={<FontAwesomeIcon icon={faStar} />}
+                  onClick={e => this.add(e, this.props)}
+                />
+              ) : (
+                <GenericButton
+                  title="Favorite"
+                  icon={<FontAwesomeIcon icon={faStar} />}
+                  onClick={e => {
+                    e.stopPropagation();
+                    window.location.href = '/login';
+                  }}
+                />
+              )}
+            </Content>
+            <Poster bg={`${config.medium}${poster_path}`} />
+          </Wrapper>
+        }
+        position="bottom center"
+        style={style.toolTip}
+      >
+        <Popup.Header>Click to view more info</Popup.Header>
+      </Popup>
     );
   }
 }
