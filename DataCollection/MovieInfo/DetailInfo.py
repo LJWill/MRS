@@ -91,7 +91,7 @@ class MovieDetail:
         del json_file["spoken_languages"]
         del json_file["tagline"]
         del json_file["video"]
-        del json_file["vote_average"]
+        # del json_file["vote_average"]
         del json_file["vote_count"]
         del json_file["popularity"]
         del json_file["original_title"]
