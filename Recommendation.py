@@ -18,8 +18,8 @@ class Recommender:
         # df = pd.DataFrame(list(movies.Ratings.objects.all().values("user_iduser_id", "movie_idmovie_id", "rating")))
 
         df = pd.read_csv("tagResults.csv")
-
-        reader = Reader(rating_scale=(1, 10), line_format='item user rating')
+        df = df[["tagId","tmdbId","relevance"]]
+        reader = Reader(rating_scale=(1, 10), line_format='user item rating')
         data = Dataset.load_from_df(df, reader)
         trainset, testset = train_test_split(data, test_size=.25)
         print("load")
