@@ -15,10 +15,13 @@ from surprise.model_selection import cross_validate
 
 class Recommender:
     def recommend(self):
-        # df = pd.DataFrame(list(movies.Ratings.objects.all().values("user_iduser_id", "movie_idmovie_id", "rating")))
 
-        df = pd.read_csv("tagResults.csv")
-        df = df[["tagId","tmdbId","relevance"]]
+        df = pd.DataFrame(list(movies.Ratings.objects.raw(
+            'SELECT * FROM ratings where movie_idMovie in (SELECT Movie_idmovie from ratings group by Movie_idmovie HAVING count(*) > 5);'
+        ).values("user_iduser_id", "movie_idmovie_id", "rating")))
+        print("Data retrieved")
+        # df = pd.read_csv("ratings.csv")
+        df = df[["userId","movieId","rating"]]
         reader = Reader(rating_scale=(1, 10), line_format='user item rating')
         data = Dataset.load_from_df(df, reader)
         trainset, testset = train_test_split(data, test_size=.25)
