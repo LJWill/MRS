@@ -15,12 +15,14 @@ from surprise.model_selection import cross_validate
 
 class Recommender:
     def recommend(self):
-        df = pd.DataFrame(list(movies.Ratings.objects.all().values("user_iduser_id", "movie_idmovie_id", "rating")))
+        # df = pd.DataFrame(list(movies.Ratings.objects.all().values("user_iduser_id", "movie_idmovie_id", "rating")))
 
-        reader = Reader(rating_scale=(1, 10), line_format='user item rating')
+        df = pd.read_csv("tagResults.csv")
+
+        reader = Reader(rating_scale=(1, 10), line_format='item user rating')
         data = Dataset.load_from_df(df, reader)
         trainset, testset = train_test_split(data, test_size=.25)
-        print("l")
+        print("load")
         list_algos = []
         # algo_KNNBasic = KNNBasic(sim_options={"user_based": False})
         # list_algos.append((algo_KNNBasic,"KNNBasic"))
