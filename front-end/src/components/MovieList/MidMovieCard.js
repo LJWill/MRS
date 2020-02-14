@@ -104,7 +104,7 @@ class MidMovieCard extends Component {
 
   like = (e, data) => {
     e.stopPropagation();
-    if(!data.authenticated){
+    if(data.authenticated){
       let newData = Object.assign({ userAction: 'Like' }, data);
     this.props.shuffleMovie(newData);
     }else{
@@ -115,7 +115,7 @@ class MidMovieCard extends Component {
 
   dislike = (e, data) => {
     e.stopPropagation();
-    if(!data.authenticated){
+    if(data.authenticated){
       let newData = Object.assign({ userAction: 'DisLike' }, data);
     this.props.shuffleMovie(newData);
     }else{
