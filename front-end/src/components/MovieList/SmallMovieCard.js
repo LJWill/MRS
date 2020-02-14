@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
-import { isSaved, removeFromList } from '../../utils';
 import config from '../../config';
 import { Button, Icon } from 'semantic-ui-react';
+import Zoom from '@material-ui/core/Zoom';
+import Fade from '@material-ui/core/Fade';
+import Slide from '@material-ui/core/Slide';
 
 const Poster = styled.div`
   background-color: #fff;
@@ -112,47 +113,55 @@ const Wrapper = styled.article`
   }
 `;
 
-const CoverIcon = ({data}) => {
+const CoverIcon = ({ data }) => {
   if (data === 'Like') {
-    return (<Icon name="like" size="big" color="red"/>);
-  }else{
-    return (<Icon name="thumbs down outline" size="big" />);
+    return <Icon name="like" size="big" color="red" />;
+  } else {
+    return <Icon name="thumbs down outline" size="big" />;
   }
-}
+};
 export default class Movie extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isSaved: isSaved(props),
+      isAdding: false,
       style: { opacity: 1, transform: 'rotateY(0)' }
     };
   }
 
+  componentWillMount() {
+    console.log('-------->', this.props)
+    this.setState({ isAdding: true })
+  }
 
   remove = movie => {
-    console.log('removed', this.props)
-    this.props.func(movie)
+    this.props.func(movie);
   };
-
 
   render() {
     const { title, poster_path, onTop, userAction } = this.props;
 
     return (
-      <Wrapper style={this.state.style}>
-        <FrontContent>
-          <CoverIcon data={userAction}/>
-        </FrontContent>
+      <Slide direction='up' in={this.state.isAdding} >
+        <Wrapper style={this.state.style}>
+          <FrontContent>
+            <CoverIcon data={userAction} />
+          </FrontContent>
 
-        <Content>
-          <h5>{title}</h5>
-          <Delete onClick={() => {this.remove(this.props)}}>
-            <Icon name="delete" size="big" />
-          </Delete>
-        </Content>
+          <Content>
+            <h5>{title}</h5>
+            <Delete
+              onClick={() => {
+                this.remove(this.props);
+              }}
+            >
+              <Icon name="delete" size="big" />
+            </Delete>
+          </Content>
 
-        <Poster bg={`${config.medium}${poster_path}`} onTop={onTop} />
-      </Wrapper>
+          <Poster bg={`${config.medium}${poster_path}`} onTop={onTop} />
+        </Wrapper>
+      </Slide>
     );
   }
 }

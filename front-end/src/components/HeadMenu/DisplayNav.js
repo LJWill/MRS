@@ -3,14 +3,7 @@ import styled from 'styled-components';
 import { media } from '../../utils';
 import { Link } from 'react-router-dom';
 import Search from './Search';
-import {
-  Grid,
-  Button,
-  Dropdown,
-  Icon,
-  Header,
-  Segment
-} from 'semantic-ui-react';
+import { Grid, Button, Dropdown, Icon } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { logout } from '../../store/actions/auth';
 import { withRouter } from 'react-router-dom';
@@ -38,7 +31,7 @@ const styles = {
     position: 'absolute',
     right: '0',
     top: '0',
-    padding: '20px'
+    padding: '23px 30px'
   }
 };
 
@@ -154,8 +147,7 @@ class Nav extends React.Component {
               </NavItem>
             </ul>
 
-              <Search style={styles.searchBar} />
-
+            <Search style={styles.searchBar} />
 
             {authenticated ? (
               <ul style={styles.accountItem}>
@@ -206,11 +198,11 @@ class Nav extends React.Component {
           </Grid.Row>
 
           <Grid.Row>
-            <DisplayContainer
-              movies={this.props.movies}
-              onTop={this.state.onTop}
-              func={this.props.func}
-            />
+              <DisplayContainer
+                movies={this.props.movies}
+                onTop={this.state.onTop}
+                func={this.props.func}
+              />
           </Grid.Row>
         </Wrapper>
       </div>

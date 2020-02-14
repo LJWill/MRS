@@ -5,7 +5,6 @@ import MidMovieCard from '../../components/MovieList/MidMovieCard';
 import DisplayNav from '../../components/HeadMenu/DisplayNav';
 import { connect } from 'react-redux';
 import { Flipper, Flipped } from 'react-flip-toolkit';
-import FlipMove from 'react-flip-move';
 import * as movieActions from '../../store/actions/movie';
 import './MovieBrowser.scss';
 
@@ -21,7 +20,6 @@ class MovieBrowser extends React.Component {
       expanded: !this.state.expanded
     });
 
-    console.log(movie);
     this.props.userMovieAction(movie);
 
     window.scrollTo({
@@ -37,9 +35,7 @@ class MovieBrowser extends React.Component {
       expanded: !this.state.expanded
     });
 
-    console.log(movie);
     this.props.userMovieRemove(movie);
-
 
     window.scrollTo({
       top: 0,
