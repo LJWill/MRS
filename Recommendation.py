@@ -17,11 +17,11 @@ class Recommender:
     def recommend(self):
 
         df = pd.DataFrame(list(movies.Ratings.objects.raw(
-            'SELECT * FROM ratings where movie_idMovie in (SELECT Movie_idmovie from ratings group by Movie_idmovie HAVING count(*) > 5);'
-        ).values("user_iduser_id", "movie_idmovie_id", "rating")))
+            'SELECT id, User_iduser, Movie_idmovie, rating FROM ratings where movie_idMovie in (SELECT Movie_idmovie from ratings group by Movie_idmovie HAVING count(*) > 5)'
+        )))
+        df = df[["User_iduser","Movie_idmovie","rating"]]
         print("Data retrieved")
         # df = pd.read_csv("ratings.csv")
-        df = df[["userId","movieId","rating"]]
         reader = Reader(rating_scale=(1, 10), line_format='user item rating')
         data = Dataset.load_from_df(df, reader)
         trainset, testset = train_test_split(data, test_size=.25)
