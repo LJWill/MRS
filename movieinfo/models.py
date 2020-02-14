@@ -121,11 +121,12 @@ class User(models.Model):
         db_table = 'user'
 
 
-class Favourite(models.Model):
+class UserHistory(models.Model):
     user_iduser = models.ForeignKey('User', db_column='User_iduser', on_delete=models.CASCADE)
     movie_idmovie = models.ForeignKey('Movie', db_column='Movie_idmovie', on_delete=models.CASCADE)
-
+    timeStamp = models.DateTimeField(auto_now_add=True)
+    like = models.BooleanField(null=False)
     class Meta:
         managed = True
-        db_table = 'favourite'
+        db_table = 'userHistory'
         unique_together = (('movie_idmovie', 'user_iduser'),)

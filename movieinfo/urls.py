@@ -6,6 +6,6 @@ urlpatterns = [
   path('movies/', MovieListAPI.as_view()),
   path('movieInfo/<int:pk>/', MovieDetailAPI.as_view()),
   path('movieInfo/rating/', RatingAPI.as_view()),
-  path('movieInfo/favourite/', FavouriteAPI.as_view()),
+  path('movieInfo/favourite/', UserHistoryAPI.as_view()),
 
 ]

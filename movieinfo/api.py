@@ -4,7 +4,7 @@ from rest_framework.generics import get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.pagination import PageNumberPagination, LimitOffsetPagination, CursorPagination
 from rest_framework.response import Response
-from .models import Movie
+from .models import *
 from .serializers import *
 
 
@@ -44,27 +44,27 @@ class MovieListAPI(APIView):
         serializer = self.serializer_class(page_movies, many=True,context = {'iduser':1})
         return Response(serializer.data,status=status.HTTP_200_OK)
 
-class FavouriteAPI(APIView):
-    serializer_class = FavouriteSerializer
+class UserHistoryAPI(APIView):
+    serializer_class = UserHistorySerializer
 
     def put(self,request):
-        favourite = request.data
-        print(favourite)
-        serializer = self.serializer_class(data=favourite)
+        userhistory = request.data
+        print(userhistory)
+        serializer = self.serializer_class(data=userhistory)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data,
             status=status.HTTP_201_CREATED)
 
     def delete(self,request):
-        favorite = Favourite.objects.get(user_iduser=request.data['user_iduser'],movie_idmovie=request.data['movie_idmovie'])
-        favorite.delete()
+        userhistory = UserHistory.objects.get(user_iduser=request.data['user_iduser'],movie_idmovie=request.data['movie_idmovie'])
+        userhistory.delete()
         return Response(status=status.HTTP_200_OK)
 
     def post(self, request):
-        favorite = Favourite.objects.filter(user_iduser=request.data['user_iduser'])
+        userhistory = UserHistory.objects.filter(user_iduser=request.data['user_iduser'])
 
-        serializer = self.serializer_class(favorite,many=True)
+        serializer = self.serializer_class(userhistory,many=True)
 
         return Response(serializer.data,
             status=status.HTTP_200_OK)
@@ -94,4 +94,3 @@ class RatingAPI(APIView):
             status=status.HTTP_201_CREATED
         )
 
-3

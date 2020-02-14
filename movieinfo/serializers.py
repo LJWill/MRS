@@ -3,9 +3,9 @@ from rest_framework import serializers
 from movieinfo.models import *
 
 
-class FavouriteSerializer(serializers.ModelSerializer):
+class UserHistorySerializer(serializers.ModelSerializer):
     class Meta:
-        model = Favourite
+        model = UserHistory
         fields = '__all__'
 
 
