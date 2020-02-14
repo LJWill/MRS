@@ -104,10 +104,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'moviedb',
-        'USER': "root",
-        'PASSWORD': "admin",
-        'HOST': '45.113.232.220',
-        'PORT': '3306',
+        'USER': os.getenv('MYSQL_USERNAME'),
+        'PASSWORD': os.getenv('MYSQL_PASSWORD'),
     }
 }
 

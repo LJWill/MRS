@@ -4,7 +4,6 @@ import config from '../../config';
 import { Button, Icon } from 'semantic-ui-react';
 import Zoom from '@material-ui/core/Zoom';
 import Fade from '@material-ui/core/Fade';
-import Slide from '@material-ui/core/Slide';
 
 const Poster = styled.div`
   background-color: #fff;
@@ -129,11 +128,6 @@ export default class Movie extends Component {
     };
   }
 
-  componentWillMount() {
-    console.log('-------->', this.props)
-    this.setState({ isAdding: true })
-  }
-
   remove = movie => {
     this.props.func(movie);
   };
@@ -142,7 +136,6 @@ export default class Movie extends Component {
     const { title, poster_path, onTop, userAction } = this.props;
 
     return (
-      <Slide direction='up' in={this.state.isAdding} >
         <Wrapper style={this.state.style}>
           <FrontContent>
             <CoverIcon data={userAction} />
@@ -161,7 +154,6 @@ export default class Movie extends Component {
 
           <Poster bg={`${config.medium}${poster_path}`} onTop={onTop} />
         </Wrapper>
-      </Slide>
     );
   }
 }
