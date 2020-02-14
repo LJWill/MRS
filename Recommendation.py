@@ -46,8 +46,8 @@ class Recommender:
         # algo_CoClustering = CoClustering()
         # list_algos.append((algo_CoClustering,"CoClustering"))
         # #
-        # algo_SlopeOne = SlopeOne()
-        # list_algos.append((algo_SlopeOne,"SlopeOne"))
+        algo_SlopeOne = SlopeOne()
+        list_algos.append((algo_SlopeOne,"SlopeOne"))
 
         for algo,name in list_algos:
             algo = self.train(trainset,testset, algo,name)
