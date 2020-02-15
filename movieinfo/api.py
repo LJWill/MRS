@@ -7,6 +7,8 @@ from rest_framework.response import Response
 from .models import *
 from .serializers import *
 import jwt
+import json
+
 
 class MovieDetailAPI(APIView):
     serializer_class = MovieDetailSerializer
@@ -49,6 +51,7 @@ class MovieListAPI(APIView):
 
 class UserHistoryAPI(APIView):
     serializer_class = UserHistorySerializer
+    userhistory = UserHistory.objects.all()
 
     def get(self, request):
         userMovies = UserHistory.objects.all()
@@ -74,17 +77,17 @@ class UserHistoryAPI(APIView):
         userhistory.delete()
         return Response(status=status.HTTP_200_OK)
 
-
     def post(self, request):
 
-        print(request.data['movies'])
-        data = request.data['movies']
-        userhistory = UserHistory.objects.filter(user_iduser=request.data['user_id'])
-        
-        print(userhistory)
-        serializer = self.serializer_class(userhistory, many=True)
+        # userhistory = UserHistory.objects.filter(user_iduser=request.data['user_id'])
 
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        serializer = self.serializer_class(data=request.data)
+
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class MyPageNumber(PageNumberPagination):
