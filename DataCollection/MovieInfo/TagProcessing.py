@@ -2,7 +2,10 @@ import pandas as pd
 import pyspark
 from pyspark import SparkConf, SparkContext
 from pyspark.sql import SparkSession
-from pyspark.mllib.linalg.distributed import CoordinateMatrix, IndexedRow, IndexedRowMatrix, RowMatrix
+from pyspark.mllib.linalg.distributed import  RowMatrix
+import numpy as np
+from sklearn.metrics.pairwise import cosine_similarity
+import csv
 
 
 class TagProcessing:
@@ -57,17 +60,54 @@ class TagProcessing:
             appName("Python Spark create RDD example")\
             .config("spark.some.config.option", "some-value") \
             .getOrCreate()
-
         # spark.conf.set('spark.sql.pivotMaxValues', u'70000')
-
         df = spark.read.format('com.databricks.spark.csv').options(header='true', inferschema='true').load(tag_path,
                                                                                                            header=True)
-
         df = df.drop("_c0")
-
         df = df.groupBy("tmdbId").pivot("tagId").sum("relevance")
-
         df.write.csv(path=write_path, header=True, sep=",", mode='overwrite')
+
+    def pivot_sim(self, tag_path, write_path):
+        tags = pd.read_csv(tag_path,  header=0, index_col=0)
+        pivot = tags.pivot_table(values='relevance', index=['tmdbId'], columns=['tagId'])
+        pivot.to_csv(write_path)
+
+    def similarity_sim(self, pivot_path, sim_path):
+        pivot = pd.read_csv(pivot_path)
+        pivot = pd.DataFrame(pivot).ffill()
+        result = cosine_similarity(pivot)
+        # print(result, type(result))
+        similarity_matrix = pd.DataFrame(result)
+        similarity_matrix.to_csv(sim_path)
+
+    def query_sim(self, sim_path, pivot_path):
+        names = []
+        pivot = pd.read_csv(pivot_path)
+        for i in pivot["tmdbId"]:
+            names.append(int(i))
+        sim = pd.read_csv(sim_path, header=0, index_col=0)
+        result = {}
+        for i in range(sim.shape[0]):
+            temp = sim.loc[i]
+            sim.iloc[i, i] = 0
+            temp_result = []
+            for j in range(100):
+                argmax = temp[temp == temp.max()].index
+                argmax = np.random.choice(argmax)
+                argmax = int(argmax)
+                # print(argmax, type(argmax))
+                sim.iloc[i, argmax] = 0
+                temp_result.append(names[argmax])
+            # print(temp_result)
+            result[names[i]] = temp_result
+
+        w = csv.writer(open("Data/output.csv", "w"))
+        for key, val in result.items():
+            w.writerow([key, val])
+
+
+
+
 
     def similarity_processing(self, tag_path):
         conf = SparkConf().setAppName("Test").setMaster("local")
@@ -84,13 +124,17 @@ class TagProcessing:
             print(x)
         print(cs.numRows(), cs.numCols())
 
-if __name__ == '__main__':
 
-    link_path = 'newData/linkResults.csv'
-    tag_path = 'newData/genome-scores.csv'
-    result_path = 'Data/tagResults.csv'
-    pivot_path = 'Data/pivot.csv'
+if __name__ == '__main__':
+    # link_path = 'newData/linkResults.csv'
+    # tag_path = 'newData/genome-scores.csv'
+    # result_path = 'newData/tagResults.csv'
+    pivot_path = 'Data/pivot1.csv'
+    similarity_path = 'Data/sim.csv'
     tp = TagProcessing()
     # tp.read_link_file(link_path, tag_path, result_path)
-    tp.pivot_similarity(result_path, pivot_path)
+    # tp.pivot_similarity(result_path, pivot_path)
     # tp.similarity_processing(pivot_path)
+    # tp.pivot_sim(result_path, pivot_path)
+    # tp.similarity_sim(pivot_path, similarity_path)
+    tp.query_sim(similarity_path, pivot_path)
