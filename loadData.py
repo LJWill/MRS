@@ -225,7 +225,7 @@ class LoadingData:
                     with transaction.atomic():
                         movieid = row["tmdbId"]
                         if pd.notnull(movieid) and movieid in filter:
-                            movie = movies.Movie.objects.get(idmovie=int(movieid))
+                            movie = movies.Movie.objects.get(idMovie=int(movieid))
                             user = movies.User.objects.get(iduser=row["userId"])
                             querylist.append(movies.Ratings(movie_idmovie=movie, user_iduser=user
                                                                         ,rating = int(row["rating"] * 2)))
