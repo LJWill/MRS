@@ -81,9 +81,9 @@ class MovieBriefSerializer(serializers.ModelSerializer):
         many=True, slug_field='genrename', read_only=True)
     rating_movie = serializers.SerializerMethodField()
 
-    def get_rating_movie(self, movie):
+    def get_rating_movie(self, obj):
         ratings = Ratings.objects.filter(
-            user_iduser=self.context['iduser'], movie_idmovie=movie)
+            user_iduser=self.context['iduser'], movie_idmovie=obj.idMovie)
         serializer = RatingSerializer(
             instance=ratings, many=True, read_only=True)
         # serializer.is_valid()
@@ -91,7 +91,7 @@ class MovieBriefSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Movie
-        fields = ('idmovie', 'title', 'poster',
+        fields = ('idMovie', 'title', 'poster_path',
                   'genre', 'adult', 'rating_movie')
 
 
