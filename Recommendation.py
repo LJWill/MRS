@@ -17,8 +17,6 @@ class Recommender:
     def recommend(self):
 
         df = pd.DataFrame(list(movies.Ratings.objects.all().values("user_iduser_id", "movie_idmovie_id", "rating")))
-        df.to_csv("ratings.csv")
-        df = df[["User_iduser","Movie_idmovie","rating"]]
         print("Data retrieved")
         # df = pd.read_csv("ratings.csv")
         reader = Reader(rating_scale=(1, 10), line_format='user item rating')
