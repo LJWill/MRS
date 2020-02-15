@@ -209,7 +209,8 @@ class LoadingData:
 
 
     def writeRatings(self, read_path):
-        raw = pd.read_csv(read_path,chunksize=100000)
+        raw = pd.read_csv(read_path,chunksize=200000)
+        filter = pd.read_csv("result.csv")['tmdbId']
         count = 1
         nochunk = 1
 
@@ -223,7 +224,7 @@ class LoadingData:
                 try:
                     with transaction.atomic():
                         movieid = row["tmdbId"]
-                        if pd.notnull(movieid):
+                        if pd.notnull(movieid) and movieid in filter:
                             movie = movies.Movie.objects.get(idmovie=int(movieid))
                             user = movies.User.objects.get(iduser=row["userId"])
                             querylist.append(movies.Ratings(movie_idmovie=movie, user_iduser=user
@@ -285,8 +286,8 @@ if __name__ == '__main__':
     # read_path = './DataCollection/MovieInfo/Data/personDetails.csv'
     # ld.writeStuff(read_path)
 
-    read_path = './DataCollection/MovieInfo/Data/movieDetails.csv'
-    ld.writeMovie(read_path)
+    # read_path = './DataCollection/MovieInfo/Data/movieDetails.csv'
+    # ld.writeMovie(read_path)
     # #
     # read_path = './DataCollection/MovieInfo/Data/casts.csv'
     # ld.writeCast(read_path)
@@ -294,5 +295,5 @@ if __name__ == '__main__':
     # read_path = './DataCollection/MovieInfo/Data/movieImages.csv'
     # ld.writeimage(read_path)
 
-    # read_path = './DataCollection/MovieInfo/Data/finalRatings.csv'
-    # ld.writeRatings(read_path)
+    read_path = './DataCollection/MovieInfo/Data/finalRatings.csv'
+    ld.writeRatings(read_path)
