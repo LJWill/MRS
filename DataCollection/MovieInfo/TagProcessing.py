@@ -2,7 +2,7 @@ import pandas as pd
 import pyspark
 from pyspark import SparkConf, SparkContext
 from pyspark.sql import SparkSession
-from pyspark.mllib.linalg.distributed import  RowMatrix
+from pyspark.mllib.linalg.distributed import RowMatrix
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
 import csv
@@ -87,6 +87,8 @@ class TagProcessing:
             names.append(int(i))
         sim = pd.read_csv(sim_path, header=0, index_col=0)
         result = {}
+        len = sim.shape[0]
+        count = 0
         for i in range(sim.shape[0]):
             temp = sim.loc[i]
             sim.iloc[i, i] = 0
@@ -100,6 +102,8 @@ class TagProcessing:
                 temp_result.append(names[argmax])
             # print(temp_result)
             result[names[i]] = temp_result
+            print("\r" + 'processing %d out of %d items...' % (count, len), end='')
+            count += 1
 
         w = csv.writer(open("Data/output.csv", "w"))
         for key, val in result.items():
