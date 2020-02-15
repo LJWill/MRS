@@ -18,30 +18,57 @@ class CreateUserHistorySerializer(serializers.ModelSerializer):
             user_iduser=validated_data.get('user_iduser', None),
             movie_idmovie=validated_data.get('movie_idmovie', None),
             defaults={
-                'userAction' : validated_data.get('userAction', None),
+                'userAction': validated_data.get('userAction', None),
             })
 
         return userHistory
 
 
-class RetrieveUserHistorySerializer(serializers.ModelSerializer):
-    
-    # genre = serializers.SlugRelatedField(
-    #     many=True, slug_field='genrename', read_only=True)
-
-    # user_movies = serializers.SerializerMethodField()
-
-    # def get_user_movies(self, movie):
-    #     movies = Movie.objects.filter(idMovie=movie)
-    #     serializer = MovieBriefSerializer(
-    #         instance=movies, many=True, read_only=True)
-    #     # serializer.is_valid()
-    #     return serializer.data
+class MovieInfoSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = UserHistory
-        fields = ('userAction', 'movie_idmovie')
+        model = Movie
+        fields = ('idMovie', 'poster_path', 'backdrop_path',
+                  'title', 'vote_average')
 
+class RetrieveUserHistorySerializer(serializers.ModelSerializer):
+
+    # user_movies = serializers.SerializerMethodField()
+    title = serializers.SerializerMethodField()
+    poster_path = serializers.SerializerMethodField()
+    backdrop_path = serializers.SerializerMethodField()
+    vote_average = serializers.SerializerMethodField()
+    id = serializers.CharField(source='movie_idmovie.idMovie')
+     
+    class Meta:
+        model = UserHistory
+        fields = ('id', 'userAction', 'title', 'poster_path', 'backdrop_path', 'vote_average')
+
+    # def get_user_movies(self, obj):
+    #     movie_obj = obj.movie_idmovie
+    #     movies = Movie.objects.filter(idMovie=movie_obj.idMovie)
+    #     serializer = MovieInfoSerializer(instance=obj.movie_idmovie, read_only=True)
+    #     return serializer.data
+
+    def get_title(self, obj):
+        movie_obj = obj.movie_idmovie
+        data = Movie.objects.filter(idMovie=movie_obj.idMovie).values_list('title', flat=True)[0]
+        return data
+    
+    def get_poster_path(self, obj):
+        movie_obj = obj.movie_idmovie
+        data = Movie.objects.filter(idMovie=movie_obj.idMovie).values_list('poster_path', flat=True)[0]
+        return data
+    
+    def get_backdrop_path(self, obj):
+        movie_obj = obj.movie_idmovie
+        data = Movie.objects.filter(idMovie=movie_obj.idMovie).values_list('backdrop_path', flat=True)[0]
+        return data
+
+    def get_vote_average(self, obj):
+        movie_obj = obj.movie_idmovie
+        data = Movie.objects.filter(idMovie=movie_obj.idMovie).values_list('vote_average', flat=True)[0]
+        return data
 
 
 class MovieBriefSerializer(serializers.ModelSerializer):
@@ -97,7 +124,6 @@ class MovieDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Movie
         fields = '__all__'
-
 
 
 # class PeopleSerializer(serializers.ModelSerializer):
