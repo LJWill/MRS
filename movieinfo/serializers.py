@@ -8,8 +8,6 @@ class CreateUserHistorySerializer(serializers.ModelSerializer):
     class Meta:
         model = UserHistory
         fields = '__all__'
-        # exclude = ('user_iduser', )
-
 
     def get_user_iduser(self, obj):
         userID = self.context['user_id']

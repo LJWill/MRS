@@ -81,12 +81,12 @@ class retrieveUserHistoryAPI(APIView):
     serializer_class = RetrieveUserHistorySerializer
 
     def post(self, request):
+        decode_payload = jwt_decode_handler(request.data['token'])
         userhistory = UserHistory.objects.filter(
-            user_iduser=request.data['user_iduser'])
+            user_iduser=decode_payload['user_id'])
         serializer = self.serializer_class(
             userhistory, many=True)
 
-        print(serializer.data)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
