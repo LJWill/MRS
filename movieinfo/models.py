@@ -96,27 +96,26 @@ class Movie(models.Model):
     poster_path = models.CharField(max_length=255, blank=True)
     backdrop_path = models.CharField(max_length=255, blank=True)
     title = models.CharField(max_length=200, blank=True, null=True)
-    vote_average = models.FloatField(db_column='vote_average', blank=True)
-    # adult = models.BooleanField(default=False)
+    vote_average = models.FloatField(db_column='vote_average', blank=True, null=True)
+    adult = models.BooleanField(default=False)
     
     # original_language = models.CharField(max_length=45, blank=True)
     # original_title = models.TextField(blank=True, null=True)
-    # country = models.CharField(max_length=100, blank=True, null=True)
+    country = models.CharField(max_length=100, blank=True, null=True)
     # language = models.CharField(max_length=45, blank=True, null=True)
-    # release_date = models.TextField(db_column='release_date')  # Field name made lowercase. This field type is a guess.
-    # adult = models.IntegerField(null=True)
+    release_date = models.TextField(db_column='release_date')  # Field name made lowercase. This field type is a guess.
     # poster = models.CharField(max_length=45, blank=True, null=True)
-    # overview = models.TextField(blank=True, null=True)
-    # budget = models.BigIntegerField(blank=True, null=True)
-    # revenue = models.BigIntegerField(blank=True, null=True)
+    overview = models.TextField(blank=True, null=True)
+    budget = models.BigIntegerField(blank=True, null=True)
+    revenue = models.BigIntegerField(blank=True, null=True)
     # runtime = models.SmallIntegerField(blank=True, null=True)
     # status = models.BooleanField(default=False)
-    # collectionid = models.ForeignKey("Collections", models.DO_NOTHING, db_column="Collections_idCollections", null=True)
+    collectionid = models.ForeignKey("Collections", models.DO_NOTHING, db_column="Collections_idCollections", null=True)
     # casts = models.ManyToManyField(People, related_name='Cast')
     # directors = models.ManyToManyField(People, related_name='Direct')
-    # genre_ids = models.ManyToManyField(Genre, related_name='Movie_Genre')
-    # tags = models.ManyToManyField(Tags, related_name='Movie_Tags')
-    # company = models.ManyToManyField(Companies, related_name='Movie_Companies')
+    genre = models.ManyToManyField(Genre, related_name='Movie_Genre')
+    tags = models.ManyToManyField(Tags, related_name='Movie_Tags')
+    company = models.ManyToManyField(Companies, related_name='Movie_Companies')
 
     class Meta:
         managed = True
