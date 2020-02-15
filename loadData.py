@@ -226,7 +226,10 @@ class LoadingData:
                         movieid = row["tmdbId"]
                         if pd.notnull(movieid) and movieid in filter:
                             movie = movies.Movie.objects.get(idMovie=int(movieid))
-                            user = movies.User.objects.get(iduser=row["userId"])
+                            try:
+                                user = movies.User.objects.get(iduser=row["userId"])
+                            except:
+                                user = movies.User.objects.create(iduser=row["userId"])
                             querylist.append(movies.Ratings(movie_idmovie=movie, user_iduser=user
                                                                         ,rating = int(row["rating"] * 2)))
                 except Exception as e:
