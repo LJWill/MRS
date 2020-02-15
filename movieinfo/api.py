@@ -6,8 +6,7 @@ from rest_framework.pagination import PageNumberPagination, LimitOffsetPaginatio
 from rest_framework.response import Response
 from .models import *
 from .serializers import *
-import jwt
-import json
+from rest_framework_jwt.utils import jwt_decode_handler
 
 
 class MovieDetailAPI(APIView):
@@ -53,23 +52,24 @@ class createUserHistoryAPI(APIView):
     serializer_class = CreateUserHistorySerializer
     userhistory = UserHistory.objects.all()
 
-    # def get(self, request):
-    #     userMovies = UserHistory.objects.all()
-    #     page_obj = MyPageNumber()
-    #     page_movies = page_obj.paginate_queryset(
-    #         userMovies, request=request, view=self)
-    #     serializer = self.serializer_class(
-    #         page_movies, many=True, context={'iduser': 1})
-    #     return Response(serializer.data, status=status.HTTP_200_OK)
-
     def delete(self, request):
+        decode_payload = jwt_decode_handler(request.data['token'])
+        serializer = self.serializer_class(data=request.data, context={
+                                           'user_id': decode_payload['user_id']})
         userhistory = UserHistory.objects.get(
-            user_iduser=request.data['user_iduser'], movie_idmovie=request.data['movie_idmovie'])
-        userhistory.delete()
-        return Response(status=status.HTTP_200_OK)
+            user_iduser=decode_payload['user_id'], movie_idmovie=request.data['movie_idmovie'])
+
+        if serializer.is_valid(raise_exception=True):
+            userhistory.delete()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        
+        return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def post(self, request):
-        serializer = self.serializer_class(data=request.data)
+        decode_payload = jwt_decode_handler(request.data['token'])
+        serializer = self.serializer_class(data=request.data, context={
+                                           'user_id': decode_payload['user_id']})
+
         if serializer.is_valid(raise_exception=True):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)

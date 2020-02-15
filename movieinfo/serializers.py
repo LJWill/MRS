@@ -2,20 +2,27 @@ from rest_framework import serializers
 
 from movieinfo.models import *
 
-
 class CreateUserHistorySerializer(serializers.ModelSerializer):
 
+    user_iduser = serializers.SerializerMethodField(required = False)
     class Meta:
         model = UserHistory
         fields = '__all__'
+        # exclude = ('user_iduser', )
+
+
+    def get_user_iduser(self, obj):
+        userID = self.context['user_id']
+        return userID
 
     def get_unique_together_validators(self):
         """Overriding method to disable unique together checks"""
         return []
 
     def create(self, validated_data):
+        user = User.objects.get(iduser=self.context['user_id'])
         userHistory, created = UserHistory.objects.update_or_create(
-            user_iduser=validated_data.get('user_iduser', None),
+            user_iduser=user,
             movie_idmovie=validated_data.get('movie_idmovie', None),
             defaults={
                 'userAction': validated_data.get('userAction', None),
