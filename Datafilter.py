@@ -12,4 +12,4 @@ class filter:
 
 if __name__ == '__main__':
     f = filter()
-    f.filter("./DataCollection/MovieInfo/Data/ratings.csv")
+    f.filter("./DataCollection/MovieInfo/Data/finalRatings.csv")
