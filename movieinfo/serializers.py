@@ -3,7 +3,7 @@ from rest_framework import serializers
 from movieinfo.models import *
 
 
-class UserHistorySerializer(serializers.ModelSerializer):
+class CreateUserHistorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserHistory
@@ -23,10 +23,25 @@ class UserHistorySerializer(serializers.ModelSerializer):
 
         return userHistory
 
-# class PeopleSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = People
-#         fields = ('idperson', 'name', 'profileimage')
+
+class RetrieveUserHistorySerializer(serializers.ModelSerializer):
+    
+    # genre = serializers.SlugRelatedField(
+    #     many=True, slug_field='genrename', read_only=True)
+
+    # user_movies = serializers.SerializerMethodField()
+
+    # def get_user_movies(self, movie):
+    #     movies = Movie.objects.filter(idMovie=movie)
+    #     serializer = MovieBriefSerializer(
+    #         instance=movies, many=True, read_only=True)
+    #     # serializer.is_valid()
+    #     return serializer.data
+
+    class Meta:
+        model = UserHistory
+        fields = ('userAction', 'movie_idmovie')
+
 
 
 class MovieBriefSerializer(serializers.ModelSerializer):
@@ -82,3 +97,10 @@ class MovieDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Movie
         fields = '__all__'
+
+
+
+# class PeopleSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = People
+#         fields = ('idperson', 'name', 'profileimage')

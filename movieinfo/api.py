@@ -49,45 +49,45 @@ class MovieListAPI(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-class UserHistoryAPI(APIView):
-    serializer_class = UserHistorySerializer
+class createUserHistoryAPI(APIView):
+    serializer_class = CreateUserHistorySerializer
     userhistory = UserHistory.objects.all()
 
-    def get(self, request):
-        userMovies = UserHistory.objects.all()
-        page_obj = MyPageNumber()
-        page_movies = page_obj.paginate_queryset(
-            userMovies, request=request, view=self)
-        serializer = self.serializer_class(
-            page_movies, many=True, context={'iduser': 1})
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
-    def put(self, request):
-        userhistory = request.data
-        print(userhistory)
-        serializer = self.serializer_class(data=userhistory)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data,
-                        status=status.HTTP_201_CREATED)
+    # def get(self, request):
+    #     userMovies = UserHistory.objects.all()
+    #     page_obj = MyPageNumber()
+    #     page_movies = page_obj.paginate_queryset(
+    #         userMovies, request=request, view=self)
+    #     serializer = self.serializer_class(
+    #         page_movies, many=True, context={'iduser': 1})
+    #     return Response(serializer.data, status=status.HTTP_200_OK)
 
     def delete(self, request):
         userhistory = UserHistory.objects.get(
-            user_iduser=request.data['user_id'], movie_idmovie=request.data['movie_id'])
+            user_iduser=request.data['user_iduser'], movie_idmovie=request.data['movie_idmovie'])
         userhistory.delete()
         return Response(status=status.HTTP_200_OK)
 
     def post(self, request):
-
-        # userhistory = UserHistory.objects.filter(user_iduser=request.data['user_id'])
-
         serializer = self.serializer_class(data=request.data)
-
         if serializer.is_valid(raise_exception=True):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class retrieveUserHistoryAPI(APIView):
+    serializer_class = RetrieveUserHistorySerializer
+
+    def post(self, request):
+        userhistory = UserHistory.objects.filter(
+            user_iduser=request.data['user_iduser'])
+        serializer = self.serializer_class(
+            userhistory, many=True)
+
+        print(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class MyPageNumber(PageNumberPagination):
