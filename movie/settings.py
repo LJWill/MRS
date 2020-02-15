@@ -106,6 +106,8 @@ DATABASES = {
         'NAME': 'moviedb',
         'USER': os.getenv('MYSQL_USERNAME'),
         'PASSWORD': os.getenv('MYSQL_PASSWORD'),
+        # 'Host': os.getenv('MYSQL_HOSTNAME'),
+        # 'Port': '3306'
     }
 }
 
