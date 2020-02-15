@@ -83,9 +83,11 @@ class TagProcessing:
     def query_sim(self, sim_path, pivot_path):
         names = []
         pivot = pd.read_csv(pivot_path)
+        print("read pivot done")
         for i in pivot["tmdbId"]:
             names.append(int(i))
         sim = pd.read_csv(sim_path, header=0, index_col=0)
+        print("read sim done")
         result = {}
         len = sim.shape[0]
         count = 0
