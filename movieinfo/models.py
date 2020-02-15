@@ -89,18 +89,27 @@ class Tags(models.Model):
         db_table = 'tags'
 
 class Movie(models.Model):
-    idmovie = models.BigIntegerField(db_column='idMovie', primary_key=True)  # Field name made lowercase.
-    country = models.CharField(max_length=100, blank=True, null=True)
+    # popularity = models.FloatField(db_column='popularity', blank=True)
+    # vote_count = models.IntegerField(db_column='vote_count', blank=True)
+    # video = models.BooleanField(default=False)
+    idMovie = models.BigIntegerField(db_column='id', primary_key=True)  # Field name made lowercase.
+    poster_path = models.CharField(max_length=255, blank=True)
+    backdrop_path = models.CharField(max_length=255, blank=True)
     title = models.CharField(max_length=200, blank=True, null=True)
+    vote_average = models.FloatField(db_column='vote_average', blank=True, null=True)
+    adult = models.BooleanField(default=False)
+    
+    # original_language = models.CharField(max_length=45, blank=True)
+    # original_title = models.TextField(blank=True, null=True)
+    country = models.CharField(max_length=100, blank=True, null=True)
     # language = models.CharField(max_length=45, blank=True, null=True)
-    releasedate = models.TextField(db_column='releaseDate')  # Field name made lowercase. This field type is a guess.
-    adult = models.IntegerField(null=True)
-    poster = models.CharField(max_length=45, blank=True, null=True)
+    release_date = models.TextField(db_column='release_date')  # Field name made lowercase. This field type is a guess.
+    # poster = models.CharField(max_length=45, blank=True, null=True)
     overview = models.TextField(blank=True, null=True)
     budget = models.BigIntegerField(blank=True, null=True)
     revenue = models.BigIntegerField(blank=True, null=True)
-    runtime = models.SmallIntegerField(blank=True, null=True)
-    status = models.BooleanField(default=False)
+    # runtime = models.SmallIntegerField(blank=True, null=True)
+    # status = models.BooleanField(default=False)
     collectionid = models.ForeignKey("Collections", models.DO_NOTHING, db_column="Collections_idCollections", null=True)
     # casts = models.ManyToManyField(People, related_name='Cast')
     # directors = models.ManyToManyField(People, related_name='Direct')
@@ -125,7 +134,7 @@ class UserHistory(models.Model):
     user_iduser = models.ForeignKey('User', db_column='User_iduser', on_delete=models.CASCADE)
     movie_idmovie = models.ForeignKey('Movie', db_column='Movie_idmovie', on_delete=models.CASCADE)
     timeStamp = models.DateTimeField(auto_now_add=True)
-    like = models.BooleanField(null=False)
+    userAction = models.BooleanField(null=False)
     class Meta:
         managed = True
         db_table = 'userHistory'

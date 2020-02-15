@@ -26,19 +26,50 @@ class LoadingData:
             with transaction.atomic():
 
                 try:
-                    movies.Movie.objects.get(idmovie=int(row["id"]))
+                    movies.Movie.objects.get(idMovie=int(row["id"]))
                     continue
                 except:
-                    new_movie = movies.Movie.objects.create(idmovie=row["id"])
+                    new_movie = movies.Movie.objects.create(idMovie=row["id"])
+
+                    poster_path = row["poster_path"]
+                    if not pd.isnull(poster_path):
+                        new_movie.poster_path = poster_path
+
+                    backdrop_path = row["backdrop_path"]
+                    if not pd.isnull(backdrop_path):
+                        new_movie.backdrop_path = backdrop_path
 
                     new_movie.title = row["title"]
+
+                    vote = row["vote_average"]
+                    if not pd.isnull(vote):
+                        new_movie.vote_average = vote
 
                     adult = row["adult"]
                     if not adult:
                         new_movie.adult = 0
                     else:
                         new_movie.adult = 1
+
+                    country = row["production_countries"]
+                    if not pd.isnull(country):
+                        new_movie.country = country
+
+                    releasedate = row["release_date"]
+                    if not pd.isnull(releasedate):
+                        new_movie.release_date = releasedate
+
+                    overview = row["overview"]
+                    if not pd.isnull(overview):
+                        new_movie.overview = overview
+
                     new_movie.budget = row["budget"]
+
+                    new_movie.revenue = row["revenue"]
+
+                    collectionname = row["belongs_to_collection"]
+                    if not pd.isnull(collectionname):
+                        new_movie.collectionid = self.writeCollections(collectionname)
 
                     genres = row["genres"]
                     if not pd.isnull(genres):
@@ -51,34 +82,10 @@ class LoadingData:
                         companies = companies.split(",")
                         for company in companies:
                             new_movie.company.add(self.writeCompany(company))
-
-                    overview = row["overview"]
-                    if not pd.isnull(overview):
-                        new_movie.overview = overview
-
-                    poster = row["poster_path"]
-                    if not pd.isnull(poster):
-                        new_movie.poster = poster
-
-                    runtime = row["runtime"]
-                    if not pd.isnull(runtime):
-                        new_movie.runtime = runtime
-
-                    country = row["production_countries"]
-                    if not pd.isnull(country):
-                        new_movie.country = country
-
-                    releasedate = row["release_date"]
-                    if not pd.isnull(releasedate):
-                        new_movie.releasedate = releasedate
-
-                    collectionname = row["belongs_to_collection"]
-                    if not pd.isnull(collectionname):
-                        new_movie.collectionid = self.writeCollections(collectionname)
-
-                    new_movie.revenue = row["revenue"]
-                    if row["status"] == "Released":
-                        new_movie.status = True
+                    #
+                    #
+                    # if row["status"] == "Released":
+                    #     new_movie.status = True
                     new_movie.save()
 
     # def writeStuff(self, read_path):
@@ -278,8 +285,8 @@ if __name__ == '__main__':
     # read_path = './DataCollection/MovieInfo/Data/personDetails.csv'
     # ld.writeStuff(read_path)
 
-    # read_path = './DataCollection/MovieInfo/Data/movieDetails.csv'
-    # ld.writeMovie(read_path)
+    read_path = './DataCollection/MovieInfo/Data/movieDetails.csv'
+    ld.writeMovie(read_path)
     # #
     # read_path = './DataCollection/MovieInfo/Data/casts.csv'
     # ld.writeCast(read_path)
@@ -287,5 +294,5 @@ if __name__ == '__main__':
     # read_path = './DataCollection/MovieInfo/Data/movieImages.csv'
     # ld.writeimage(read_path)
 
-    read_path = './DataCollection/MovieInfo/Data/finalRatings.csv'
-    ld.writeRatings(read_path)
+    # read_path = './DataCollection/MovieInfo/Data/finalRatings.csv'
+    # ld.writeRatings(read_path)

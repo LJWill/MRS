@@ -6,7 +6,7 @@ from rest_framework.pagination import PageNumberPagination, LimitOffsetPaginatio
 from rest_framework.response import Response
 from .models import *
 from .serializers import *
-
+import jwt
 
 class MovieDetailAPI(APIView):
     serializer_class = MovieDetailSerializer
@@ -20,9 +20,9 @@ class MovieDetailAPI(APIView):
     def get(self, request, pk):
 
         snippet = self.get_object(pk)
-        serializer = MovieDetailSerializer(snippet,context = {'iduser':1})
+        serializer = MovieDetailSerializer(snippet, context={'iduser': 1})
         # serializer.get_rating_movie(1)
-        return Response(serializer.data,status=status.HTTP_200_OK)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     # def post(self, request, format=None):
     #     movie_id = request.data
@@ -40,34 +40,52 @@ class MovieListAPI(APIView):
     def get(self, request):
         movies = Movie.objects.all()
         page_obj = MyPageNumber()
-        page_movies = page_obj.paginate_queryset(movies, request=request, view=self)
-        serializer = self.serializer_class(page_movies, many=True,context = {'iduser':1})
-        return Response(serializer.data,status=status.HTTP_200_OK)
+        page_movies = page_obj.paginate_queryset(
+            movies, request=request, view=self)
+        serializer = self.serializer_class(
+            page_movies, many=True, context={'iduser': 1})
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
 
 class UserHistoryAPI(APIView):
     serializer_class = UserHistorySerializer
 
-    def put(self,request):
+    def get(self, request):
+        userMovies = UserHistory.objects.all()
+        page_obj = MyPageNumber()
+        page_movies = page_obj.paginate_queryset(
+            userMovies, request=request, view=self)
+        serializer = self.serializer_class(
+            page_movies, many=True, context={'iduser': 1})
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def put(self, request):
         userhistory = request.data
         print(userhistory)
         serializer = self.serializer_class(data=userhistory)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data,
-            status=status.HTTP_201_CREATED)
+                        status=status.HTTP_201_CREATED)
 
-    def delete(self,request):
-        userhistory = UserHistory.objects.get(user_iduser=request.data['user_iduser'],movie_idmovie=request.data['movie_idmovie'])
+    def delete(self, request):
+        userhistory = UserHistory.objects.get(
+            user_iduser=request.data['user_id'], movie_idmovie=request.data['movie_id'])
         userhistory.delete()
         return Response(status=status.HTTP_200_OK)
 
+
     def post(self, request):
-        userhistory = UserHistory.objects.filter(user_iduser=request.data['user_iduser'])
 
-        serializer = self.serializer_class(userhistory,many=True)
+        print(request.data['movies'])
+        data = request.data['movies']
+        userhistory = UserHistory.objects.filter(user_iduser=request.data['user_id'])
+        
+        print(userhistory)
+        serializer = self.serializer_class(userhistory, many=True)
 
-        return Response(serializer.data,
-            status=status.HTTP_200_OK)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
 
 class MyPageNumber(PageNumberPagination):
     page_size = 10
@@ -82,7 +100,8 @@ class RatingAPI(APIView):
     def put(self, request):
         rating = request.data
         try:
-            ratings = Ratings.objects.get(movie_idmovie=rating['movie_idmovie'], user_iduser=rating['user_iduser'])
+            ratings = Ratings.objects.get(
+                movie_idmovie=rating['movie_idmovie'], user_iduser=rating['user_iduser'])
             serializer = self.serializer_class(ratings, data=rating)
             serializer.is_valid(raise_exception=True)
         except:
@@ -93,4 +112,3 @@ class RatingAPI(APIView):
             serializer.data,
             status=status.HTTP_201_CREATED
         )
-
