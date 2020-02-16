@@ -51,13 +51,13 @@ export const authLogin = (username, password) => {
         console.log(res);
         const token = res.data.token;
         const username = res.data.username;
-        const expirationDate = new Date(new Date().getTime() + 3600 * 1000);
+        const expirationDate = new Date(new Date().getTime() + 36000 * 1000);
         localStorage.setItem('token', token);
         localStorage.setItem('username', username);
         localStorage.setItem('expirationDate', expirationDate);
         dispatch(authSuccess(token, username));
         dispatch(getUserMovies(token))
-        dispatch(checkAuthTimeout(3600));
+        dispatch(checkAuthTimeout(36000));
       })
       .catch(err => {
         dispatch(authFail(err));
