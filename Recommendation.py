@@ -15,44 +15,46 @@ from surprise.model_selection import cross_validate
 
 class Recommender:
     def recommend(self):
+        for i in range (1,20):
+            df = pd.read_csv("rating%d.csv"%i, header=None)
+            df.columns = ['id', 'rating','Movie_idmovie','User_iduser']
+            df = df[["User_iduser","Movie_idmovie","reating"]]
+            print("Data retrieved")
+            # df = pd.read_csv("ratings.csv")
+            reader = Reader(rating_scale=(1, 10), line_format='user item rating')
+            data = Dataset.load_from_df(df, reader)
+            trainset, testset = train_test_split(data, test_size=.25)
+            print("load")
+            list_algos = []
+            algo_KNNBasic = KNNBasic(sim_options={"user_based": False})
+            list_algos.append((algo_KNNBasic,"KNNBasic"))
 
-        df = pd.DataFrame(list(movies.Ratings.objects.all().values("user_iduser_id", "movie_idmovie_id", "rating")))
-        print("Data retrieved")
-        # df = pd.read_csv("ratings.csv")
-        reader = Reader(rating_scale=(1, 10), line_format='user item rating')
-        data = Dataset.load_from_df(df, reader)
-        trainset, testset = train_test_split(data, test_size=.25)
-        print("load")
-        list_algos = []
-        algo_KNNBasic = KNNBasic(sim_options={"user_based": False})
-        list_algos.append((algo_KNNBasic,"KNNBasic"))
+            # algo_KNNWithMeans = KNNWithMeans()
+            # list_algos.append((algo_KNNWithMeans,"KNNWithMeans"))
+            #
+            # algo_KNNWithZScore = KNNWithZScore()
+            # list_algos.append((algo_KNNWithZScore,"KNNWithZScore"))
 
-        # algo_KNNWithMeans = KNNWithMeans()
-        # list_algos.append((algo_KNNWithMeans,"KNNWithMeans"))
-        #
-        # algo_KNNWithZScore = KNNWithZScore()
-        # list_algos.append((algo_KNNWithZScore,"KNNWithZScore"))
+            # algo_KNNBaseline =KNNBaseline()
+            # list_algos.append((algo_KNNBaseline,"KNNBaseline"))
+            #
+            # algo_SVD =SVD()
+            # list_algos.append((algo_SVD,"SVD"))
+            #
+            # algo_SVDpp = SVDpp()
+            # list_algos.append((algo_SVDpp,"SVDpp"))
 
-        # algo_KNNBaseline =KNNBaseline()
-        # list_algos.append((algo_KNNBaseline,"KNNBaseline"))
-        #
-        # algo_SVD =SVD()
-        # list_algos.append((algo_SVD,"SVD"))
-        #
-        # algo_SVDpp = SVDpp()
-        # list_algos.append((algo_SVDpp,"SVDpp"))
+            # algo_NMF = NMF()
+            # list_algos.append((algo_NMF,"NMF"))
 
-        # algo_NMF = NMF()
-        # list_algos.append((algo_NMF,"NMF"))
+            # algo_CoClustering = CoClustering()
+            # list_algos.append((algo_CoClustering,"CoClustering"))
+            # #
+            # algo_SlopeOne = SlopeOne()
+            # list_algos.append((algo_SlopeOne,"SlopeOne"))
 
-        # algo_CoClustering = CoClustering()
-        # list_algos.append((algo_CoClustering,"CoClustering"))
-        # #
-        # algo_SlopeOne = SlopeOne()
-        # list_algos.append((algo_SlopeOne,"SlopeOne"))
-
-        for algo,name in list_algos:
-            algo = self.train(trainset,testset, algo,name)
+            for algo,name in list_algos:
+                algo = self.train(trainset,testset, algo,name+str(i))
 
 
 
