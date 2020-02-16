@@ -18,7 +18,7 @@ const containObj = (obj, list) => {
   return result;
 };
 
-const userMovieAction = (state, action) => {
+const userMovieSuccess = (state, action) => {
   if (!containObj(action.movie, state.userMovies)) {
     return updateObject(state, {
       userMovies: [...state.userMovies, action.movie]
@@ -32,20 +32,11 @@ const userMovieAction = (state, action) => {
 
 const userMovieRemove = (state, action) => {
   const newState = state.userMovies.filter(
-    item => item.idMovie !== action.movie.idMovie
+    item => item.id !== action.movie.id
   );
 
   return updateObject(state, {
     userMovies: newState
-  });
-};
-
-const userMovieSuccess = (state, action) => {
-  return updateObject(state, {
-    isFetching: false,
-    error: null,
-    userMovies: action.movie,
-    userAction: action.username
   });
 };
 
@@ -56,16 +47,42 @@ const userMovieFail = (state, action) => {
   });
 };
 
+
+const getUserMovieStart = (state, action) => {
+  return updateObject(state, {
+    isFetching: true,
+  });
+};
+
+const getUserMovieSuccess = (state, action) => {
+  return updateObject(state, {
+    isFetching: false,
+    userMovies: action.movie
+  });
+};
+
+const getUserMovieFail = (state, action) => {
+  return updateObject(state, {
+    isFetching: false,
+    error: action.error
+  });
+};
+
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case actionTypes.USER_MOVIE_ACTION:
-      return userMovieAction(state, action);
     case actionTypes.USER_MOVIE_REMOVE:
       return userMovieRemove(state, action);
     case actionTypes.USER_MOVIE_SUCCESS:
       return userMovieSuccess(state, action);
     case actionTypes.USER_MOVIE_FAIL:
       return userMovieFail(state, action);
+
+    case actionTypes.GET_USER_MOVIE_START:
+      return getUserMovieStart(state, action);
+    case actionTypes.GET_USER_MOVIE_SUCCESS:
+      return getUserMovieSuccess(state, action);
+    case actionTypes.GET_USER_MOVIE_FAIL:
+      return getUserMovieFail(state, action);
 
     default:
       return state;

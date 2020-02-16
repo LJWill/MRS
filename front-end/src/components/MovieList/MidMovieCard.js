@@ -104,13 +104,13 @@ class MidMovieCard extends Component {
 
   like = (e, data) => {
     e.stopPropagation();
+
     if(data.authenticated){
       let newData = Object.assign({ userAction: 'Like' }, data);
-    this.props.shuffleMovie(newData);
+      this.props.shuffleMovie(newData);
     }else{
       window.location.href = '/login'
     }
-    
   };
 
   dislike = (e, data) => {
@@ -200,7 +200,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => ({
   userMovieAction: movie => dispatch(movieActions.userMovieAction(movie)),
-  userMovieRemove: movie => dispatch(movieActions.userMovieRemove(movie))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MidMovieCard);

@@ -110,7 +110,7 @@ class Movie extends Component {
     e.stopPropagation();
 
     let newData = Object.assign({ userAction: 'Like' }, movie);
-    this.props.userMovieAction(newData, { userAction: 'Like' });
+    this.props.userMovieAction(newData, this.props.token);
     
   };
 
@@ -195,12 +195,13 @@ const mapStateToProps = state => {
   return {
     movies: state.movieBrowser.movies,
     userMovies: state.userMovie.userMovies,
-    authenticated: state.auth.token !== null
+    authenticated: state.auth.token !== null,
+    token: state.auth.token
   };
 };
 
 const mapDispatchToProps = dispatch => ({
-  userMovieAction: movie => dispatch(movieActions.userMovieAction(movie)),
+  userMovieAction: (movie, token) => dispatch(movieActions.userMovieAction(movie, token)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Movie);

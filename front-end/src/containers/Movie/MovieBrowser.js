@@ -15,12 +15,13 @@ class MovieBrowser extends React.Component {
   };
 
   shuffleMovie = movie => {
+
     this.setState({
       movies: _.shuffle(this.state.movies),
       expanded: !this.state.expanded
     });
 
-    this.props.userMovieAction(movie);
+    this.props.userMovieAction(movie, this.props.token);
 
     window.scrollTo({
       top: 0,
@@ -30,12 +31,15 @@ class MovieBrowser extends React.Component {
   };
 
   anotherShuffleMovie = movie => {
+
+    console.log('9999999999', this.props.token)
+
     this.setState({
       movies: _.shuffle(this.state.movies),
       expanded: !this.state.expanded
     });
 
-    this.props.userMovieRemove(movie);
+    this.props.userMovieRemove(movie, this.props.token);
 
     window.scrollTo({
       top: 0,
@@ -54,13 +58,14 @@ class MovieBrowser extends React.Component {
 
   componentWillMount() {
     let m = this.props.movies[0];
-    // console.log('++++++++++', m && m.now_playing);
+    // console.log('++++++++++', m && m);
     m && this.setState({ movies: m.top_rated });
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.movies !== this.props.movies) {
       // get now playing movies
+      console.log('++++++++++', nextProps.movies[0].top_rated);
       this.setState({ movies: nextProps.movies[0].top_rated });
     }
   }
@@ -103,12 +108,13 @@ const mapStateToProps = state => {
     // genres: state.movieBrowser.genres,
     movies: state.movieBrowser.movies,
     userMovies: state.userMovie.userMovies,
+    token: state.auth.token
   };
 };
 
 const mapDispatchToProps = dispatch => ({
-  userMovieAction: movie => dispatch(movieActions.userMovieAction(movie)),
-  userMovieRemove: movie => dispatch(movieActions.userMovieRemove(movie))
+  userMovieAction: (movie, token) => dispatch(movieActions.userMovieAction(movie, token)),
+  userMovieRemove: (movie, token) => dispatch(movieActions.userMovieRemove(movie, token))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MovieBrowser);

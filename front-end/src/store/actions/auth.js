@@ -1,5 +1,6 @@
-import axios from "axios";
-import * as actionTypes from "./actionTypes";
+// import axios from 'axios';
+import { local_axiosMovies as axios } from '../../axios';
+import * as actionTypes from './actionTypes';
 
 export const authStart = () => {
   return {
@@ -23,8 +24,8 @@ export const authFail = error => {
 };
 
 export const logout = () => {
-  localStorage.removeItem("token");
-  localStorage.removeItem("expirationDate");
+  localStorage.removeItem('token');
+  localStorage.removeItem('expirationDate');
   return {
     type: actionTypes.AUTH_LOGOUT
   };
@@ -42,19 +43,20 @@ export const authLogin = (username, password) => {
   return dispatch => {
     dispatch(authStart());
     axios
-      .post("http://localhost:8000/api/users/login", {
+      .post('users/login', {
         username_or_email: username,
         password: password
       })
       .then(res => {
-        console.log(res)
+        console.log(res);
         const token = res.data.token;
-        const username = res.data.username
+        const username = res.data.username;
         const expirationDate = new Date(new Date().getTime() + 3600 * 1000);
-        localStorage.setItem("token", token);
-        localStorage.setItem("username", username);
-        localStorage.setItem("expirationDate", expirationDate);
+        localStorage.setItem('token', token);
+        localStorage.setItem('username', username);
+        localStorage.setItem('expirationDate', expirationDate);
         dispatch(authSuccess(token, username));
+        dispatch(getUserMovies(token))
         dispatch(checkAuthTimeout(3600));
       })
       .catch(err => {
@@ -67,7 +69,7 @@ export const authSignup = (username, email, password, password2) => {
   return dispatch => {
     dispatch(authStart());
     axios
-      .post("http://localhost:8000/api/users/register", {
+      .post('users/register', {
         username: username,
         email: email,
         password: password,
@@ -75,11 +77,11 @@ export const authSignup = (username, email, password, password2) => {
       })
       .then(res => {
         const token = res.data.token;
-        const username = res.data.username
+        const username = res.data.username;
         const expirationDate = new Date(new Date().getTime() + 3600 * 1000);
-        localStorage.setItem("token", token);
-        localStorage.setItem("username", username);
-        localStorage.setItem("expirationDate", expirationDate);
+        localStorage.setItem('token', token);
+        localStorage.setItem('username', username);
+        localStorage.setItem('expirationDate', expirationDate);
         dispatch(authSuccess(token, username));
         dispatch(checkAuthTimeout(3600));
       })
@@ -89,19 +91,57 @@ export const authSignup = (username, email, password, password2) => {
   };
 };
 
+const getUserMoviesStart = () => {
+  return {
+    type: actionTypes.GET_USER_MOVIE_START
+  };
+};
+
+const getUserMoviesSuccess = (movie) => {
+  return {
+    type: actionTypes.GET_USER_MOVIE_SUCCESS,
+    movie
+  };
+};
+
+const getUserMoviesFail = error => {
+  return {
+    type: actionTypes.GET_USER_MOVIE_FAIL,
+    error: error
+  };
+};
+
+export const getUserMovies = (token) => {
+  return dispatch => {
+    dispatch(getUserMoviesStart());
+
+    axios
+      .post('movie/info/usermovies/', {
+        token
+      })
+      .then(res => {
+        dispatch(getUserMoviesSuccess(res.data));
+      })
+      .catch(err => {
+        dispatch(getUserMoviesFail(err));
+      });
+  };
+};
+
 export const authCheckState = () => {
   return dispatch => {
-    const token = localStorage.getItem("token");
-    const username = localStorage.getItem("username");
+    const token = localStorage.getItem('token');
+    const username = localStorage.getItem('username');
 
     if (token === undefined) {
       dispatch(logout());
     } else {
-      const expirationDate = new Date(localStorage.getItem("expirationDate"));
+      const expirationDate = new Date(localStorage.getItem('expirationDate'));
       if (expirationDate <= new Date()) {
         dispatch(logout());
       } else {
         dispatch(authSuccess(token, username));
+        dispatch(getUserMovies(token))
         dispatch(
           checkAuthTimeout(
             (expirationDate.getTime() - new Date().getTime()) / 1000

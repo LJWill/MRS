@@ -179,10 +179,33 @@ export const userMovieStart = () => {
   };
 };
 
-export const userMovieRemove = movie => {
-  return {
-    type: actionTypes.USER_MOVIE_REMOVE,
-    movie
+export const userMovieRemove = (movie, token) => {
+  // return {
+  //   type: actionTypes.USER_MOVIE_REMOVE,
+  //   movie
+  // };
+  console.log('>>>>>>>>>>>>>>>>>>>>>>>>', token, movie.id);
+  return dispatch => {
+    axios
+      .delete('movie/info/userhistory/', {
+        data: { 
+          token, 
+          userAction: movie.userAction, 
+          movie_idmovie: movie.id
+        }
+      })
+      .then(res => {
+        console.log(res);
+        if (res.status === 200) {
+          dispatch({
+            type: actionTypes.USER_MOVIE_REMOVE,
+            movie
+          });
+        }
+      })
+      .catch(err => {
+        console.log('*****', err);
+      });
   };
 };
 
@@ -201,17 +224,19 @@ export const userMovieFail = error => {
 };
 
 // dispatch user movie action
-export const userMovieAction = (movie) => {
-  // return {
-  //   type: actionTypes.USER_MOVIE_ACTION,
-  //   movie
-  // };
+export const userMovieAction = (movie, token) => {
+  const userAction = movie.userAction === 'Like' ? true : false;
+  const currentUrl = window.location.href;
 
-  const userAction = movie.userAction === 'Like' ? true : false
+  console.log(
+    'yoooooooooooooooooo',
+    currentUrl.split('/')[currentUrl.split('/').length - 1]
+  );
+  console.log(token);
+
   return dispatch => {
     dispatch(userMovieStart());
-    console.log('!!!!!!!!!!',movie, userAction)
-    const token = localStorage.getItem('token');
+    console.log('!!!!!!!!!!', movie, userAction);
 
     if (!token) {
       return dispatch(userMovieFail('token not exist'));
@@ -225,10 +250,12 @@ export const userMovieAction = (movie) => {
       })
       .then(res => {
         console.log(res);
-        if (res.status === 201|| res.status === 200) {
+        if (res.status === 201 || res.status === 200) {
           dispatch(userMovieSuccess(movie));
-          window.location.href = '/movies'
-        }else{
+          if (currentUrl !== 'movies') {
+            window.location.href = '/movies';
+          }
+        } else {
           dispatch(userMovieFail(res));
         }
       })
