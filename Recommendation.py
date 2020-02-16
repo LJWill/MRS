@@ -61,6 +61,7 @@ class Recommender:
 
     def train(self, trainset, testset, algo, name):
         starttime = datetime.now()
+        simi = algo.compute_similarities(trainset)
         algo.fit(trainset)
         pred = algo.predict(testset[0][0], testset[0][1]
                             , verbose=True)
