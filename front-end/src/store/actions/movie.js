@@ -226,17 +226,11 @@ export const userMovieFail = error => {
 // dispatch user movie action
 export const userMovieAction = (movie, token) => {
   const userAction = movie.userAction === 'Like' ? true : false;
-  const currentUrl = window.location.href;
-
-  console.log(
-    'yoooooooooooooooooo',
-    currentUrl.split('/')[currentUrl.split('/').length - 1]
-  );
-  console.log(token);
+  const href = window.location.href.split('/');
+  const currentUrl = href[href.length - 1]
 
   return dispatch => {
     dispatch(userMovieStart());
-    console.log('!!!!!!!!!!', movie, userAction);
 
     if (!token) {
       return dispatch(userMovieFail('token not exist'));
@@ -249,7 +243,6 @@ export const userMovieAction = (movie, token) => {
         movie_idmovie: movie.idMovie
       })
       .then(res => {
-        console.log(res);
         if (res.status === 201 || res.status === 200) {
           dispatch(userMovieSuccess(movie));
           if (currentUrl !== 'movies') {

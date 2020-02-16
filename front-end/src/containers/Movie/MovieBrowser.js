@@ -65,7 +65,6 @@ class MovieBrowser extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.movies !== this.props.movies) {
       // get now playing movies
-      console.log('++++++++++', nextProps.movies[0].top_rated);
       this.setState({ movies: nextProps.movies[0].top_rated });
     }
   }
@@ -95,9 +94,9 @@ class MovieBrowser extends React.Component {
 
 const MovieView = data => {
   return data.data.map(m => (
-    <Flipped flipId={m.idMovie}>
+    <Flipped flipId={m.idMovie} key={m.idMovie}>
       <Grid.Column>
-        <MidMovieCard {...m} key={m.idMovie} shuffleMovie={data.func} />
+        <MidMovieCard {...m}  shuffleMovie={data.func} />
       </Grid.Column>
     </Flipped>
   ));
