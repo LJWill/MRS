@@ -79,6 +79,68 @@ class TopRatedMovieAPI(GenericAPIView):
 
         return Response(data, status=status.HTTP_200_OK)
 
+class RecentMovieAPI(GenericAPIView):
+    serializer_class = MovieInfoSerializer
+    pagination_class = CustomPagination
+    queryset = Movie.objects.all().order_by('-release_date')
+
+    def get(self, request):
+        queryset = self.filter_queryset(self.get_queryset())
+        page = self.paginate_queryset(queryset)
+
+        if page is not None:
+            serializer = self.serializer_class(
+                page, many=True,)
+            result = self.get_paginated_response(serializer.data)
+            data = result.data  # pagination data
+        else:
+            serializer = self.serializer_class(
+                page, many=True)
+            data = serializer.data
+
+        return Response(data, status=status.HTTP_200_OK)
+
+class PopularMovieAPI(GenericAPIView):
+    serializer_class = MovieInfoSerializer
+    pagination_class = CustomPagination
+    queryset = Movie.objects.all().order_by('-popularity')
+
+    def get(self, request):
+        queryset = self.filter_queryset(self.get_queryset())
+        page = self.paginate_queryset(queryset)
+
+        if page is not None:
+            serializer = self.serializer_class(
+                page, many=True,)
+            result = self.get_paginated_response(serializer.data)
+            data = result.data  # pagination data
+        else:
+            serializer = self.serializer_class(
+                page, many=True)
+            data = serializer.data
+
+        return Response(data, status=status.HTTP_200_OK)
+
+class MostWatchedMovieAPI(GenericAPIView):
+    serializer_class = MovieInfoSerializer
+    pagination_class = CustomPagination
+    queryset = Movie.objects.all().order_by('-vote_count')
+
+    def get(self, request):
+        queryset = self.filter_queryset(self.get_queryset())
+        page = self.paginate_queryset(queryset)
+
+        if page is not None:
+            serializer = self.serializer_class(
+                page, many=True,)
+            result = self.get_paginated_response(serializer.data)
+            data = result.data  # pagination data
+        else:
+            serializer = self.serializer_class(
+                page, many=True)
+            data = serializer.data
+
+        return Response(data, status=status.HTTP_200_OK)
 
 class CreateUserHistoryAPI(APIView):
     serializer_class = CreateUserHistorySerializer
