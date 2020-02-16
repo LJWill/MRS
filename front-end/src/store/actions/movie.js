@@ -1,4 +1,4 @@
-import { axiosMovies as axios } from '../../axios';
+import { local_axiosMovies as axios, tmdb_axiosMovies as tmdb} from '../../axios';
 import * as actionTypes from './actionTypes';
 
 // get genre
@@ -97,6 +97,8 @@ export const getMovies = requestData => {
 };
 
 export const getMovieDetail = id => {
+
+  console.log('heloooooooooooo', id)
   const requests = [
     getMovie(id),
     getActors(id),
@@ -120,19 +122,19 @@ export const getMovieDetail = id => {
 };
 
 export const getMovie = id => {
-  return axios.get(`/movie/${id}`, {
+  return tmdb.get(`/movie/${id}`, {
     params: {}
   });
 };
 
 export const getActors = id => {
-  return axios.get(`/movie/${id}/credits`, {
+  return tmdb.get(`/movie/${id}/credits`, {
     params: { language: ""}
   });
 };
 
 export const getMovieImages = (id) => {
-  return axios.get(`/movie/${id}/images`, {
+  return tmdb.get(`/movie/${id}/images`, {
     params: { language: "null"}
   });
 };
@@ -146,7 +148,7 @@ export const searchMovies = requestData => {
 export const getGenres = () => {
   return dispatch => {
     dispatch(getGenreStart());
-    axios
+    tmdb
       .get(`genre/movie/list`, { params: {} })
       .then(res => {
         console.log(res);
@@ -161,7 +163,7 @@ export const getGenres = () => {
 };
 
 export const getRecommendations = id => {
-  return axios.get(`/movie/${id}/recommendations`, {
+  return tmdb.get(`/movie/${id}/recommendations`, {
     params: {
       language: 'null',
       page: 1

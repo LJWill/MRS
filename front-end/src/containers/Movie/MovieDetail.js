@@ -263,7 +263,7 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  getMovieDetail: id => dispatch(movieActions.getMovieDetail(id))
+  getMovieDetail: idMovie => dispatch(movieActions.getMovieDetail(idMovie))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MovieDetail);

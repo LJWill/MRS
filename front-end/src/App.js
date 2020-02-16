@@ -17,12 +17,12 @@ class App extends Component {
 
     const { getMovies, getGenres } = this.props;
 
-    console.log(this.props)
     getMovies({ filters });
     // getGenres();
   }
 
   render() {
+
     return (
       <Router>
         <CustomLayout {...this.props}>

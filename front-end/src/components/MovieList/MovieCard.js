@@ -135,8 +135,11 @@ class Movie extends Component {
   };
 
   render() {
-    const { title, vote_average, id, poster_path } = this.props;
 
+    const { title, vote_average, idMovie, poster_path } = this.props;
+
+    console.log('----+++++++', this.props)
+    
     let backgroundColor;
     if (vote_average >= 8) {
       backgroundColor = 'rgb(78, 173, 31)';
@@ -152,7 +155,7 @@ class Movie extends Component {
         trigger={
           <Wrapper
             style={this.state.style}
-            onClick={() => this.jumpTo(title, id)}
+            onClick={() => this.jumpTo(title, idMovie)}
           >
             <Rating style={{ backgroundColor }}>
               {vote_average > 9.9 ? vote_average.toFixed(0) : vote_average.toFixed(1)}
