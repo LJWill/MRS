@@ -59,13 +59,13 @@ class MovieBrowser extends React.Component {
   componentWillMount() {
     let m = this.props.movies[0];
     // console.log('++++++++++', m && m);
-    m && this.setState({ movies: m.top_rated });
+    m && this.setState({ movies: m.most_watched });
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.movies !== this.props.movies) {
       // get now playing movies
-      this.setState({ movies: nextProps.movies[0].top_rated });
+      this.setState({ movies: nextProps.movies[0].most_watched });
     }
   }
 

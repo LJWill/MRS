@@ -8,8 +8,7 @@ import CustomLayout from "./containers/Layout";
 import * as movieActions from './store/actions/movie';
 import * as authActions from './store/actions/auth';
 
-const filters = ['top_rated'];
-// const filters = ['now_playing', 'popular', 'top_rated', 'upcoming'];
+const filters = ['most_watched', 'popular', 'recent', 'top_rated'];
 
 class App extends Component {
   componentDidMount() {

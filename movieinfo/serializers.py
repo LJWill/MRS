@@ -46,11 +46,11 @@ class RetrieveUserHistorySerializer(serializers.ModelSerializer):
     poster_path = serializers.SerializerMethodField()
     backdrop_path = serializers.SerializerMethodField()
     vote_average = serializers.SerializerMethodField()
-    id = serializers.CharField(source='movie_idmovie.idMovie')
+    idMovie = serializers.CharField(source='movie_idmovie.idMovie')
      
     class Meta:
         model = UserHistory
-        fields = ('id', 'userAction', 'title', 'poster_path', 'backdrop_path', 'vote_average')
+        fields = ('idMovie', 'userAction', 'title', 'poster_path', 'backdrop_path', 'vote_average')
 
     # def get_user_movies(self, obj):
     #     movie_obj = obj.movie_idmovie

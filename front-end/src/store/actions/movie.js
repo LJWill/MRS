@@ -180,18 +180,13 @@ export const userMovieStart = () => {
 };
 
 export const userMovieRemove = (movie, token) => {
-  // return {
-  //   type: actionTypes.USER_MOVIE_REMOVE,
-  //   movie
-  // };
-  console.log('>>>>>>>>>>>>>>>>>>>>>>>>', token, movie.id);
   return dispatch => {
     axios
       .delete('movie/info/userhistory/', {
         data: { 
           token, 
           userAction: movie.userAction, 
-          movie_idmovie: movie.id
+          movie_idmovie: movie.idMovie
         }
       })
       .then(res => {
@@ -225,7 +220,6 @@ export const userMovieFail = error => {
 
 // dispatch user movie action
 export const userMovieAction = (movie, token) => {
-  const userAction = movie.userAction === 'Like' ? true : false;
   const href = window.location.href.split('/');
   const currentUrl = href[href.length - 1]
 
@@ -239,7 +233,7 @@ export const userMovieAction = (movie, token) => {
     axios
       .post('movie/info/userhistory/', {
         token,
-        userAction,
+        userAction: movie.userAction,
         movie_idmovie: movie.idMovie
       })
       .then(res => {

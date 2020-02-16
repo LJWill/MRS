@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar, faEye } from '@fortawesome/free-regular-svg-icons';
-import { urlTitle, isSaved, removeFromList } from '../../utils';
+import { urlTitle, removeFromList } from '../../utils';
 import config from '../../config';
 import { GenericButton, Button } from './Button';
 import * as movieActions from '../../store/actions/movie';
@@ -101,7 +101,6 @@ class Movie extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isSaved: isSaved(props),
       style: { opacity: 1, transform: 'rotateY(0)' }
     };
   }
@@ -109,7 +108,7 @@ class Movie extends Component {
   add = (e, movie) => {
     e.stopPropagation();
 
-    let newData = Object.assign({ userAction: 'Like' }, movie);
+    let newData = Object.assign({ userAction: true }, movie);
     this.props.userMovieAction(newData, this.props.token);
     
   };
@@ -185,7 +184,7 @@ class Movie extends Component {
         position="bottom center"
         style={style.toolTip}
       >
-        <Popup.Header>Click to view more info</Popup.Header>
+        <Popup.Header>Click to view more</Popup.Header>
       </Popup>
     );
   }

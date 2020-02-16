@@ -106,7 +106,7 @@ class MidMovieCard extends Component {
     e.stopPropagation();
 
     if(data.authenticated){
-      let newData = Object.assign({ userAction: 'Like' }, data);
+      let newData = Object.assign({ userAction: true }, data);
       this.props.shuffleMovie(newData);
     }else{
       window.location.href = '/login'
@@ -116,7 +116,7 @@ class MidMovieCard extends Component {
   dislike = (e, data) => {
     e.stopPropagation();
     if(data.authenticated){
-      let newData = Object.assign({ userAction: 'DisLike' }, data);
+      let newData = Object.assign({ userAction: false }, data);
     this.props.shuffleMovie(newData);
     }else{
       window.location.href = '/login'
@@ -145,7 +145,7 @@ class MidMovieCard extends Component {
   };
 
   render() {
-    const { title, vote_average, id, poster_path } = this.props;
+    const { title, vote_average, idMovie, poster_path } = this.props;
 
     let backgroundColor;
     if (vote_average >= 8) {
@@ -164,7 +164,7 @@ class MidMovieCard extends Component {
                 {/* {vote_average.toFixed(1)} */}
                 {vote_average > 9.9 ? vote_average.toFixed(0) : vote_average.toFixed(1)}
               </Rating>
-              <Content  onClick={() => this.jumpTo(title, id)}>
+              <Content  onClick={() => this.jumpTo(title, idMovie)}>
                 <h3>{title}</h3>
                 <Button.Group style={styles.buttonGroup}>
                   <Button color="red" onClick={(e) => this.like(e, this.props)}>
@@ -183,7 +183,7 @@ class MidMovieCard extends Component {
         position="top center"
         style={styles.toolTip}
       >
-        <Popup.Header>Click to view more info</Popup.Header>
+        <Popup.Header>Click to view more</Popup.Header>
       </Popup>
     );
   }
