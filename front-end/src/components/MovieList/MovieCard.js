@@ -142,7 +142,8 @@ class Movie extends Component {
       backgroundColor = 'rgb(78, 173, 31)';
     } else if (vote_average <= 6) {
       backgroundColor = 'rgb(166, 173, 31)';
-    } else {
+    } 
+    else {
       backgroundColor = '#aa2e85';
     }
 
@@ -154,7 +155,8 @@ class Movie extends Component {
             onClick={() => this.jumpTo(title, id)}
           >
             <Rating style={{ backgroundColor }}>
-              {vote_average.toFixed(1)}
+              {vote_average > 9.9 ? vote_average.toFixed(0) : vote_average.toFixed(1)}
+              {/* {vote_average.toFixed(1)} */}
             </Rating>
             <Content>
               <h3>{title}</h3>
