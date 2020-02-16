@@ -40,7 +40,7 @@ class MovieList extends React.Component {
               movies.map(movie => (
                   <SmallMovieCard
                     {...movie}
-                    key={movie.id}
+                    key={movie.idMovie}
                     onTop={this.props.onTop}
                     func={this.props.func}
                   />

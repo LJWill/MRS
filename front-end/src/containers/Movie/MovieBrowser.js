@@ -55,13 +55,13 @@ class MovieBrowser extends React.Component {
   componentWillMount() {
     let m = this.props.movies[0];
     // console.log('++++++++++', m && m.now_playing);
-    m && this.setState({ movies: m.now_playing });
+    m && this.setState({ movies: m.top_rated });
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.movies !== this.props.movies) {
       // get now playing movies
-      this.setState({ movies: nextProps.movies[0].now_playing });
+      this.setState({ movies: nextProps.movies[0].top_rated });
     }
   }
 
@@ -90,9 +90,9 @@ class MovieBrowser extends React.Component {
 
 const MovieView = data => {
   return data.data.map(m => (
-    <Flipped flipId={m.id}>
+    <Flipped flipId={m.idMovie}>
       <Grid.Column>
-        <MidMovieCard {...m} key={m.id} shuffleMovie={data.func} />
+        <MidMovieCard {...m} key={m.idMovie} shuffleMovie={data.func} />
       </Grid.Column>
     </Flipped>
   ));

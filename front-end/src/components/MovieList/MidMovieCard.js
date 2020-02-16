@@ -137,7 +137,7 @@ class MidMovieCard extends Component {
         { style: { opacity: 0, transform: 'rotateY(70deg)' } },
         () => {
           setTimeout(() => {
-            this.props.removeFromFavorites(movie.id);
+            this.props.removeFromFavorites(movie.idMovie);
           }, 500);
         }
       );
@@ -161,7 +161,8 @@ class MidMovieCard extends Component {
         trigger={
           <Wrapper style={this.state.style}>
               <Rating style={{ backgroundColor }}>
-                {vote_average.toFixed(1)}
+                {/* {vote_average.toFixed(1)} */}
+                {vote_average > 9.9 ? vote_average.toFixed(0) : vote_average.toFixed(1)}
               </Rating>
               <Content  onClick={() => this.jumpTo(title, id)}>
                 <h3>{title}</h3>

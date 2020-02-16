@@ -11,7 +11,7 @@ const initialState = {
 const containObj = (obj, list) => {
   let result = false;
   list.map(item => {
-    if (obj.id === item.id) {
+    if (obj.idMovie === item.idMovie) {
       result = true;
     }
   });
@@ -32,7 +32,7 @@ const userMovieAction = (state, action) => {
 };
 
 const userMovieRemove = (state, action) => {
-  const newState = state.userMovies.filter(item => item.id !== action.movie.id);
+  const newState = state.userMovies.filter(item => item.idMovie !== action.movie.idMovie);
 
   return updateObject(state, {
     userMovies: newState
