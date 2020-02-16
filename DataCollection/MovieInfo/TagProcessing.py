@@ -112,7 +112,7 @@ class TagProcessing:
         df.to_csv("Data/output.csv")
 
     def query(self, movieId, num=100):
-        result = pd.read_csv("newData/output.csv", header=0, index_col=0)
+        result = pd.read_csv("Data/output.csv", header=0, index_col=0)
         rs = []
         for i in list(result.keys()):
             rs.append(int(i))
