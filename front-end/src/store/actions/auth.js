@@ -120,6 +120,7 @@ export const getUserMovies = (token) => {
         token
       })
       .then(res => {
+        console.log('&&&&&&&&&', res.data)
         dispatch(getUserMoviesSuccess(res.data));
       })
       .catch(err => {

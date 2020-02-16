@@ -108,7 +108,7 @@ class Movie extends Component {
   add = (e, movie) => {
     e.stopPropagation();
 
-    let newData = Object.assign({ userAction: 'Like' }, movie);
+    let newData = Object.assign({ userAction: true }, movie);
     this.props.userMovieAction(newData, this.props.token);
     
   };
