@@ -219,7 +219,7 @@ class LoadingData:
             total = chunk.shape[0]
             querylist = []
             for index, row in chunk.iterrows():
-                print("\r"  +"##### Rating Chunk %d"% (nochunk)+'processing %d out of %d items...' % (count, total), end='')
+                print("\r"  +"##### Rating Chunk %d "% (nochunk)+'processing %d out of %d items...' % (count, total), end='')
                 count += 1
 
                 try:

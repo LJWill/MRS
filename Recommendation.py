@@ -15,11 +15,11 @@ from surprise.model_selection import cross_validate
 
 class Recommender:
     def recommend(self):
-        for i in range (1,20):
-            print("No.%d genre start:"%i)
-            df = pd.read_csv("rating%d.csv"%i, header=None)
-            df.columns = ['id', 'rating','Movie_idmovie','User_iduser']
-            df = df[["User_iduser","Movie_idmovie","rating"]]
+        for i in range(2, 20):
+            print("No.%d genre start:" % i)
+            df = pd.read_csv("./rating/rating%d.csv" % i, header=None)
+            df.columns = ['id', 'rating', 'Movie_idmovie', 'User_iduser']
+            df = df[["User_iduser", "Movie_idmovie", "rating"]]
             print("Data retrieved")
             # df = pd.read_csv("ratings.csv")
             reader = Reader(rating_scale=(1, 10), line_format='user item rating')
@@ -28,7 +28,7 @@ class Recommender:
             print("load")
             list_algos = []
             algo_KNNBasic = KNNBasic(sim_options={"user_based": False})
-            list_algos.append((algo_KNNBasic,"KNNBasic"))
+            list_algos.append((algo_KNNBasic, "KNNBasic"))
 
             # algo_KNNWithMeans = KNNWithMeans()
             # list_algos.append((algo_KNNWithMeans,"KNNWithMeans"))
@@ -54,21 +54,18 @@ class Recommender:
             # algo_SlopeOne = SlopeOne()
             # list_algos.append((algo_SlopeOne,"SlopeOne"))
 
-            for algo,name in list_algos:
-                algo = self.train(trainset,testset, algo,name+str(i))
-
-
+            for algo, name in list_algos:
+                algo = self.train(trainset, testset, algo, name + str(i))
 
     def train(self, trainset, testset, algo, name):
         starttime = datetime.now()
-        simi = algo.compute_similarities(trainset)
         algo.fit(trainset)
         pred = algo.predict(testset[0][0], testset[0][1]
                             , verbose=True)
         endtime = datetime.now()
 
-        print(name + ": %d seconds"%(endtime - starttime).seconds)
-        dump.dump(name, algo=algo, verbose= 0)
+        print('./KNNBasic/' + name + ": %d seconds" % (endtime - starttime).seconds)
+        dump.dump('./KNNBasic/' + name, algo=algo, verbose=0)
         return algo
 
 
