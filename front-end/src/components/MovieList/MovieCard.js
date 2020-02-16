@@ -108,9 +108,10 @@ class Movie extends Component {
 
   add = (e, movie) => {
     e.stopPropagation();
-    let newData = Object.assign({ userAction: 'Like' }, movie);
-    this.props.userMovieAction(newData);
 
+    let newData = Object.assign({ userAction: 'Like' }, movie);
+    this.props.userMovieAction(newData, { userAction: 'Like' });
+    
   };
 
   remove = movie => {
@@ -138,8 +139,6 @@ class Movie extends Component {
 
     const { title, vote_average, idMovie, poster_path } = this.props;
 
-    console.log('----+++++++', this.props)
-    
     let backgroundColor;
     if (vote_average >= 8) {
       backgroundColor = 'rgb(78, 173, 31)';
@@ -202,7 +201,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => ({
   userMovieAction: movie => dispatch(movieActions.userMovieAction(movie)),
-  userMovieRemove: movie => dispatch(movieActions.userMovieRemove(movie))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Movie);

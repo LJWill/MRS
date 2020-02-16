@@ -171,6 +171,7 @@ class MovieDetail extends Component {
         </Dimmer>
       );
     }
+    
     return (
       <Wrapper>
         <Nav />

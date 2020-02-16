@@ -1,4 +1,7 @@
-import { local_axiosMovies as axios, tmdb_axiosMovies as tmdb} from '../../axios';
+import {
+  local_axiosMovies as axios,
+  tmdb_axiosMovies as tmdb
+} from '../../axios';
 import * as actionTypes from './actionTypes';
 
 // get genre
@@ -97,8 +100,7 @@ export const getMovies = requestData => {
 };
 
 export const getMovieDetail = id => {
-
-  console.log('heloooooooooooo', id)
+  console.log('heloooooooooooo', id);
   const requests = [
     getMovie(id),
     getActors(id),
@@ -129,13 +131,13 @@ export const getMovie = id => {
 
 export const getActors = id => {
   return tmdb.get(`/movie/${id}/credits`, {
-    params: { language: ""}
+    params: { language: '' }
   });
 };
 
-export const getMovieImages = (id) => {
+export const getMovieImages = id => {
   return tmdb.get(`/movie/${id}/images`, {
-    params: { language: "null"}
+    params: { language: 'null' }
   });
 };
 
@@ -171,24 +173,18 @@ export const getRecommendations = id => {
   });
 };
 
-
-
-// dispatch user movie action
-
-export const userMovieAction = (movie) => {
+export const userMovieStart = () => {
   return {
-    type: actionTypes.USER_MOVIE_ACTION,
-    movie
+    type: actionTypes.USER_MOVIE_START
   };
 };
 
-export const userMovieRemove = (movie) => {
+export const userMovieRemove = movie => {
   return {
     type: actionTypes.USER_MOVIE_REMOVE,
     movie
   };
 };
-
 
 export const userMovieSuccess = movie => {
   return {
@@ -204,15 +200,40 @@ export const userMovieFail = error => {
   };
 };
 
+// dispatch user movie action
+export const userMovieAction = (movie) => {
+  // return {
+  //   type: actionTypes.USER_MOVIE_ACTION,
+  //   movie
+  // };
 
-export const dispatchUserMovie = (movie, userAction) => {
-
+  const userAction = movie.userAction === 'Like' ? true : false
   return dispatch => {
-    // axios.get(`/movie/${id}`, {
-    //   params: {}
-    // });
+    dispatch(userMovieStart());
+    console.log('!!!!!!!!!!',movie, userAction)
+    const token = localStorage.getItem('token');
 
-    dispatch(userMovieSuccess(movie))
+    if (!token) {
+      return dispatch(userMovieFail('token not exist'));
+    }
 
+    axios
+      .post('movie/info/userhistory/', {
+        token,
+        userAction,
+        movie_idmovie: movie.idMovie
+      })
+      .then(res => {
+        console.log(res);
+        if (res.status === 201|| res.status === 200) {
+          dispatch(userMovieSuccess(movie));
+          window.location.href = '/movies'
+        }else{
+          dispatch(userMovieFail(res));
+        }
+      })
+      .catch(err => {
+        dispatch(userMovieFail(err));
+      });
   };
 };

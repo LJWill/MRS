@@ -28,11 +28,12 @@ const userMovieAction = (state, action) => {
       userMovies: state.userMovies
     });
   }
-
 };
 
 const userMovieRemove = (state, action) => {
-  const newState = state.userMovies.filter(item => item.idMovie !== action.movie.idMovie);
+  const newState = state.userMovies.filter(
+    item => item.idMovie !== action.movie.idMovie
+  );
 
   return updateObject(state, {
     userMovies: newState
