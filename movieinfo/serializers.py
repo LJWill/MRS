@@ -29,12 +29,15 @@ class CreateUserHistorySerializer(serializers.ModelSerializer):
         return userHistory
 
 
+
 class MovieInfoSerializer(serializers.ModelSerializer):
+
 
     class Meta:
         model = Movie
-        fields = ('idMovie', 'poster_path', 'backdrop_path',
-                  'title', 'vote_average')
+        # fields = ['total_page', 'results']
+        fields = '__all__'
+
 
 class RetrieveUserHistorySerializer(serializers.ModelSerializer):
 

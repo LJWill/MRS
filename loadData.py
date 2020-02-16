@@ -31,6 +31,10 @@ class LoadingData:
                 except:
                     new_movie = movies.Movie.objects.create(idMovie=row["id"])
 
+                    # popuarity = row["popularity"]
+                    # if not pd.isnull(popuarity):
+                    #     new_movie.popuarity = popuarity
+
                     poster_path = row["poster_path"]
                     if not pd.isnull(poster_path):
                         new_movie.poster_path = poster_path
