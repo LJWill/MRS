@@ -183,7 +183,7 @@ class MidMovieCard extends Component {
         position="top center"
         style={styles.toolTip}
       >
-        <Popup.Header>Click to view more info</Popup.Header>
+        <Popup.Header>Click to view more</Popup.Header>
       </Popup>
     );
   }

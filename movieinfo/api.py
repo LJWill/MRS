@@ -61,7 +61,7 @@ class MovieListAPI(GenericAPIView):
 class TopRatedMovieAPI(GenericAPIView):
     serializer_class = MovieInfoSerializer
     pagination_class = CustomPagination
-    queryset = Movie.objects.all().order_by('-vote_average')
+    queryset = Movie.objects.all().order_by('-vote_average', '-vote_count')
 
     def get(self, request):
         queryset = self.filter_queryset(self.get_queryset())

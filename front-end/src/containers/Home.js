@@ -156,54 +156,53 @@ ResponsiveContainer.propTypes = {
   children: PropTypes.node
 };
 
-const filters = ['now_playing', 'popular', 'top_rated', 'upcoming'];
+const filters = ['most_watched', 'popular', 'recent', 'top_rated'];
 
 class HomepageLayout extends Component {
   constructor(props) {
     super(props);
   }
 
-
   render() {
     const { movies, genres } = this.props;
-    movies[0] && console.log('--------->', movies[0])
+    movies[0] && console.log('--------->', movies[0]);
     return (
       <ResponsiveContainer>
-        {/* {movies[0] && (
+        {movies[0] && (
           <MovieList
             filters={filters}
-            movies={movies[0].now_playing}
+            movies={movies[0].most_watched}
             genres={genres}
-            title={`Now Playing Movies`}
+            title={`Most Watched Movies`}
           />
-        )} */}
+        )}
 
-        {/* {movies[1] && (
+        {movies[1] && (
           <MovieList
             filters={filters}
             movies={movies[1].popular}
             genres={genres}
             title={`Most Popular Movies`}
           />
-        )} */}
+        )}
 
-        {movies[0] && (
+        {movies[2] && (
           <MovieList
             filters={filters}
-            movies={movies[0].top_rated}
+            movies={movies[2].recent}
+            genres={genres}
+            title={`Recent Movies`}
+          />
+        )}
+
+        {movies[3] && (
+          <MovieList
+            filters={filters}
+            movies={movies[3].top_rated}
             genres={genres}
             title={`Top Rated Movies`}
           />
         )}
-
-        {/* {movies[3] && (
-          <MovieList
-            filters={filters}
-            movies={movies[3].upcoming}
-            genres={genres}
-            title={`Upcoming Movies`}
-          />
-        )} */}
 
         <Segment style={{ padding: '8em 0em' }} vertical>
           <Grid container stackable verticalAlign="middle">
@@ -307,7 +306,7 @@ class HomepageLayout extends Component {
 const mapStateToProps = state => {
   return {
     genres: state.movieBrowser.genres,
-    movies: state.movieBrowser.movies,
+    movies: state.movieBrowser.movies
   };
 };
 
