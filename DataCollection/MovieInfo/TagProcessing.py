@@ -107,12 +107,20 @@ class TagProcessing:
             print("\r" + 'processing %d out of %d items...' % (count, len), end='')
             count += 1
 
-        w = csv.writer(open("Data/output.csv", "w"))
-        for key, val in result.items():
-            w.writerow([key, val])
+        df = pd.DataFrame(result)
+        df = df.transpose()
+        df.to_csv("Data/output.csv")
 
-
-
+    def query(self, movieId, num=100):
+        result = pd.read_csv("newData/output.csv", header=0, index_col=0)
+        rs = []
+        for i in list(result.keys()):
+            rs.append(int(i))
+        if movieId not in rs:
+            return None
+        else:
+            temp = list(result.loc[movieId])
+            return temp[:num]
 
 
     def similarity_processing(self, tag_path):
@@ -131,6 +139,7 @@ class TagProcessing:
         print(cs.numRows(), cs.numCols())
 
 
+
 if __name__ == '__main__':
     # link_path = 'newData/linkResults.csv'
     # tag_path = 'newData/genome-scores.csv'
@@ -144,3 +153,4 @@ if __name__ == '__main__':
     # tp.pivot_sim(result_path, pivot_path)
     # tp.similarity_sim(pivot_path, similarity_path)
     tp.query_sim(similarity_path, pivot_path)
+    # tp.query(2, 1)
