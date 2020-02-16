@@ -32,9 +32,9 @@ const userMovieSuccess = (state, action) => {
 
 const userMovieRemove = (state, action) => {
   const newState = state.userMovies.filter(
-    item => item.id !== action.movie.id
+    item => item.idMovie !== action.movie.idMovie
   );
-
+  
   return updateObject(state, {
     userMovies: newState
   });

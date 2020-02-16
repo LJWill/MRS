@@ -180,14 +180,13 @@ export const userMovieStart = () => {
 };
 
 export const userMovieRemove = (movie, token) => {
-  console.log('>>>>>>>>>>>>>>>>>>>>>>>>', token, movie.id);
   return dispatch => {
     axios
       .delete('movie/info/userhistory/', {
         data: { 
           token, 
           userAction: movie.userAction, 
-          movie_idmovie: movie.id
+          movie_idmovie: movie.idMovie
         }
       })
       .then(res => {
