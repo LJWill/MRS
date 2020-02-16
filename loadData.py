@@ -210,11 +210,12 @@ class LoadingData:
 
     def writeRatings(self, read_path):
         raw = pd.read_csv(read_path,chunksize=200000)
-        filter = pd.read_csv("result.csv")['tmdbId']
-        count = 1
+        # filter = pd.read_csv("result.csv")['tmdbId']
+
         nochunk = 1
 
         for chunk in raw:
+            count = 1
             total = chunk.shape[0]
             querylist = []
             for index, row in chunk.iterrows():
@@ -224,7 +225,7 @@ class LoadingData:
                 try:
                     with transaction.atomic():
                         movieid = row["tmdbId"]
-                        if pd.notnull(movieid) and movieid in filter:
+                        if pd.notnull(movieid):
                             movie = movies.Movie.objects.get(idMovie=int(movieid))
                             try:
                                 user = movies.User.objects.get(iduser=row["userId"])
