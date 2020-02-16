@@ -78,7 +78,7 @@ export const getMovies = requestData => {
   const filters = requestData.filters;
 
   const requests = filters.map(filter => {
-    return axios.get(`/movie/${filter}`, {
+    return axios.get(`/movie/${filter}/`, {
       params: { page: requestData.page }
     });
   });

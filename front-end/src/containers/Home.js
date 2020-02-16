@@ -166,43 +166,44 @@ class HomepageLayout extends Component {
 
   render() {
     const { movies, genres } = this.props;
+    movies[0] && console.log('--------->', movies[0])
     return (
       <ResponsiveContainer>
-        {movies[0] && (
+        {/* {movies[0] && (
           <MovieList
             filters={filters}
             movies={movies[0].now_playing}
             genres={genres}
             title={`Now Playing Movies`}
           />
-        )}
+        )} */}
 
-        {movies[1] && (
+        {/* {movies[1] && (
           <MovieList
             filters={filters}
             movies={movies[1].popular}
             genres={genres}
             title={`Most Popular Movies`}
           />
-        )}
+        )} */}
 
-        {movies[2] && (
+        {movies[0] && (
           <MovieList
             filters={filters}
-            movies={movies[2].top_rated}
+            movies={movies[0].top_rated}
             genres={genres}
             title={`Top Rated Movies`}
           />
         )}
 
-        {movies[3] && (
+        {/* {movies[3] && (
           <MovieList
             filters={filters}
             movies={movies[3].upcoming}
             genres={genres}
             title={`Upcoming Movies`}
           />
-        )}
+        )} */}
 
         <Segment style={{ padding: '8em 0em' }} vertical>
           <Grid container stackable verticalAlign="middle">

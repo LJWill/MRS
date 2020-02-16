@@ -53,7 +53,7 @@ export function isSaved(movie) {
     const savedMovies = JSON.parse(localStorage.getItem('savedMovies'));
     if (savedMovies) {
         const savedMovieIds = Object.keys(savedMovies);
-        return savedMovieIds.includes(movie.id.toString());
+        return savedMovieIds.includes(movie.idMovie.toString());
     } else {
         return false;
     }

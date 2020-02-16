@@ -7,7 +7,8 @@ import "semantic-ui-css/semantic.min.css";
 import CustomLayout from "./containers/Layout";
 import * as movieActions from './store/actions/movie';
 
-const filters = ['now_playing', 'popular', 'top_rated', 'upcoming'];
+const filters = ['top_rated'];
+// const filters = ['now_playing', 'popular', 'top_rated', 'upcoming'];
 
 class App extends Component {
   componentDidMount() {

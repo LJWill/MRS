@@ -4,7 +4,7 @@ import config from "./config";
 export const axiosMovies = axios.create({
   baseURL: config.API_URL,
   params: {
-    api_key: config.MOVIE_DB_API_KEY,
+    // api_key: config.MOVIE_DB_API_KEY,
     language: "en-US"
   }
 });
