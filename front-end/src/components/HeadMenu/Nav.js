@@ -153,7 +153,6 @@ class Nav extends React.Component {
 
   render() {
     const { authenticated, username } = this.props;
-
     const fixed = true;
 
     return (

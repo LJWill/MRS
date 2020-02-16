@@ -6,22 +6,24 @@ import * as actions from "./store/actions/auth";
 import "semantic-ui-css/semantic.min.css";
 import CustomLayout from "./containers/Layout";
 import * as movieActions from './store/actions/movie';
+import * as authActions from './store/actions/auth';
 
-const filters = ['now_playing', 'popular', 'top_rated', 'upcoming'];
+const filters = ['top_rated'];
+// const filters = ['now_playing', 'popular', 'top_rated', 'upcoming'];
 
 class App extends Component {
   componentDidMount() {
     
     this.props.onTryAutoSignup();
 
-    const { getMovies, getGenres } = this.props;
+    const { getMovies, getGenres} = this.props;
 
-    console.log(this.props)
     getMovies({ filters });
     // getGenres();
   }
 
   render() {
+
     return (
       <Router>
         <CustomLayout {...this.props}>

@@ -54,7 +54,8 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
     ),
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'DEFAULT_PAGINATION_CLASS': 'movie.pagination.CustomPagination',
     'PAGE_SIZE': 100,
 }
 
@@ -106,8 +107,8 @@ DATABASES = {
         'NAME': 'moviedb',
         'USER': os.getenv('MYSQL_USERNAME'),
         'PASSWORD': os.getenv('MYSQL_PASSWORD'),
-        # 'Host': os.getenv('MYSQL_HOSTNAME'),
-        # 'Port': '3306'
+        # 'HOST': os.getenv('MYSQL_HOSTNAME'),
+        # 'PORT': '3306'
     }
 }
 

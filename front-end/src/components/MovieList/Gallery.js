@@ -13,11 +13,10 @@ export default class Gallery extends Component {
 
   render() {
     const { images } = this.props;
+    const backdrops = images.backdrops.length > 0 ? images.backdrops : images.posters
+    if (backdrops.length < 1) return <div />;
 
-    console.log('111111111', this.props)
-    if (!images.backdrops) return <div />;
-
-    const imagesForGallery = images.backdrops.map(img => ({
+    const imagesForGallery = backdrops.map(img => ({
       original: config.original + img.file_path,
       thumbnail: config.small + img.file_path
     }));

@@ -113,7 +113,7 @@ const Wrapper = styled.article`
 `;
 
 const CoverIcon = ({ data }) => {
-  if (data === 'Like') {
+  if (data === true) {
     return <Icon name="like" size="big" color="red" />;
   } else {
     return <Icon name="thumbs down outline" size="big" />;
