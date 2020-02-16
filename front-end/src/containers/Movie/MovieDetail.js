@@ -171,11 +171,17 @@ class MovieDetail extends Component {
         </Dimmer>
       );
     }
-    
+
     return (
       <Wrapper>
         <Nav />
-        <Background bg={movieDetail.movie.backdrop_path} />
+        <Background
+          bg={
+            movieDetail.movie.backdrop_path
+              ? movieDetail.movie.backdrop_path
+              : movieDetail.movie.poster_path
+          }
+        />
         <MovieWrapper>
           <Poster bg={movieDetail.movie.poster_path} />
           <Info>
@@ -247,10 +253,11 @@ class MovieDetail extends Component {
 
         <Gallery images={movieDetail && movieDetail.images} />
 
-        <ScrollContainer
+        {movieDetail.recommendations.results.length > 0 && <ScrollContainer
           title="Recommended movies"
           movies={movieDetail.recommendations.results}
-        />
+        />}
+        
       </Wrapper>
     );
   }
