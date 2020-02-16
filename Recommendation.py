@@ -16,9 +16,10 @@ from surprise.model_selection import cross_validate
 class Recommender:
     def recommend(self):
         for i in range (1,20):
+            print("No.%d genre start:"%i)
             df = pd.read_csv("rating%d.csv"%i, header=None)
             df.columns = ['id', 'rating','Movie_idmovie','User_iduser']
-            df = df[["User_iduser","Movie_idmovie","reating"]]
+            df = df[["User_iduser","Movie_idmovie","rating"]]
             print("Data retrieved")
             # df = pd.read_csv("ratings.csv")
             reader = Reader(rating_scale=(1, 10), line_format='user item rating')
