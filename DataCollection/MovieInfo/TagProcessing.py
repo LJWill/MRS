@@ -112,7 +112,7 @@ class TagProcessing:
         df.to_csv("Data/output.csv")
 
     def query(self, movieId, num=100):
-        result = pd.read_csv("newData/output.csv", header=0, index_col=0)
+        result = pd.read_csv("Data/output.csv", header=0, index_col=0)
         rs = []
         for i in list(result.keys()):
             rs.append(int(i))
@@ -122,6 +122,12 @@ class TagProcessing:
             temp = list(result.loc[movieId])
             return temp[:num]
 
+    def test(self, ratings):
+        df = pd.read_csv(ratings)
+
+        result = df.movieId.unique()
+
+        print(result, len(result))
 
     def similarity_processing(self, tag_path):
         conf = SparkConf().setAppName("Test").setMaster("local")
@@ -144,6 +150,7 @@ if __name__ == '__main__':
     # link_path = 'newData/linkResults.csv'
     # tag_path = 'newData/genome-scores.csv'
     # result_path = 'newData/tagResults.csv'
+    rating_path = 'newData/ratings.csv'
     pivot_path = 'Data/pivot1.csv'
     similarity_path = 'Data/sim.csv'
     tp = TagProcessing()
@@ -152,5 +159,7 @@ if __name__ == '__main__':
     # tp.similarity_processing(pivot_path)
     # tp.pivot_sim(result_path, pivot_path)
     # tp.similarity_sim(pivot_path, similarity_path)
-    tp.query_sim(similarity_path, pivot_path)
-    # tp.query(2, 1)
+    # tp.query_sim(similarity_path, pivot_path)
+    item = tp.query(2, 10)
+    print(item)
+    # tp.test(rating_path)
