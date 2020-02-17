@@ -47,7 +47,8 @@ class MovieBrowser extends React.Component {
   state = {
     expanded: false,
     movies: null,
-    loaded: false
+    loaded: false,
+    activePage: null
   };
 
   shuffleMovie = () => {
@@ -101,6 +102,11 @@ class MovieBrowser extends React.Component {
     }
   }
 
+  handlePaginationChange = (e, { activePage }) => {
+    console.log(activePage)
+    this.setState({ activePage })
+  }
+
   render() {
     // let { movies } = this.state;
 
@@ -114,7 +120,7 @@ class MovieBrowser extends React.Component {
           func={this.anotherShuffleMovie}
         />
 
-        {!this.state.loaded ? (
+        {/* {!this.state.loaded ? (
           // <Dimmer active>
           //   <Loader active inverted>Loading</Loader>
           // </Dimmer>
@@ -129,7 +135,7 @@ class MovieBrowser extends React.Component {
               </Grid>
             </Flipper>
           </Container>
-        ) : (
+        ) : ( */}
           <Container className="movieContainer">
             <Flipper flipKey={this.state.expanded} spring="gentle">
               <Grid container columns={5}>
@@ -141,11 +147,11 @@ class MovieBrowser extends React.Component {
               </Grid>
             </Flipper>
           </Container>
-        )}
+        {/* )} */}
 
         <Container className="pagination">
           <Pagination
-            defaultActivePage={5}
+            defaultActivePage={this.props.currentPage}
             ellipsisItem={{
               content: <Icon name="ellipsis horizontal" />,
               icon: true
@@ -160,13 +166,15 @@ class MovieBrowser extends React.Component {
             }}
             prevItem={{ content: <Icon name="angle left" />, icon: true }}
             nextItem={{ content: <Icon name="angle right" />, icon: true }}
-            totalPages={10}
+            totalPages={this.props.totalPage}
+            onPageChange={this.handlePaginationChange}
           />
         </Container>
       </div>
     );
   }
 }
+
 
 const onAppear = (el, i) => {
   setTimeout(() => {
@@ -216,6 +224,10 @@ const mapStateToProps = state => {
     movies: state.movieBrowser.movies,
     userMovies: state.userMovie.userMovies,
     recommendMovies: state.recommendMovie.movies,
+    totalPage:state.recommendMovie.total_page,
+    currentPage:state.recommendMovie.current_page,
+    nextPage:state.recommendMovie.next,
+    previousPage:state.recommendMovie.previous,
     token: state.auth.token
   };
 };

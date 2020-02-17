@@ -238,8 +238,8 @@ export const userMovieAction = (movie, token) => {
       })
       .then(res => {
         if (res.status === 201 || res.status === 200) {
-          dispatch(getMyRecommendation());
           dispatch(userMovieSuccess(movie));
+          dispatch(getMyRecommendation());
         } else {
           dispatch(userMovieFail(res));
         }

@@ -13,22 +13,21 @@ const initialState = {
 
 const getRecommendationStart = (state, action) => {
   return updateObject(state, {
+    isFeching: true,
     error: null,
-    isFeching: true
   });
 };
 
 const getRecommendationSuccess = (state, action) => {
   const movies = action.movies
   // console.log('#################################################', movies);
-
   return updateObject(state, {
     movies: movies.results,
     isFeching: false,
     next: movies.links ? movies.links.next : null,
     previous: movies.link ? movies.link.previous : null,
     total_page: movies.page_number ? movies.page_number : null,
-    current_page: null,
+    current_page: movies.current ? movies.current : null,
     error: null
   });
 };

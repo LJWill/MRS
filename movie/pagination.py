@@ -9,11 +9,18 @@ class CustomPagination(PageNumberPagination):
     page_size_query_param = 'page_size'
 
     def get_paginated_response(self, data):
+
+        if(self.get_next_link() is not None):
+            currentPage = int(self.get_next_link().split('=')[-1]) - 1
+        else:
+            currentPage = int(self.get_previous_link().split('=')[-1]) + 1
+
         return Response({
             'links': {
                 'next': self.get_next_link(),
-                'previous': self.get_previous_link()
+                'previous': self.get_previous_link(),
             },
+            'current': currentPage,
             'total': self.page.paginator.count,
             'page_number': math.ceil(self.page.paginator.count / self.page_size),
             'page_size': int(self.request.GET.get('page_size', self.page_size)),
