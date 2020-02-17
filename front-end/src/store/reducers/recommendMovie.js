@@ -20,7 +20,7 @@ const getRecommendationStart = (state, action) => {
 
 const getRecommendationSuccess = (state, action) => {
   const movies = action.movies
-  console.log('#################################################', movies);
+  // console.log('#################################################', movies);
 
   return updateObject(state, {
     movies: movies.results,

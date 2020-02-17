@@ -223,8 +223,6 @@ export const userMovieAction = (movie, token) => {
   const href = window.location.href.split('/');
   const currentUrl = href[href.length - 1];
 
-  console.log('token', movie.token)
-
   return (dispatch, getState) => {
     dispatch(userMovieStart());
 
@@ -240,19 +238,8 @@ export const userMovieAction = (movie, token) => {
       })
       .then(res => {
         if (res.status === 201 || res.status === 200) {
+          dispatch(getMyRecommendation());
           dispatch(userMovieSuccess(movie));
-
-          const likeMovies = getState()
-            .userMovie.userMovies.filter(m => m.userAction)
-            .map(i => parseInt(i.idMovie));
-          const dislikeMovies = getState()
-            .userMovie.userMovies.filter(m => !m.userAction)
-            .map(i => parseInt(i.idMovie));
-
-          // console.log('^^^^^^^^^^', likeMovies, dislikeMovies);
-
-          dispatch(getMyRecommendation(likeMovies, dislikeMovies, token))
-          
         } else {
           dispatch(userMovieFail(res));
         }
@@ -283,18 +270,27 @@ const getRecommendationFail = error => {
   };
 };
 
-export const getMyRecommendation = (like, dislike, token) => {
+export const getMyRecommendation = () => {
   const href = window.location.href.split('/');
   const currentUrl = href[href.length - 1];
 
-  console.log('^^^^^^^^^^', like, dislike);
-
-  return dispatch => {
+  return (dispatch, getState) => {
     dispatch(getRecommendationStart());
+
+    const token = getState().auth.token;
 
     if (!token) {
       return dispatch(getRecommendationFail('token not exist'));
     }
+
+    const like = getState()
+      .userMovie.userMovies.filter(m => m.userAction)
+      .map(i => parseInt(i.idMovie));
+    const dislike = getState()
+      .userMovie.userMovies.filter(m => !m.userAction)
+      .map(i => parseInt(i.idMovie));
+
+    console.log('^^^^^^^^^^', like, dislike);
 
     axios
       .post('movie/recommendation/', {
@@ -306,12 +302,11 @@ export const getMyRecommendation = (like, dislike, token) => {
         if (res.status === 200) {
           dispatch(getRecommendationSuccess(res.data));
 
-          // if (currentUrl !== 'movies') {
-          //   window.location.href = '/movies';
-          // }
-
-        } 
-        else {
+          if (currentUrl !== 'movies') {
+            window.location.href = '/movies';
+            // browserHistory.push('/movies')
+          }
+        } else {
           dispatch(getRecommendationFail(res));
         }
       })
