@@ -112,9 +112,10 @@ class TagProcessing:
         df.to_csv("Data/output.csv")
 
     def query(self, movieId, num=100):
-        result = pd.read_csv("~/Downloads/output.csv", header=0, index_col=0)
+        result = pd.read_csv("DataCollection/MovieInfo/Data/output.csv", header=0, index_col=0)
         rs = []
-        for i in list(result.keys()):
+        df = result.transpose()
+        for i in list(df.keys()):
             rs.append(int(i))
         if movieId not in rs:
             return None
@@ -160,6 +161,6 @@ if __name__ == '__main__':
     # tp.pivot_sim(result_path, pivot_path)
     # tp.similarity_sim(pivot_path, similarity_path)
     # tp.query_sim(similarity_path, pivot_path)
-    item = tp.query(2, 10)
+    item = tp.query(15, 2)
     print(item)
     # tp.test(rating_path)

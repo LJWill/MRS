@@ -1,4 +1,5 @@
 from django.http import Http404
+from django.db.models import Case, When
 from rest_framework import status
 from rest_framework.generics import get_object_or_404
 from rest_framework.views import APIView
@@ -43,15 +44,14 @@ class MovieRecommendationAPI(GenericAPIView):
     tp = TagProcessing()
 
     def get(self, request):
-        recomm_mids = self.tp.query(20, 20)
+        recomm_mids = self.tp.query(24428, 100)
 
-        # preserved = Case(*[When(pk=pk, then=pos) for pos, pk in enumerate(pk_list)])
-        # queryset = MyModel.objects.filter(pk__in=pk_list).order_by(preserved)
-
-        queryset = self.filter_queryset(self.get_queryset().filter(pk__in=recomm_mids))
+        preserved = Case(*[When(pk=pk, then=pos) for pos, pk in enumerate(recomm_mids)])
+        queryset = self.get_queryset().filter(pk__in=recomm_mids).order_by(preserved)
         page = self.paginate_queryset(queryset)
         
-        print('\n\n---------->', recomm_mids, '\n\n')
+
+        # print('\n\n---------->', recomm_mids, '\n\n')
 
 
         if page is not None:
