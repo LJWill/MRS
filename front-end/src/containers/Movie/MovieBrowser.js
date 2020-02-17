@@ -1,6 +1,13 @@
 import React from 'react';
 import _ from 'lodash';
-import { Container, Divider, Grid, Header, Icon } from 'semantic-ui-react';
+import {
+  Container,
+  Divider,
+  Grid,
+  Header,
+  Icon,
+  Pagination
+} from 'semantic-ui-react';
 import MidMovieCard from '../../components/MovieList/MidMovieCard';
 import DisplayNav from '../../components/HeadMenu/DisplayNav';
 import { connect } from 'react-redux';
@@ -15,7 +22,6 @@ class MovieBrowser extends React.Component {
   };
 
   shuffleMovie = movie => {
-
     this.setState({
       movies: _.shuffle(this.state.movies),
       expanded: !this.state.expanded
@@ -31,8 +37,7 @@ class MovieBrowser extends React.Component {
   };
 
   anotherShuffleMovie = movie => {
-
-    console.log('9999999999', this.props.token)
+    console.log('9999999999', this.props.token);
 
     this.setState({
       movies: _.shuffle(this.state.movies),
@@ -60,12 +65,14 @@ class MovieBrowser extends React.Component {
     let m = this.props.movies[0];
     // console.log('++++++++++', m && m);
     m && this.setState({ movies: m.most_watched });
+    // this.setState({ movies: this.props.recommendMovies})
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.movies !== this.props.movies) {
       // get now playing movies
       this.setState({ movies: nextProps.movies[0].most_watched });
+      // this.setState({ movies: this.props.recommendMovies})
     }
   }
 
@@ -87,6 +94,27 @@ class MovieBrowser extends React.Component {
             )}
           </Flipper>
         </Container>
+
+        <Container className="pagination">
+            <Pagination
+              defaultActivePage={5}
+              ellipsisItem={{
+                content: <Icon name="ellipsis horizontal" />,
+                icon: true
+              }}
+              firstItem={{
+                content: <Icon name="angle double left" />,
+                icon: true
+              }}
+              lastItem={{
+                content: <Icon name="angle double right" />,
+                icon: true
+              }}
+              prevItem={{ content: <Icon name="angle left" />, icon: true }}
+              nextItem={{ content: <Icon name="angle right" />, icon: true }}
+              totalPages={10}
+            />
+        </Container>
       </div>
     );
   }
@@ -96,7 +124,7 @@ const MovieView = data => {
   return data.data.map(m => (
     <Flipped flipId={m.idMovie} key={m.idMovie}>
       <Grid.Column>
-        <MidMovieCard {...m}  shuffleMovie={data.func} />
+        <MidMovieCard {...m} shuffleMovie={data.func} />
       </Grid.Column>
     </Flipped>
   ));
@@ -107,13 +135,16 @@ const mapStateToProps = state => {
     // genres: state.movieBrowser.genres,
     movies: state.movieBrowser.movies,
     userMovies: state.userMovie.userMovies,
+    recommendMovies: state.recommendMovie.movies,
     token: state.auth.token
   };
 };
 
 const mapDispatchToProps = dispatch => ({
-  userMovieAction: (movie, token) => dispatch(movieActions.userMovieAction(movie, token)),
-  userMovieRemove: (movie, token) => dispatch(movieActions.userMovieRemove(movie, token))
+  userMovieAction: (movie, token) =>
+    dispatch(movieActions.userMovieAction(movie, token)),
+  userMovieRemove: (movie, token) =>
+    dispatch(movieActions.userMovieRemove(movie, token))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MovieBrowser);
