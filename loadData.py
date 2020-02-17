@@ -302,7 +302,7 @@ if __name__ == '__main__':
     # read_path = './DataCollection/MovieInfo/Data/movieDetails.csv'
     # ld.writeMovie(read_path)
 
-    read_path = '~/Downloads/movieDetails.csv'
+    read_path = './DataCollection/MovieInfo/Data/movieDetails.csv'
     ld.writeMovie(read_path)
     
     # read_path = './DataCollection/MovieInfo/Data/casts.csv'
