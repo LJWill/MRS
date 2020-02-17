@@ -160,7 +160,7 @@ class TagProcessing:
         final = [item for item in final if item not in remove]
         # final = [5, 1, 2, 2, 3]
         final_result = sorted(set(final), key=final.index)
-        final_result = [item for item in final_result if item not in original_like]
+        final_result = [item for item in final_result if item not in original_like and item not in dislike]
         return final_result[:num]
 
     def test(self, ratings):
