@@ -97,8 +97,8 @@ class MovieBrowser extends React.Component {
       );
       // get now playing movies
       // this.setState({ movies: nextProps.movies[0].most_watched });
-      // this.setState({ movies: nextProps.recommendMovies, loaded: true });
-      this.setState({ movies: this.props.recommendMovies, loaded: true });
+      this.setState({ movies: nextProps.recommendMovies, loaded: true });
+      // this.setState({ movies: this.props.recommendMovies, loaded: true });
     }
   }
 
@@ -106,12 +106,17 @@ class MovieBrowser extends React.Component {
     console.log(activePage)
     this.setState({ activePage })
   }
+  
+  createFlipperKey = () => {
+    let id_list = this.props.recommendMovies.map(movie => (movie.idMovie))
+    return id_list.join('-')
+  };
 
   render() {
-    // let { movies } = this.state;
+    let { movies } = this.state;
 
-    let movies = this.props.recommendMovies;
-
+    // let movies = this.props.recommendMovies;
+    console.log('YESSSSSSSSSSSSSSSSSSSSSSSS', this.state.expanded)
     return (
       <div>
         <GlobalStyle />
@@ -137,7 +142,7 @@ class MovieBrowser extends React.Component {
           </Container>
         ) : ( */}
           <Container className="movieContainer">
-            <Flipper flipKey={this.state.expanded} spring="gentle">
+            <Flipper flipKey={this.createFlipperKey()} spring="gentle">
               <Grid container columns={5}>
                 <MovieView
                   data={movies}
