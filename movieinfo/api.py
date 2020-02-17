@@ -47,10 +47,7 @@ class MovieRecommendationAPI(GenericAPIView):
         
         decode_payload = jwt_decode_handler(request.data['token'])
 
-        print('\n\n--------->', type(request.data['like']))
-
-        # for item in request.data['like']:
-        #     print('\n\n--------->', item)
+        # print('\n\n--------->', type(request.data['like']))
 
         like = [int(item) for item in request.data['like']]
         dislike = [int(item) for item in request.data['dislike']]
