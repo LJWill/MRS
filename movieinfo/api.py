@@ -46,8 +46,19 @@ class MovieRecommendationAPI(GenericAPIView):
     def post(self, request):
         
         decode_payload = jwt_decode_handler(request.data['token'])
-        movie_id = int(request.data['movie_id'])                       
-        recomm_mids = self.tp.query(movie_id, 100)
+
+        print('\n\n--------->', type(request.data['like']))
+
+        # for item in request.data['like']:
+        #     print('\n\n--------->', item)
+
+        like = [int(item) for item in request.data['like']]
+        dislike = [int(item) for item in request.data['dislike']]
+
+        
+        queryDict = {'like':like, 'dislike': dislike}
+
+        recomm_mids = self.tp.query_list(queryDict, 100)
 
         # print('\n\n---------->', movie_id, type(movie_id),'\n\n')
         if not recomm_mids: return Response(status=status.HTTP_404_NOT_FOUND)

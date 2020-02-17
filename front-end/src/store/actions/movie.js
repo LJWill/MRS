@@ -247,6 +247,8 @@ export const userMovieAction = (movie, token) => {
             .userMovie.userMovies.filter(m => !m.userAction)
             .map(i => i.idMovie.toString());
 
+          console.log('^^^^^^^^^^', likeMovies, dislikeMovies);
+
           dispatch(getMyRecommendation(likeMovies, dislikeMovies, token))
           
         } else {
