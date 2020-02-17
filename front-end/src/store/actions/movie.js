@@ -247,13 +247,8 @@ export const userMovieAction = (movie, token) => {
             .userMovie.userMovies.filter(m => !m.userAction)
             .map(i => i.idMovie.toString());
 
-          // console.log('^^^^^^^^^^', likeMovies, dislikeMovies);
-
-          // dispatch(getMyRecommendation(likeMovies, dislikeMovies, token))
-
-          if (currentUrl !== 'movies') {
-            window.location.href = '/movies';
-          }
+          dispatch(getMyRecommendation(likeMovies, dislikeMovies, token))
+          
         } else {
           dispatch(userMovieFail(res));
         }
@@ -288,6 +283,8 @@ export const getMyRecommendation = (like, dislike, token) => {
   const href = window.location.href.split('/');
   const currentUrl = href[href.length - 1];
 
+  console.log('^^^^^^^^^^', like, dislike);
+
   return dispatch => {
     dispatch(getRecommendationStart());
 
@@ -304,6 +301,11 @@ export const getMyRecommendation = (like, dislike, token) => {
       .then(res => {
         if (res.status === 200) {
           dispatch(getRecommendationSuccess(res.data.results));
+
+          if (currentUrl !== 'movies') {
+            window.location.href = '/movies';
+          }
+
         } else {
           dispatch(getRecommendationFail(res));
         }
