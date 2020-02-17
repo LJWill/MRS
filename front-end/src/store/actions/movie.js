@@ -183,9 +183,9 @@ export const userMovieRemove = (movie, token) => {
   return dispatch => {
     axios
       .delete('movie/info/userhistory/', {
-        data: { 
-          token, 
-          userAction: movie.userAction, 
+        data: {
+          token,
+          userAction: movie.userAction,
           movie_idmovie: movie.idMovie
         }
       })
@@ -221,9 +221,9 @@ export const userMovieFail = error => {
 // dispatch user movie action
 export const userMovieAction = (movie, token) => {
   const href = window.location.href.split('/');
-  const currentUrl = href[href.length - 1]
+  const currentUrl = href[href.length - 1];
 
-  return dispatch => {
+  return (dispatch, getState) => {
     dispatch(userMovieStart());
 
     if (!token) {
@@ -239,6 +239,18 @@ export const userMovieAction = (movie, token) => {
       .then(res => {
         if (res.status === 201 || res.status === 200) {
           dispatch(userMovieSuccess(movie));
+
+          const likeMovies = getState()
+            .userMovie.userMovies.filter(m => m.userAction)
+            .map(i => i.idMovie.toString());
+          const dislikeMovies = getState()
+            .userMovie.userMovies.filter(m => !m.userAction)
+            .map(i => i.idMovie.toString());
+
+          // console.log('^^^^^^^^^^', likeMovies, dislikeMovies);
+
+          // dispatch(getMyRecommendation(likeMovies, dislikeMovies, token))
+
           if (currentUrl !== 'movies') {
             window.location.href = '/movies';
           }
@@ -252,33 +264,29 @@ export const userMovieAction = (movie, token) => {
   };
 };
 
-
-
 const getRecommendationStart = () => {
   return {
     type: actionTypes.GET_RECOMMENDATION_START
   };
 };
 
-const getRecommendationSuccess = (movie) => {
+const getRecommendationSuccess = movies => {
   return {
     type: actionTypes.GET_RECOMMENDATION_SUCCESS,
-    movie
+    movies
   };
 };
 
-const getRecommendationFail = (error) => {
+const getRecommendationFail = error => {
   return {
     type: actionTypes.GET_RECOMMENDATION_FAIL,
     error
   };
 };
 
-
-
-export const getRecommendation = (movie, token) => {
+export const getMyRecommendation = (like, dislike, token) => {
   const href = window.location.href.split('/');
-  const currentUrl = href[href.length - 1]
+  const currentUrl = href[href.length - 1];
 
   return dispatch => {
     dispatch(getRecommendationStart());
@@ -290,17 +298,18 @@ export const getRecommendation = (movie, token) => {
     axios
       .post('movie/recommendation/', {
         token,
-        movie_id: movie.idMovie,
+        like,
+        dislike
       })
       .then(res => {
         if (res.status === 200) {
-          dispatch(getRecommendationSuccess(movie));
+          dispatch(getRecommendationSuccess(res.data.results));
         } else {
-          dispatch(userMovieFail(res));
+          dispatch(getRecommendationFail(res));
         }
       })
       .catch(err => {
-        dispatch(userMovieFail(err));
+        dispatch(getRecommendationFail(err));
       });
   };
 };

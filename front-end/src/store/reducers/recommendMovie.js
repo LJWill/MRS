@@ -15,6 +15,7 @@ const getRecommendationStart = (state, action) => {
 };
 
 const getRecommendationSuccess = (state, action) => {
+    console.log('#################################################', action);
   return updateObject(state, {
     movies: action.movies,
     isFeching: false,
@@ -31,7 +32,6 @@ const getRecommendationFail = (state, action) => {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-      
     case actionTypes.GET_RECOMMENDATION_START:
       return getRecommendationStart(state, action);
     case actionTypes.GET_RECOMMENDATION_SUCCESS:

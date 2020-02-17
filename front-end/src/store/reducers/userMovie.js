@@ -10,8 +10,9 @@ const initialState = {
 
 const containObj = (obj, list) => {
   let result = false;
+  // let ids = list.map(i => i.idMovie.toString())
   list.map(item => {
-    if (obj.idMovie === item.idMovie) {
+    if (obj.idMovie == item.idMovie) {
       result = true;
     }
   });
@@ -20,6 +21,7 @@ const containObj = (obj, list) => {
 
 const userMovieSuccess = (state, action) => {
   if (!containObj(action.movie, state.userMovies)) {
+    console.log('^^^^^^^^^^^', action.movie, state.userMovies)
     return updateObject(state, {
       userMovies: [...state.userMovies, action.movie]
     });

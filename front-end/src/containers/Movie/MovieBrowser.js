@@ -60,12 +60,14 @@ class MovieBrowser extends React.Component {
     let m = this.props.movies[0];
     // console.log('++++++++++', m && m);
     m && this.setState({ movies: m.most_watched });
+    // this.setState({ movies: this.props.recommendMovies})
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.movies !== this.props.movies) {
       // get now playing movies
       this.setState({ movies: nextProps.movies[0].most_watched });
+      // this.setState({ movies: this.props.recommendMovies})
     }
   }
 
@@ -107,13 +109,14 @@ const mapStateToProps = state => {
     // genres: state.movieBrowser.genres,
     movies: state.movieBrowser.movies,
     userMovies: state.userMovie.userMovies,
+    recommendMovies: state.recommendMovie.movies,
     token: state.auth.token
   };
 };
 
 const mapDispatchToProps = dispatch => ({
   userMovieAction: (movie, token) => dispatch(movieActions.userMovieAction(movie, token)),
-  userMovieRemove: (movie, token) => dispatch(movieActions.userMovieRemove(movie, token))
+  userMovieRemove: (movie, token) => dispatch(movieActions.userMovieRemove(movie, token)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MovieBrowser);
