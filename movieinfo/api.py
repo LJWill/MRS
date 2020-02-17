@@ -11,6 +11,7 @@ from .serializers import *
 from rest_framework_jwt.utils import jwt_decode_handler
 from movie.pagination import CustomPagination
 from .algorithm import TagProcessing
+from Recommender import recommender
 
 class MovieDetailAPI(APIView):
     serializer_class = MovieDetailSerializer
@@ -42,6 +43,7 @@ class MovieRecommendationAPI(GenericAPIView):
     pagination_class = CustomPagination
     queryset = Movie.objects.all()
     tp = TagProcessing()
+    re = recommender()
 
     def post(self, request):
         
@@ -51,10 +53,10 @@ class MovieRecommendationAPI(GenericAPIView):
 
         like = [int(item) for item in request.data['like']]
         dislike = [int(item) for item in request.data['dislike']]
-
         
         queryDict = {'like':like, 'dislike': dislike}
-
+        
+        # recomm_mids = self.re.recommend(queryDict)
         recomm_mids = self.tp.query_list(queryDict, 100)
 
         # print('\n\n---------->', movie_id, type(movie_id),'\n\n')
@@ -210,7 +212,6 @@ class CreateUserHistoryAPI(APIView):
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
 class RetrieveUserHistoryAPI(APIView):
     serializer_class = RetrieveUserHistorySerializer
 
@@ -222,7 +223,6 @@ class RetrieveUserHistoryAPI(APIView):
             userhistory, many=True)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
-
 
 class RatingAPI(APIView):
     serializer_class = RatingSerializer

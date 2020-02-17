@@ -107,6 +107,7 @@ class MidMovieCard extends Component {
 
     if(data.authenticated){
       let newData = Object.assign({ userAction: true }, data);
+      this.props.userMovieAction(newData, data.token);
       this.props.shuffleMovie(newData);
     }else{
       window.location.href = '/login'
@@ -115,9 +116,11 @@ class MidMovieCard extends Component {
 
   dislike = (e, data) => {
     e.stopPropagation();
+    
     if(data.authenticated){
       let newData = Object.assign({ userAction: false }, data);
-    this.props.shuffleMovie(newData);
+      this.props.userMovieAction(newData, data.token);
+      this.props.shuffleMovie(newData);
     }else{
       window.location.href = '/login'
     }
@@ -194,12 +197,13 @@ const mapStateToProps = state => {
   return {
     movies: state.movieBrowser.movies,
     userMovies: state.userMovie.userMovies,
-    authenticated: state.auth.token !== null
+    authenticated: state.auth.token !== null,
+    token: state.auth.token
   };
 };
 
 const mapDispatchToProps = dispatch => ({
-  userMovieAction: movie => dispatch(movieActions.userMovieAction(movie)),
+  userMovieAction: (movie, token) => dispatch(movieActions.userMovieAction(movie, token)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MidMovieCard);

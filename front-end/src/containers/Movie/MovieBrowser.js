@@ -14,6 +14,33 @@ import { connect } from 'react-redux';
 import { Flipper, Flipped } from 'react-flip-toolkit';
 import * as movieActions from '../../store/actions/movie';
 import './MovieBrowser.scss';
+import styled, { createGlobalStyle } from "styled-components";
+
+
+const GlobalStyle = createGlobalStyle`
+
+@keyframes fadeIn {
+  0%   { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+ .fadeIn{
+  animation: fadeIn .35s forwards;
+  animation-timing-function: cubic-bezier(0.39, 0.575, 0.565, 1);
+}
+
+@keyframes fadeOut {
+  0% { opacity: 1}
+  100% { opacity: 0; }
+}
+
+ .fadeOut{
+  animation: fadeOut .3s forwards;
+  animation-timing-function: cubic-bezier(0.47, 0, 0.745, 0.715);
+}
+
+`;
+
 
 class MovieBrowser extends React.Component {
   state = {
@@ -21,18 +48,11 @@ class MovieBrowser extends React.Component {
     movies: null
   };
 
-  shuffleMovie = movie => {
+  shuffleMovie = () => {
     this.setState({
-      movies: _.shuffle(this.state.movies),
+      // movies: _.shuffle(this.state.movies),
+      movies: this.props.recommendMovies,
       expanded: !this.state.expanded
-    });
-
-    this.props.userMovieAction(movie, this.props.token);
-
-    window.scrollTo({
-      top: 0,
-      left: 0,
-      behavior: 'smooth'
     });
   };
 
@@ -40,17 +60,12 @@ class MovieBrowser extends React.Component {
     console.log('9999999999', this.props.token);
 
     this.setState({
-      movies: _.shuffle(this.state.movies),
+      // movies: _.shuffle(this.state.movies),
+      movies: this.props.recommendMovies,
       expanded: !this.state.expanded
     });
 
     this.props.userMovieRemove(movie, this.props.token);
-
-    window.scrollTo({
-      top: 0,
-      left: 0,
-      behavior: 'smooth'
-    });
   };
 
   componentDidMount() {
@@ -65,22 +80,25 @@ class MovieBrowser extends React.Component {
     let m = this.props.movies[0];
     // console.log('++++++++++', m && m);
     // m && this.setState({ movies: m.most_watched });
-    this.setState({ movies: this.props.recommendMovies})
+    this.setState({ movies: this.props.recommendMovies });
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.movies !== this.props.movies) {
       // get now playing movies
       // this.setState({ movies: nextProps.movies[0].most_watched });
-      this.setState({ movies: this.props.recommendMovies})
+      this.setState({ movies: this.props.recommendMovies });
     }
   }
 
   render() {
     let { movies } = this.state;
 
+    // let movies = this.props.recommendMovies;
+
     return (
       <div>
+        <GlobalStyle />
         <DisplayNav
           movies={this.props.userMovies}
           func={this.anotherShuffleMovie}
@@ -96,33 +114,64 @@ class MovieBrowser extends React.Component {
         </Container>
 
         <Container className="pagination">
-            <Pagination
-              defaultActivePage={5}
-              ellipsisItem={{
-                content: <Icon name="ellipsis horizontal" />,
-                icon: true
-              }}
-              firstItem={{
-                content: <Icon name="angle double left" />,
-                icon: true
-              }}
-              lastItem={{
-                content: <Icon name="angle double right" />,
-                icon: true
-              }}
-              prevItem={{ content: <Icon name="angle left" />, icon: true }}
-              nextItem={{ content: <Icon name="angle right" />, icon: true }}
-              totalPages={10}
-            />
+          <Pagination
+            defaultActivePage={5}
+            ellipsisItem={{
+              content: <Icon name="ellipsis horizontal" />,
+              icon: true
+            }}
+            firstItem={{
+              content: <Icon name="angle double left" />,
+              icon: true
+            }}
+            lastItem={{
+              content: <Icon name="angle double right" />,
+              icon: true
+            }}
+            prevItem={{ content: <Icon name="angle left" />, icon: true }}
+            nextItem={{ content: <Icon name="angle right" />, icon: true }}
+            totalPages={10}
+          />
         </Container>
       </div>
     );
   }
 }
 
+const onAppear = (el, i) => {
+  setTimeout(() => {
+    el.classList.add('fadeIn');
+    setTimeout(() => {
+      el.style.opacity = 1;
+      el.classList.remove('fadeIn');
+    }, 500);
+  }, i * 50);
+};
+
+const onExit = (el, i, removeElement) => {
+  setTimeout(() => {
+    el.classList.add("fadeOut");
+    setTimeout(removeElement, 500);
+  }, i * 50);
+}
+
+const onComplete = () => {
+  window.scrollTo({
+    top: 0,
+    left: 0,
+    behavior: 'smooth'
+  });
+};
+
 const MovieView = data => {
   return data.data.map(m => (
-    <Flipped flipId={m.idMovie} key={m.idMovie}>
+    <Flipped
+      flipId={m.idMovie}
+      key={m.idMovie}
+      onAppear={onAppear}
+      onExit={onExit}
+      onComplete={onComplete}
+    >
       <Grid.Column>
         <MidMovieCard {...m} shuffleMovie={data.func} />
       </Grid.Column>

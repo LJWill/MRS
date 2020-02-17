@@ -223,6 +223,8 @@ export const userMovieAction = (movie, token) => {
   const href = window.location.href.split('/');
   const currentUrl = href[href.length - 1];
 
+  console.log('token', movie.token)
+
   return (dispatch, getState) => {
     dispatch(userMovieStart());
 
