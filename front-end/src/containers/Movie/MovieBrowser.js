@@ -17,8 +17,7 @@ import { Flipper, Flipped } from 'react-flip-toolkit';
 import * as movieActions from '../../store/actions/movie';
 import './MovieBrowser.scss';
 import { createGlobalStyle } from 'styled-components';
-import { withRouter } from "react-router-dom"
-
+// import { withRouter } from "react-router-dom"
 
 const GlobalStyle = createGlobalStyle`
 @keyframes fadeIn {
@@ -61,12 +60,11 @@ class MovieBrowser extends React.Component {
   };
 
   anotherShuffleMovie = movie => {
-    console.log('9999999999', this.props.token);
-
     this.setState({
       // movies: _.shuffle(this.state.movies),
       movies: this.props.recommendMovies,
-      expanded: !this.state.expanded
+      expanded: !this.state.expanded,
+      loaded: false
     });
 
     this.props.userMovieRemove(movie, this.props.token);
@@ -83,40 +81,29 @@ class MovieBrowser extends React.Component {
   }
 
   componentWillMount() {
-    // console.log('++++++++++', m && m);
-    // m && this.setState({ movies: m.most_watched });
     this.setState({ movies: this.props.recommendMovies });
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.recommendMovies !== this.props.recommendMovies) {
-      console.log(
-        '%%%%%%%%%%%%%%%%%',
-        nextProps.recommendMovies,
-        this.props.recommendMovies
-      );
-      // get now playing movies
-      // this.setState({ movies: nextProps.movies[0].most_watched });
       this.setState({ movies: nextProps.recommendMovies, loaded: true });
-      // this.setState({ movies: this.props.recommendMovies, loaded: true });
     }
   }
 
   handlePaginationChange = (e, { activePage }) => {
-    console.log(activePage)
-    this.setState({ activePage })
-  }
-  
+    console.log(activePage);
+    this.setState({ activePage });
+  };
+
   createFlipperKey = () => {
-    let id_list = this.props.recommendMovies.map(movie => (movie.idMovie))
-    return id_list.join('-')
+    let id_list = this.props.recommendMovies.map(movie => movie.idMovie);
+    return id_list.join('-');
   };
 
   render() {
-    let { movies } = this.state;
-
-    // let movies = this.props.recommendMovies;
-    console.log('YESSSSSSSSSSSSSSSSSSSSSSSS', this.state.expanded)
+    // let { movies } = this.state;
+    let movies = this.props.recommendMovies;
+    console.log('------>', this.props);
     return (
       <div>
         <GlobalStyle />
@@ -125,34 +112,25 @@ class MovieBrowser extends React.Component {
           func={this.anotherShuffleMovie}
         />
 
-        {/* {!this.state.loaded ? (
-          // <Dimmer active>
-          //   <Loader active inverted>Loading</Loader>
-          // </Dimmer>
-          <Container className="movieContainer">
-            <Flipper flipKey={this.state.expanded} spring="gentle">
-              <Grid container columns={5}>
-                <MovieView
-                  data={movies}
-                  func={this.shuffleMovie}
-                  loaded={this.state.loaded}
-                />
-              </Grid>
-            </Flipper>
-          </Container>
-        ) : ( */}
-          <Container className="movieContainer">
-            <Flipper flipKey={this.createFlipperKey()} spring="gentle">
-              <Grid container columns={5}>
-                <MovieView
-                  data={movies}
-                  func={this.shuffleMovie}
-                  loaded={this.state.loaded}
-                />
-              </Grid>
-            </Flipper>
-          </Container>
-        {/* )} */}
+        {this.props.isFetching && (
+          <Dimmer active>
+            <Loader active inverted>
+              Loading
+            </Loader>
+          </Dimmer>
+        )}
+
+        <Container className="movieContainer">
+          <Flipper flipKey={this.createFlipperKey()} spring="gentle">
+            <Grid container columns={5}>
+              <MovieView
+                data={movies}
+                func={this.shuffleMovie}
+                loaded={this.state.loaded}
+              />
+            </Grid>
+          </Flipper>
+        </Container>
 
         <Container className="pagination">
           <Pagination
@@ -180,7 +158,6 @@ class MovieBrowser extends React.Component {
   }
 }
 
-
 const onAppear = (el, i) => {
   setTimeout(() => {
     el.classList.add('fadeIn');
@@ -188,7 +165,7 @@ const onAppear = (el, i) => {
       el.style.opacity = 1;
       el.classList.remove('fadeIn');
     }, 500);
-  }, i * 50);
+  }, i * 30);
 };
 
 const onExit = (el, i, removeElement) => {
@@ -229,10 +206,11 @@ const mapStateToProps = state => {
     movies: state.movieBrowser.movies,
     userMovies: state.userMovie.userMovies,
     recommendMovies: state.recommendMovie.movies,
-    totalPage:state.recommendMovie.total_page,
-    currentPage:state.recommendMovie.current_page,
-    nextPage:state.recommendMovie.next,
-    previousPage:state.recommendMovie.previous,
+    totalPage: state.recommendMovie.total_page,
+    currentPage: state.recommendMovie.current_page,
+    nextPage: state.recommendMovie.next,
+    previousPage: state.recommendMovie.previous,
+    isFetching: state.recommendMovie.isFetching,
     token: state.auth.token
   };
 };
@@ -244,4 +222,4 @@ const mapDispatchToProps = dispatch => ({
     dispatch(movieActions.userMovieRemove(movie, token))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(MovieBrowser));
+export default connect(mapStateToProps, mapDispatchToProps)(MovieBrowser);
