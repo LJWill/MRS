@@ -89,8 +89,8 @@ class Tags(models.Model):
         db_table = 'tags'
 
 class Movie(models.Model):
-    # popularity = models.FloatField(db_column='popularity', blank=True)
-    # vote_count = models.IntegerField(db_column='vote_count', blank=True)
+    popularity = models.FloatField(db_column='popularity', blank=True, null=True)
+    vote_count = models.BigIntegerField(db_column='vote_count', blank=True, null=True)
     # video = models.BooleanField(default=False)
     idMovie = models.BigIntegerField(db_column='id', primary_key=True)  # Field name made lowercase.
     poster_path = models.CharField(max_length=255, blank=True)

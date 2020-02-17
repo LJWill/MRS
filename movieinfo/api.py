@@ -2,11 +2,14 @@ from django.http import Http404
 from rest_framework import status
 from rest_framework.generics import get_object_or_404
 from rest_framework.views import APIView
+from rest_framework.generics import GenericAPIView, ListAPIView
 from rest_framework.pagination import PageNumberPagination, LimitOffsetPagination, CursorPagination
 from rest_framework.response import Response
 from .models import *
 from .serializers import *
-import jwt
+from rest_framework_jwt.utils import jwt_decode_handler
+from movie.pagination import CustomPagination
+
 
 class MovieDetailAPI(APIView):
     serializer_class = MovieDetailSerializer
@@ -33,65 +36,152 @@ class MovieDetailAPI(APIView):
     #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class MovieListAPI(APIView):
+class MovieListAPI(GenericAPIView):
     serializer_class = MovieBriefSerializer
-    pagination_class = PageNumberPagination
+    pagination_class = CustomPagination
+    queryset = Movie.objects.all()
 
     def get(self, request):
-        movies = Movie.objects.all()
-        page_obj = MyPageNumber()
-        page_movies = page_obj.paginate_queryset(
-            movies, request=request, view=self)
-        serializer = self.serializer_class(
-            page_movies, many=True, context={'iduser': 1})
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        queryset = self.filter_queryset(self.get_queryset())
+        page = self.paginate_queryset(queryset)
+
+        if page is not None:
+            serializer = self.serializer_class(
+                page, many=True, context={'iduser': 1})
+            result = self.get_paginated_response(serializer.data)
+            data = result.data  # pagination data
+        else:
+            serializer = self.serializer_class(
+                page, many=True, context={'iduser': 1})
+            data = serializer.data
+
+        return Response(data, status=status.HTTP_200_OK)
 
 
-class UserHistoryAPI(APIView):
-    serializer_class = UserHistorySerializer
+class TopRatedMovieAPI(GenericAPIView):
+    serializer_class = MovieInfoSerializer
+    pagination_class = CustomPagination
+    queryset = Movie.objects.all().order_by('-vote_average', '-vote_count')
 
     def get(self, request):
-        userMovies = UserHistory.objects.all()
-        page_obj = MyPageNumber()
-        page_movies = page_obj.paginate_queryset(
-            userMovies, request=request, view=self)
-        serializer = self.serializer_class(
-            page_movies, many=True, context={'iduser': 1})
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        queryset = self.filter_queryset(self.get_queryset())
+        page = self.paginate_queryset(queryset)
 
-    def put(self, request):
-        userhistory = request.data
-        print(userhistory)
-        serializer = self.serializer_class(data=userhistory)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data,
-                        status=status.HTTP_201_CREATED)
+        if page is not None:
+            serializer = self.serializer_class(
+                page, many=True,)
+            result = self.get_paginated_response(serializer.data)
+            data = result.data  # pagination data
+        else:
+            serializer = self.serializer_class(
+                page, many=True)
+            data = serializer.data
+
+        return Response(data, status=status.HTTP_200_OK)
+
+class RecentMovieAPI(GenericAPIView):
+    serializer_class = MovieInfoSerializer
+    pagination_class = CustomPagination
+    queryset = Movie.objects.all().order_by('-release_date')
+
+    def get(self, request):
+        queryset = self.filter_queryset(self.get_queryset())
+        page = self.paginate_queryset(queryset)
+
+        if page is not None:
+            serializer = self.serializer_class(
+                page, many=True,)
+            result = self.get_paginated_response(serializer.data)
+            data = result.data  # pagination data
+        else:
+            serializer = self.serializer_class(
+                page, many=True)
+            data = serializer.data
+
+        return Response(data, status=status.HTTP_200_OK)
+
+class PopularMovieAPI(GenericAPIView):
+    serializer_class = MovieInfoSerializer
+    pagination_class = CustomPagination
+    queryset = Movie.objects.all().order_by('-popularity')
+
+    def get(self, request):
+        queryset = self.filter_queryset(self.get_queryset())
+        page = self.paginate_queryset(queryset)
+
+        if page is not None:
+            serializer = self.serializer_class(
+                page, many=True,)
+            result = self.get_paginated_response(serializer.data)
+            data = result.data  # pagination data
+        else:
+            serializer = self.serializer_class(
+                page, many=True)
+            data = serializer.data
+
+        return Response(data, status=status.HTTP_200_OK)
+
+class MostWatchedMovieAPI(GenericAPIView):
+    serializer_class = MovieInfoSerializer
+    pagination_class = CustomPagination
+    queryset = Movie.objects.all().order_by('-vote_count')
+
+    def get(self, request):
+        queryset = self.filter_queryset(self.get_queryset())
+        page = self.paginate_queryset(queryset)
+
+        if page is not None:
+            serializer = self.serializer_class(
+                page, many=True,)
+            result = self.get_paginated_response(serializer.data)
+            data = result.data  # pagination data
+        else:
+            serializer = self.serializer_class(
+                page, many=True)
+            data = serializer.data
+
+        return Response(data, status=status.HTTP_200_OK)
+
+class CreateUserHistoryAPI(APIView):
+    serializer_class = CreateUserHistorySerializer
+    userhistory = UserHistory.objects.all()
 
     def delete(self, request):
+        decode_payload = jwt_decode_handler(request.data['token'])
+        serializer = self.serializer_class(data=request.data, context={
+                                           'user_id': decode_payload['user_id']})
         userhistory = UserHistory.objects.get(
-            user_iduser=request.data['user_id'], movie_idmovie=request.data['movie_id'])
-        userhistory.delete()
-        return Response(status=status.HTTP_200_OK)
+            user_iduser=decode_payload['user_id'], movie_idmovie=request.data['movie_idmovie'])
 
+        if serializer.is_valid(raise_exception=True):
+            userhistory.delete()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+        return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def post(self, request):
+        decode_payload = jwt_decode_handler(request.data['token'])
+        serializer = self.serializer_class(data=request.data, context={
+                                           'user_id': decode_payload['user_id']})
 
-        print(request.data['movies'])
-        data = request.data['movies']
-        userhistory = UserHistory.objects.filter(user_iduser=request.data['user_id'])
-        
-        print(userhistory)
-        serializer = self.serializer_class(userhistory, many=True)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class RetrieveUserHistoryAPI(APIView):
+    serializer_class = RetrieveUserHistorySerializer
+
+    def post(self, request):
+        decode_payload = jwt_decode_handler(request.data['token'])
+        userhistory = UserHistory.objects.filter(
+            user_iduser=decode_payload['user_id'])
+        serializer = self.serializer_class(
+            userhistory, many=True)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
-
-
-class MyPageNumber(PageNumberPagination):
-    page_size = 10
-    page_query_param = 'page'
-    page_size_query_param = 'size'
-    max_page_size = None
 
 
 class RatingAPI(APIView):

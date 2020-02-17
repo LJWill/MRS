@@ -31,6 +31,15 @@ class LoadingData:
                 except:
                     new_movie = movies.Movie.objects.create(idMovie=row["id"])
 
+                    popularity = row["popularity"]
+                    if not pd.isnull(popularity):
+                        new_movie.popularity = popularity
+
+                    vote_count = row["vote_count"]
+                    if not pd.isnull(vote_count):
+                        new_movie.vote_count = vote_count
+
+
                     poster_path = row["poster_path"]
                     if not pd.isnull(poster_path):
                         new_movie.poster_path = poster_path
@@ -292,12 +301,15 @@ if __name__ == '__main__':
 
     # read_path = './DataCollection/MovieInfo/Data/movieDetails.csv'
     # ld.writeMovie(read_path)
-    # #
+
+    read_path = '~/Downloads/movieDetails.csv'
+    ld.writeMovie(read_path)
+    
     # read_path = './DataCollection/MovieInfo/Data/casts.csv'
     # ld.writeCast(read_path)
     #
     # read_path = './DataCollection/MovieInfo/Data/movieImages.csv'
     # ld.writeimage(read_path)
 
-    read_path = './DataCollection/MovieInfo/Data/finalRatings.csv'
-    ld.writeRatings(read_path)
+    # read_path = './DataCollection/MovieInfo/Data/finalRatings.csv'
+    # ld.writeRatings(read_path)

@@ -156,24 +156,24 @@ ResponsiveContainer.propTypes = {
   children: PropTypes.node
 };
 
-const filters = ['now_playing', 'popular', 'top_rated', 'upcoming'];
+const filters = ['most_watched', 'popular', 'recent', 'top_rated'];
 
 class HomepageLayout extends Component {
   constructor(props) {
     super(props);
   }
 
-
   render() {
     const { movies, genres } = this.props;
+    movies[0] && console.log('--------->', movies[0]);
     return (
       <ResponsiveContainer>
         {movies[0] && (
           <MovieList
             filters={filters}
-            movies={movies[0].now_playing}
+            movies={movies[0].most_watched}
             genres={genres}
-            title={`Now Playing Movies`}
+            title={`Most Watched Movies`}
           />
         )}
 
@@ -189,18 +189,18 @@ class HomepageLayout extends Component {
         {movies[2] && (
           <MovieList
             filters={filters}
-            movies={movies[2].top_rated}
+            movies={movies[2].recent}
             genres={genres}
-            title={`Top Rated Movies`}
+            title={`Recent Movies`}
           />
         )}
 
         {movies[3] && (
           <MovieList
             filters={filters}
-            movies={movies[3].upcoming}
+            movies={movies[3].top_rated}
             genres={genres}
-            title={`Upcoming Movies`}
+            title={`Top Rated Movies`}
           />
         )}
 
@@ -306,7 +306,7 @@ class HomepageLayout extends Component {
 const mapStateToProps = state => {
   return {
     genres: state.movieBrowser.genres,
-    movies: state.movieBrowser.movies,
+    movies: state.movieBrowser.movies
   };
 };
 

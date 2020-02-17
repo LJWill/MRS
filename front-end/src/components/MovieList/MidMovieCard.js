@@ -104,19 +104,19 @@ class MidMovieCard extends Component {
 
   like = (e, data) => {
     e.stopPropagation();
+
     if(data.authenticated){
-      let newData = Object.assign({ userAction: 'Like' }, data);
-    this.props.shuffleMovie(newData);
+      let newData = Object.assign({ userAction: true }, data);
+      this.props.shuffleMovie(newData);
     }else{
       window.location.href = '/login'
     }
-    
   };
 
   dislike = (e, data) => {
     e.stopPropagation();
     if(data.authenticated){
-      let newData = Object.assign({ userAction: 'DisLike' }, data);
+      let newData = Object.assign({ userAction: false }, data);
     this.props.shuffleMovie(newData);
     }else{
       window.location.href = '/login'
@@ -137,7 +137,7 @@ class MidMovieCard extends Component {
         { style: { opacity: 0, transform: 'rotateY(70deg)' } },
         () => {
           setTimeout(() => {
-            this.props.removeFromFavorites(movie.id);
+            this.props.removeFromFavorites(movie.idMovie);
           }, 500);
         }
       );
@@ -145,7 +145,7 @@ class MidMovieCard extends Component {
   };
 
   render() {
-    const { title, vote_average, id, poster_path } = this.props;
+    const { title, vote_average, idMovie, poster_path } = this.props;
 
     let backgroundColor;
     if (vote_average >= 8) {
@@ -161,9 +161,10 @@ class MidMovieCard extends Component {
         trigger={
           <Wrapper style={this.state.style}>
               <Rating style={{ backgroundColor }}>
-                {vote_average.toFixed(1)}
+                {/* {vote_average.toFixed(1)} */}
+                {vote_average > 9.9 ? vote_average.toFixed(0) : vote_average.toFixed(1)}
               </Rating>
-              <Content  onClick={() => this.jumpTo(title, id)}>
+              <Content  onClick={() => this.jumpTo(title, idMovie)}>
                 <h3>{title}</h3>
                 <Button.Group style={styles.buttonGroup}>
                   <Button color="red" onClick={(e) => this.like(e, this.props)}>
@@ -182,7 +183,7 @@ class MidMovieCard extends Component {
         position="top center"
         style={styles.toolTip}
       >
-        <Popup.Header>Click to view more info</Popup.Header>
+        <Popup.Header>Click to view more</Popup.Header>
       </Popup>
     );
   }
@@ -199,7 +200,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => ({
   userMovieAction: movie => dispatch(movieActions.userMovieAction(movie)),
-  userMovieRemove: movie => dispatch(movieActions.userMovieRemove(movie))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MidMovieCard);

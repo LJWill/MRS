@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar, faEye } from '@fortawesome/free-regular-svg-icons';
-import { urlTitle, isSaved, removeFromList } from '../../utils';
+import { urlTitle, removeFromList } from '../../utils';
 import config from '../../config';
 import { GenericButton, Button } from './Button';
 import * as movieActions from '../../store/actions/movie';
@@ -101,16 +101,16 @@ class Movie extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isSaved: isSaved(props),
       style: { opacity: 1, transform: 'rotateY(0)' }
     };
   }
 
   add = (e, movie) => {
     e.stopPropagation();
-    let newData = Object.assign({ userAction: 'Like' }, movie);
-    this.props.userMovieAction(newData);
 
+    let newData = Object.assign({ userAction: true }, movie);
+    this.props.userMovieAction(newData, this.props.token);
+    
   };
 
   remove = movie => {
@@ -135,14 +135,16 @@ class Movie extends Component {
   };
 
   render() {
-    const { title, vote_average, id, poster_path } = this.props;
+
+    const { title, vote_average, idMovie, poster_path } = this.props;
 
     let backgroundColor;
     if (vote_average >= 8) {
       backgroundColor = 'rgb(78, 173, 31)';
     } else if (vote_average <= 6) {
       backgroundColor = 'rgb(166, 173, 31)';
-    } else {
+    } 
+    else {
       backgroundColor = '#aa2e85';
     }
 
@@ -151,10 +153,11 @@ class Movie extends Component {
         trigger={
           <Wrapper
             style={this.state.style}
-            onClick={() => this.jumpTo(title, id)}
+            onClick={() => this.jumpTo(title, idMovie)}
           >
             <Rating style={{ backgroundColor }}>
-              {vote_average.toFixed(1)}
+              {vote_average > 9.9 ? vote_average.toFixed(0) : vote_average.toFixed(1)}
+              {/* {vote_average.toFixed(1)} */}
             </Rating>
             <Content>
               <h3>{title}</h3>
@@ -181,7 +184,7 @@ class Movie extends Component {
         position="bottom center"
         style={style.toolTip}
       >
-        <Popup.Header>Click to view more info</Popup.Header>
+        <Popup.Header>Click to view more</Popup.Header>
       </Popup>
     );
   }
@@ -191,13 +194,13 @@ const mapStateToProps = state => {
   return {
     movies: state.movieBrowser.movies,
     userMovies: state.userMovie.userMovies,
-    authenticated: state.auth.token !== null
+    authenticated: state.auth.token !== null,
+    token: state.auth.token
   };
 };
 
 const mapDispatchToProps = dispatch => ({
-  userMovieAction: movie => dispatch(movieActions.userMovieAction(movie)),
-  userMovieRemove: movie => dispatch(movieActions.userMovieRemove(movie))
+  userMovieAction: (movie, token) => dispatch(movieActions.userMovieAction(movie, token)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Movie);

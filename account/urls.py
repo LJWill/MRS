@@ -3,7 +3,7 @@ from django.contrib import admin
 from django.urls import path, include, re_path
 from .api import RegistrationAPI, UserViewSet
 from rest_framework.routers import DefaultRouter, SimpleRouter
-from rest_framework_jwt.views import obtain_jwt_token, ObtainJSONWebToken
+from rest_framework_jwt.views import obtain_jwt_token, ObtainJSONWebToken, verify_jwt_token
 from .serializers import CustomJWTSerializer
 
 
@@ -18,5 +18,7 @@ urlpatterns = [
 
   path('', include(router.urls), name='user_list'),
   
+  # url(r'^api-token-verify/', verify_jwt_token),
+
   # path('api/auth/users', include(router.urls)),
 ]

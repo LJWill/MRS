@@ -1,4 +1,7 @@
-import { axiosMovies as axios } from '../../axios';
+import {
+  local_axiosMovies as axios,
+  tmdb_axiosMovies as tmdb
+} from '../../axios';
 import * as actionTypes from './actionTypes';
 
 // get genre
@@ -78,7 +81,7 @@ export const getMovies = requestData => {
   const filters = requestData.filters;
 
   const requests = filters.map(filter => {
-    return axios.get(`/movie/${filter}`, {
+    return axios.get(`/movie/${filter}/`, {
       params: { page: requestData.page }
     });
   });
@@ -97,6 +100,7 @@ export const getMovies = requestData => {
 };
 
 export const getMovieDetail = id => {
+  console.log('heloooooooooooo', id);
   const requests = [
     getMovie(id),
     getActors(id),
@@ -120,20 +124,20 @@ export const getMovieDetail = id => {
 };
 
 export const getMovie = id => {
-  return axios.get(`/movie/${id}`, {
+  return tmdb.get(`/movie/${id}`, {
     params: {}
   });
 };
 
 export const getActors = id => {
-  return axios.get(`/movie/${id}/credits`, {
-    params: { language: ""}
+  return tmdb.get(`/movie/${id}/credits`, {
+    params: { language: '' }
   });
 };
 
-export const getMovieImages = (id) => {
-  return axios.get(`/movie/${id}/images`, {
-    params: { language: "null"}
+export const getMovieImages = id => {
+  return tmdb.get(`/movie/${id}/images`, {
+    params: { language: 'null' }
   });
 };
 
@@ -146,7 +150,7 @@ export const searchMovies = requestData => {
 export const getGenres = () => {
   return dispatch => {
     dispatch(getGenreStart());
-    axios
+    tmdb
       .get(`genre/movie/list`, { params: {} })
       .then(res => {
         console.log(res);
@@ -161,7 +165,7 @@ export const getGenres = () => {
 };
 
 export const getRecommendations = id => {
-  return axios.get(`/movie/${id}/recommendations`, {
+  return tmdb.get(`/movie/${id}/recommendations`, {
     params: {
       language: 'null',
       page: 1
@@ -169,24 +173,36 @@ export const getRecommendations = id => {
   });
 };
 
-
-
-// dispatch user movie action
-
-export const userMovieAction = (movie) => {
+export const userMovieStart = () => {
   return {
-    type: actionTypes.USER_MOVIE_ACTION,
-    movie
+    type: actionTypes.USER_MOVIE_START
   };
 };
 
-export const userMovieRemove = (movie) => {
-  return {
-    type: actionTypes.USER_MOVIE_REMOVE,
-    movie
+export const userMovieRemove = (movie, token) => {
+  return dispatch => {
+    axios
+      .delete('movie/info/userhistory/', {
+        data: { 
+          token, 
+          userAction: movie.userAction, 
+          movie_idmovie: movie.idMovie
+        }
+      })
+      .then(res => {
+        console.log(res);
+        if (res.status === 200) {
+          dispatch({
+            type: actionTypes.USER_MOVIE_REMOVE,
+            movie
+          });
+        }
+      })
+      .catch(err => {
+        console.log('*****', err);
+      });
   };
 };
-
 
 export const userMovieSuccess = movie => {
   return {
@@ -202,15 +218,36 @@ export const userMovieFail = error => {
   };
 };
 
-
-export const dispatchUserMovie = (movie, userAction) => {
+// dispatch user movie action
+export const userMovieAction = (movie, token) => {
+  const href = window.location.href.split('/');
+  const currentUrl = href[href.length - 1]
 
   return dispatch => {
-    // axios.get(`/movie/${id}`, {
-    //   params: {}
-    // });
+    dispatch(userMovieStart());
 
-    dispatch(userMovieSuccess(movie))
+    if (!token) {
+      return dispatch(userMovieFail('token not exist'));
+    }
 
+    axios
+      .post('movie/info/userhistory/', {
+        token,
+        userAction: movie.userAction,
+        movie_idmovie: movie.idMovie
+      })
+      .then(res => {
+        if (res.status === 201 || res.status === 200) {
+          dispatch(userMovieSuccess(movie));
+          if (currentUrl !== 'movies') {
+            window.location.href = '/movies';
+          }
+        } else {
+          dispatch(userMovieFail(res));
+        }
+      })
+      .catch(err => {
+        dispatch(userMovieFail(err));
+      });
   };
 };

@@ -3,15 +3,15 @@ import { Route } from 'react-router-dom';
 import Hoc from './hoc/hoc';
 
 import Signup from './containers/Signup';
-import Login from "./containers/Login";
+import Login from './containers/Login';
 // import Signup from './components/SignUp';
 // import Login from './components/Login';
 import HomepageLayout from './containers/Home';
-import MovieBrowser from './containers/Movie/MovieBrowser'
-import About from './containers/About/index'
-import MovieDetail from './containers/Movie/MovieDetail'
+import MovieBrowser from './containers/Movie/MovieBrowser';
+import About from './containers/About/index';
+import MovieDetail from './containers/Movie/MovieDetail';
 
-const BaseRouter = (data) => (
+const BaseRouter = data => (
   <Hoc>
     <Route path="/login" component={Login} />
     <Route path="/signup" component={Signup} />

@@ -58,7 +58,7 @@ class MovieList extends React.Component {
         <div style={{ overflow: 'hidden', padding: '20px' }}>
           <MoviesWrapper offset={this.state.listOffset}>
             {movies &&
-              movies.map(movie => <MovieCard {...movie} key={movie.id} />)}
+              movies.map(movie => <MovieCard {...movie} key={movie.idMovie} />)}
           </MoviesWrapper>
         </div>
       </List>
