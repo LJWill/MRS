@@ -283,7 +283,7 @@ export const getMyRecommendation = (like, dislike, token) => {
   const href = window.location.href.split('/');
   const currentUrl = href[href.length - 1];
 
-  console.log('^^^^^^^^^^', like, dislike);
+  // console.log('^^^^^^^^^^', like, dislike);
 
   return dispatch => {
     dispatch(getRecommendationStart());
@@ -300,7 +300,7 @@ export const getMyRecommendation = (like, dislike, token) => {
       })
       .then(res => {
         if (res.status === 200) {
-          dispatch(getRecommendationSuccess(res.data.results));
+          dispatch(getRecommendationSuccess(res.data));
 
           if (currentUrl !== 'movies') {
             window.location.href = '/movies';

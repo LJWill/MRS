@@ -21,7 +21,6 @@ const containObj = (obj, list) => {
 
 const userMovieSuccess = (state, action) => {
   if (!containObj(action.movie, state.userMovies)) {
-    console.log('^^^^^^^^^^^', action.movie, state.userMovies)
     return updateObject(state, {
       userMovies: [...state.userMovies, action.movie]
     });

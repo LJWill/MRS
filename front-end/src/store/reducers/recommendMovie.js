@@ -3,6 +3,10 @@ import { updateObject } from '../utility';
 
 const initialState = {
   isFeching: false,
+  next: null,
+  previous: null,
+  total_page: null,
+  current_page: null,
   movies: [],
   error: null
 };
@@ -15,10 +19,14 @@ const getRecommendationStart = (state, action) => {
 };
 
 const getRecommendationSuccess = (state, action) => {
-    console.log('#################################################', action);
+  console.log('#################################################', action);
   return updateObject(state, {
     movies: action.movies,
     isFeching: false,
+    next: action.links.next,
+    previous: action.link.previous,
+    total_page: action.page_number,
+    current_page: null,
     error: null
   });
 };
