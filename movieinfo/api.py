@@ -38,30 +38,32 @@ class MovieDetailAPI(APIView):
 
 
 class MovieRecommendationAPI(GenericAPIView):
-    serializer_class = MovieBriefSerializer
+    serializer_class = MovieInfoSerializer
     pagination_class = CustomPagination
     queryset = Movie.objects.all()
     tp = TagProcessing()
 
-    def get(self, request):
-        recomm_mids = self.tp.query(24428, 100)
+    def post(self, request):
+        
+        decode_payload = jwt_decode_handler(request.data['token'])
+        movie_id = int(request.data['movie_id'])                       
+        recomm_mids = self.tp.query(movie_id, 100)
+
+        # print('\n\n---------->', movie_id, type(movie_id),'\n\n')
+        if not recomm_mids: return Response(status=status.HTTP_404_NOT_FOUND)
 
         preserved = Case(*[When(pk=pk, then=pos) for pos, pk in enumerate(recomm_mids)])
         queryset = self.get_queryset().filter(pk__in=recomm_mids).order_by(preserved)
         page = self.paginate_queryset(queryset)
         
-
-        # print('\n\n---------->', recomm_mids, '\n\n')
-
-
         if page is not None:
             serializer = self.serializer_class(
-                page, many=True, context={'iduser': 1})
+                page, many=True, context={'user_id': decode_payload['user_id']})
             result = self.get_paginated_response(serializer.data)
             data = result.data  # pagination data
         else:
             serializer = self.serializer_class(
-                page, many=True, context={'iduser': 1})
+                page, many=True, context={'user_id': decode_payload['user_id']})
             data = serializer.data
 
         return Response(data, status=status.HTTP_200_OK)
@@ -87,7 +89,6 @@ class MovieListAPI(GenericAPIView):
             data = serializer.data
 
         return Response(data, status=status.HTTP_200_OK)
-
 
 class TopRatedMovieAPI(GenericAPIView):
     serializer_class = MovieInfoSerializer
