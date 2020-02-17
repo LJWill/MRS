@@ -2,7 +2,7 @@ import * as actionTypes from '../actions/actionTypes';
 import { updateObject } from '../utility';
 
 const initialState = {
-  isFeching: false,
+  isFetching: false,
   movie: null,
   credits: null,
   images: null,
@@ -13,7 +13,7 @@ const initialState = {
 const getMovieDetailStart = (state, action) => {
   return updateObject(state, {
     error: null,
-    isFeching: true
+    isFetching: true
   });
 };
 
@@ -23,7 +23,7 @@ const getMovieDetailSuccess = (state, action) => {
     credits: action.credits,
     images: action.images,
     recommendations: action.recommendations,
-    isFeching: false,
+    isFetching: false,
     error: null
   });
 };
@@ -31,7 +31,7 @@ const getMovieDetailSuccess = (state, action) => {
 const getMovieDetailFail = (state, action) => {
   return updateObject(state, {
     error: action.error,
-    isFeching: false
+    isFetching: false
   });
 };
 
