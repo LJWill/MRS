@@ -6,7 +6,7 @@ from surprise import *
 
 class recommend:
     def recommend(self):
-        for i in range(2, 20):
+        for i in range(1, 20):
             print("genre %d start:" % i)
             (pred, algo) = dump.load("./KNNBasic/KNNBasic%d" % i)
             list = algo.trainset.all_items()
