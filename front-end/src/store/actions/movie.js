@@ -214,7 +214,7 @@ export const userMovieSuccess = movie => {
 export const userMovieFail = error => {
   return {
     type: actionTypes.USER_MOVIE_FAIL,
-    error: error
+    error
   };
 };
 
@@ -242,6 +242,59 @@ export const userMovieAction = (movie, token) => {
           if (currentUrl !== 'movies') {
             window.location.href = '/movies';
           }
+        } else {
+          dispatch(userMovieFail(res));
+        }
+      })
+      .catch(err => {
+        dispatch(userMovieFail(err));
+      });
+  };
+};
+
+
+
+const getRecommendationStart = () => {
+  return {
+    type: actionTypes.GET_RECOMMENDATION_START
+  };
+};
+
+const getRecommendationSuccess = (movie) => {
+  return {
+    type: actionTypes.GET_RECOMMENDATION_SUCCESS,
+    movie
+  };
+};
+
+const getRecommendationFail = (error) => {
+  return {
+    type: actionTypes.GET_RECOMMENDATION_FAIL,
+    error
+  };
+};
+
+
+
+export const getRecommendation = (movie, token) => {
+  const href = window.location.href.split('/');
+  const currentUrl = href[href.length - 1]
+
+  return dispatch => {
+    dispatch(getRecommendationStart());
+
+    if (!token) {
+      return dispatch(getRecommendationFail('token not exist'));
+    }
+
+    axios
+      .post('movie/recommendation/', {
+        token,
+        movie_id: movie.idMovie,
+      })
+      .then(res => {
+        if (res.status === 200) {
+          dispatch(getRecommendationSuccess(movie));
         } else {
           dispatch(userMovieFail(res));
         }
