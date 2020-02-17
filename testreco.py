@@ -21,6 +21,7 @@ class recommend:
             for movieid in df['0'].index:
 
                 reco = algo.get_neighbors(algo.trainset.to_inner_iid(movieid), k=100)
+                reco = [algo.trainset.to_raw_iid(inner) for inner in reco]
                 count = 0
                 for movie in reco:
                     df[str(count)][movieid] = movie
