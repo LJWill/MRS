@@ -128,8 +128,8 @@ class TagProcessing:
         # result = df.transpose()
         final = []
         remove = []
-        like = dict.get("like")
-        like = like[-10:]
+        original_like = dict.get("like")
+        like = original_like[-10:]
         like.reverse()
         dislike = dict.get("dislike")
         count = 0
@@ -160,6 +160,7 @@ class TagProcessing:
         final = [item for item in final if item not in remove]
         # final = [5, 1, 2, 2, 3]
         final_result = sorted(set(final), key=final.index)
+        final_result = [item for item in final_result if item not in original_like]
         return final_result[:num]
 
     def test(self, ratings):
