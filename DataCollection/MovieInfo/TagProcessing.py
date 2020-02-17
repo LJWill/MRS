@@ -123,6 +123,46 @@ class TagProcessing:
             temp = list(result.loc[movieId])
             return temp[:num]
 
+    def query_list(self, dict, num=100):
+        # df = pd.read_csv("Data/output.csv", header=0, index_col=0)
+        # result = df.transpose()
+        final = []
+        remove = []
+        original_like = dict.get("like")
+        like = original_like[-10:]
+        like.reverse()
+        dislike = dict.get("dislike")
+        count = 0
+        lens = len(like)
+        # print(lens)
+        result = [[0 for i in range(100)] for j in range(lens)]
+        for i in like:
+            result[count] = self.query(i)
+            count += 1
+        # print(result)
+        count = 0
+        round = 0
+        blocks = len(result)*len(result[0])
+        while count < blocks:
+            for i in range(lens):
+                # print(i)
+                # print(round * (lens - i))
+                # print((round+1) * (lens - i))
+                temp = result[i][round * (lens - i): (round + 1) * (lens - i)]
+                # print(temp)
+                final.extend(temp)
+                count = len(final)
+            round += 1
+        # print(final)
+        for j in dislike:
+            remove.extend(self.query(j))
+
+        final = [item for item in final if item not in remove]
+        # final = [5, 1, 2, 2, 3]
+        final_result = sorted(set(final), key=final.index)
+        final_result = [item for item in final_result if item not in original_like]
+        return final_result[:num]
+
     def test(self, ratings):
         df = pd.read_csv(ratings)
 
@@ -161,6 +201,7 @@ if __name__ == '__main__':
     # tp.pivot_sim(result_path, pivot_path)
     # tp.similarity_sim(pivot_path, similarity_path)
     # tp.query_sim(similarity_path, pivot_path)
-    item = tp.query(15, 2)
+    dict = {'like': [2, 3, 5], 'dislike': [6]}
+    item = tp.query_list(dict, 9)
     print(item)
     # tp.test(rating_path)

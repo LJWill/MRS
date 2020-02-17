@@ -10,8 +10,9 @@ const initialState = {
 
 const containObj = (obj, list) => {
   let result = false;
+  // let ids = list.map(i => i.idMovie.toString())
   list.map(item => {
-    if (obj.idMovie === item.idMovie) {
+    if (obj.idMovie == item.idMovie) {
       result = true;
     }
   });

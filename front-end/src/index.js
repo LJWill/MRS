@@ -10,6 +10,7 @@ import authReducer from "./store/reducers/auth";
 import movieReducer from "./store/reducers/movie";
 import movieDetailReducer from "./store/reducers/movieDetail";
 import userMovieReducer from "./store/reducers/userMovie"; 
+import recommendMovieReducer from "./store/reducers/recommendMovie"; 
 
 
 const composeEnhances = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
@@ -18,7 +19,8 @@ const rootReducer = combineReducers({
   auth: authReducer,
   movieBrowser: movieReducer,
   movieDetail: movieDetailReducer,
-  userMovie: userMovieReducer
+  userMovie: userMovieReducer,
+  recommendMovie: recommendMovieReducer,
 });
 
 const store = createStore(rootReducer, composeEnhances(applyMiddleware(thunk)));
