@@ -43,7 +43,6 @@ class MovieRecommendationAPI(GenericAPIView):
     pagination_class = CustomPagination
     queryset = Movie.objects.all()
     tp = TagProcessing()
-    re = recommender()
 
     def post(self, request):
         decode_payload = jwt_decode_handler(request.data['token'])
@@ -77,7 +76,6 @@ class MovieRecommendationAPI2(GenericAPIView):
     serializer_class = MovieInfoSerializer
     pagination_class = CustomPagination
     queryset = Movie.objects.all()
-    tp = TagProcessing()
     re = recommender()
 
     def post(self, request):
