@@ -1,12 +1,64 @@
 import pandas as pd
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
+import Recommender
 
 
 
 class TagProcessing:
-    def __init__(self, ):
+
+    def evluation(self, rating_path):
+        rating = pd.read_csv(rating_path, index_col=0, header=0)
+
+        Id = self.output_df.index.values.tolist()
+        # print(len(Id))
+        # a = rating.shape[0]
+        rating = rating[rating.tmdbId.isin(Id)]
+        partial = rating.iloc[:1000000]
+        users = partial.userId.unique()
+        partial = partial.groupby("userId")
+        mean_precision = 0
+        mean_recall = 0
+        for i in users:
+            temp = partial.get_group(i)
+            likes = []
+            dislikes = []
+            dict ={}
+            # print(temp.shape)
+            # print(temp)
+            for index, row in temp.iterrows():
+                # print(row, type(row))
+                if row[1] >= 4.0:
+                    likes.append(int(row["tmdbId"]))
+                elif row[1] <= 1.5:
+                    dislikes.append(int(row["tmdbId"]))
+
+            dict["like"] = likes[:10]
+            dict["dislike"] = dislikes
+            # full_like = self.query_list(dict)
+            full_like = self.reco.recommend(dict)
+            precision_1 = len([item for item in full_like if item in likes[10:]])
+            precision_2 = len(likes[10:])
+            recall_2 = len(full_like)
+            if precision_2 == 0 and precision_1 == 0:
+                mean_precision += 1
+                mean_recall += 1
+            # elif recall_2 == 0:
+            #     mean_precision += precision_1/precision_2
+            #     mean_recall += 1
+            else:
+                mean_precision += precision_1/precision_2
+                mean_recall += precision_1/recall_2
+        avg_precision = mean_precision/len(users)
+        avg_recall = mean_recall/len(users)
+        f1 = 2*avg_precision*avg_recall/(avg_precision + avg_recall)
+        print("AVG_Precision: ", avg_precision)
+        print("AVG_Recall: ", avg_recall)
+        print("F1_Score: ", f1)
+
+    def __init__(self):
         self.output_df = pd.read_csv("Data/output.csv", header=0, index_col=0)
+        self.reco = Recommender.recommender()
 
     def float_int(self, x):
         return int(x)
@@ -132,6 +184,8 @@ class TagProcessing:
         dislike = dict.get("dislike")
         count = 0
         lens = len(like)
+        if lens == 0:
+            return []
         # print(lens)
         result = [[0 for i in range(100)] for j in range(lens)]
         for i in like:
@@ -198,7 +252,7 @@ if __name__ == '__main__':
     # link_path = 'newData/linkResults.csv'
     # tag_path = 'newData/genome-scores.csv'
     # result_path = 'newData/tagResults.csv'
-    rating_path = 'newData/ratings.csv'
+    rating_path = 'Rating/finalRatings.csv'
     pivot_path = 'Data/pivot1.csv'
     similarity_path = 'Data/sim.csv'
     tp = TagProcessing()
@@ -208,7 +262,8 @@ if __name__ == '__main__':
     # tp.pivot_sim(result_path, pivot_path)
     # tp.similarity_sim(pivot_path, similarity_path)
     # tp.query_sim(similarity_path, pivot_path)
-    dict = {'like': [2, 3, 5], 'dislike': [6]}
-    item = tp.query_list(dict, 9)
-    print(item)
+    # dict = {'like': [2, 3, 5], 'dislike': [6]}
+    # item = tp.query_list(dict, 9)
+    # print(item)
+    tp.evluation(rating_path)
     # tp.test(rating_path)
