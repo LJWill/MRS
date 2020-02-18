@@ -141,6 +141,7 @@ class MovieBrowser extends React.Component {
         <Container className="pagination">
           <Pagination
             defaultActivePage={this.props.currentPage}
+            activePage={this.props.currentPage}
             ellipsisItem={{
               content: <Icon name="ellipsis horizontal" />,
               icon: true
