@@ -2,7 +2,7 @@ import * as actionTypes from '../actions/actionTypes';
 import { updateObject } from '../utility';
 
 const initialState = {
-  isFeching: false,
+  isFetching: false,
   movies: [],
   genres: null,
   error: null
@@ -11,14 +11,14 @@ const initialState = {
 const getGenreStart = (state, action) => {
   return updateObject(state, {
     error: null,
-    isFeching: true
+    isFetching: true
   });
 };
 
 const getGenreSuccess = (state, action) => {
   return updateObject(state, {
     genres: action.genres,
-    isFeching: false,
+    isFetching: false,
     error: null
   });
 };
@@ -26,21 +26,21 @@ const getGenreSuccess = (state, action) => {
 const getGenreFail = (state, action) => {
   return updateObject(state, {
     error: action.error,
-    isFeching: false
+    isFetching: false
   });
 };
 
 const getMovieStart = (state, action) => {
   return updateObject(state, {
     error: null,
-    isFeching: true
+    isFetching: true
   });
 };
 
 const getMovieSuccess = (state, action) => {
   return updateObject(state, {
     movies: action.movies,
-    isFeching: false,
+    isFetching: false,
     error: null
   });
 };
@@ -48,7 +48,7 @@ const getMovieSuccess = (state, action) => {
 const getMovieFail = (state, action) => {
   return updateObject(state, {
     error: action.error,
-    isFeching: false
+    isFetching: false
   });
 };
 

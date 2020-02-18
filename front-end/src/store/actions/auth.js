@@ -1,6 +1,7 @@
 // import axios from 'axios';
 import { local_axiosMovies as axios } from '../../axios';
 import * as actionTypes from './actionTypes';
+import {getMyRecommendation} from './movie';
 
 export const authStart = () => {
   return {
@@ -56,7 +57,7 @@ export const authLogin = (username, password) => {
         localStorage.setItem('username', username);
         localStorage.setItem('expirationDate', expirationDate);
         dispatch(authSuccess(token, username));
-        dispatch(getUserMovies(token))
+        dispatch(getUserMovies(token));
         dispatch(checkAuthTimeout(36000));
       })
       .catch(err => {
@@ -78,12 +79,12 @@ export const authSignup = (username, email, password, password2) => {
       .then(res => {
         const token = res.data.token;
         const username = res.data.username;
-        const expirationDate = new Date(new Date().getTime() + 3600 * 1000);
+        const expirationDate = new Date(new Date().getTime() + 36000 * 1000);
         localStorage.setItem('token', token);
         localStorage.setItem('username', username);
         localStorage.setItem('expirationDate', expirationDate);
         dispatch(authSuccess(token, username));
-        dispatch(checkAuthTimeout(3600));
+        dispatch(checkAuthTimeout(36000));
       })
       .catch(err => {
         dispatch(authFail(err));
@@ -97,7 +98,7 @@ const getUserMoviesStart = () => {
   };
 };
 
-const getUserMoviesSuccess = (movie) => {
+const getUserMoviesSuccess = movie => {
   return {
     type: actionTypes.GET_USER_MOVIE_SUCCESS,
     movie
@@ -111,7 +112,10 @@ const getUserMoviesFail = error => {
   };
 };
 
-export const getUserMovies = (token) => {
+export const getUserMovies = token => {
+  const href = window.location.href.split('/');
+  const currentUrl = href[href.length - 1];
+
   return dispatch => {
     dispatch(getUserMoviesStart());
 
@@ -121,6 +125,10 @@ export const getUserMovies = (token) => {
       })
       .then(res => {
         dispatch(getUserMoviesSuccess(res.data));
+
+        if(!res.data.length < 1 && currentUrl === 'movies'){
+          dispatch(getMyRecommendation())
+        }
       })
       .catch(err => {
         dispatch(getUserMoviesFail(err));
@@ -141,7 +149,7 @@ export const authCheckState = () => {
         dispatch(logout());
       } else {
         dispatch(authSuccess(token, username));
-        dispatch(getUserMovies(token))
+        dispatch(getUserMovies(token));
         dispatch(
           checkAuthTimeout(
             (expirationDate.getTime() - new Date().getTime()) / 1000
