@@ -30,9 +30,9 @@ class recommender:
         movie_sim = {}
         recommend = []
         like_lim = 0
-        while len(recommend) < 100:
+        while len(recommend) < 1:
             recommend = []
-            like_lim += 10
+            like_lim += 1
             for movie in userHistory["like"]:
                 genres = self.getGenres(movie)
                 dict = self.getSimilar(movie, genres)
@@ -65,14 +65,14 @@ class recommender:
         result = {}
         for id in genres:
             df = self.list_dfs[id - 1]
-            index = list(df.head().index)[1]
+            # index = list(df.head().index)[1]
             result[id] = df.loc[movieid]
         return result
 
 
-# reco = recommender()
-# his = {}
-# his["like"] = [293660, 5]
-# his["dislike"] = []
-# result = reco.recommend(his)
-# print(len(result))
+reco = recommender()
+his = {}
+his["like"] = [155]
+his["dislike"] = []
+result = reco.recommend(his)
+print((result))

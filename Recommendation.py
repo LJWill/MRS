@@ -24,10 +24,10 @@ class Recommender:
             # df = pd.read_csv("ratings.csv")
             reader = Reader(rating_scale=(1, 10), line_format='user item rating')
             data = Dataset.load_from_df(df, reader)
-            trainset, testset = train_test_split(data, test_size=.25)
+            trainset, testset = train_test_split(data, test_size=.1)
             print("load")
             list_algos = []
-            algo_KNNBasic = KNNBasic(sim_options={"user_based": False})
+            algo_KNNBasic = KNNBasic(sim_options={"user_based": False, 'min_support': 10})
             list_algos.append((algo_KNNBasic, "KNNBasic"))
 
             # algo_KNNWithMeans = KNNWithMeans()
@@ -60,6 +60,8 @@ class Recommender:
     def train(self, trainset, testset, algo, name):
         starttime = datetime.now()
         algo.fit(trainset)
+        # df = algo.compute_similarities()
+        # print(df)
         pred = algo.predict(testset[0][0], testset[0][1]
                             , verbose=True)
         endtime = datetime.now()
