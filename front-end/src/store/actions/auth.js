@@ -1,7 +1,7 @@
 // import axios from 'axios';
 import { local_axiosMovies as axios } from '../../axios';
 import * as actionTypes from './actionTypes';
-import {getMyRecommendation} from './movie';
+import {getMyRecommendation, getMyRecommendation2} from './movie';
 
 export const authStart = () => {
   return {
@@ -128,6 +128,7 @@ export const getUserMovies = token => {
 
         if(!res.data.length < 1 && currentUrl === 'movies'){
           dispatch(getMyRecommendation())
+          dispatch(getMyRecommendation2())
         }
       })
       .catch(err => {

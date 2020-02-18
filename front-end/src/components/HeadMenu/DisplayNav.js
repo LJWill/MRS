@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { media } from '../../utils';
 import { Link } from 'react-router-dom';
-import Search from './Search';
+// import Search from './Search';
 import { Grid, Button, Dropdown, Icon } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { logout } from '../../store/actions/auth';
@@ -32,6 +32,15 @@ const styles = {
     right: '0',
     top: '0',
     padding: '23px 30px'
+  },
+  algoButton: {
+    position: 'absolute',
+    left: '0',
+    right: '0',
+    // width: '100%',
+    margin: '20px auto',
+    display: 'flex',
+    justifyContent: 'center'
   }
 };
 
@@ -51,7 +60,7 @@ const Wrapper = styled.nav`
     margin: 0;
     padding: 30px 30px;
     align-items: center;
-
+    z-index: 1000;
     ${media.tablet`display: none;`};
   }
 `;
@@ -87,6 +96,7 @@ const LogoWrapper = styled.a`
   display: flex;
   font-size: 24px;
   text-decoration: none;
+  z-index: 1000;
 
   svg {
     height: 64px;
@@ -109,7 +119,11 @@ const Logo = () => (
 class Nav extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { onTop: true, isOpen: false };
+    this.state = {
+      onTop: true,
+      isOpen: false,
+      algo: 1
+    };
   }
   componentDidMount() {
     window.addEventListener('scroll', this.handleScroll);
@@ -127,6 +141,10 @@ class Nav extends React.Component {
 
   toggleMenu = () => {
     this.setState({ isOpen: !this.state.isOpen });
+  };
+
+  algo = e => {
+    console.log('$$$$$$$$', e);
   };
 
   render() {
@@ -147,7 +165,29 @@ class Nav extends React.Component {
               </NavItem>
             </ul>
 
-            <Search style={styles.searchBar} />
+            {/* <Search style={styles.searchBar} /> */}
+
+            <AccountItem style={styles.algoButton}>
+              <Button.Group size="large" >
+                <Button
+                  onClick={() => {
+                    this.setState({ algo: 1 }, () => this.props.algo(1));
+                  }}
+                  color={this.state.algo === 1 ? 'green' : ''}
+                >
+                  Algo One
+                </Button>
+                <Button.Or />
+                <Button
+                  onClick={() => {
+                    this.setState({ algo: 2 }, () => this.props.algo(2));
+                  }}
+                  color={this.state.algo === 2 ? 'green' : ''}
+                >
+                  Algo Two
+                </Button>
+              </Button.Group>
+            </AccountItem>
 
             {authenticated ? (
               <ul style={styles.accountItem}>
@@ -198,11 +238,11 @@ class Nav extends React.Component {
           </Grid.Row>
 
           <Grid.Row>
-              <DisplayContainer
-                movies={this.props.movies}
-                onTop={this.state.onTop}
-                func={this.props.func}
-              />
+            <DisplayContainer
+              movies={this.props.movies}
+              onTop={this.state.onTop}
+              func={this.props.func}
+            />
           </Grid.Row>
         </Wrapper>
       </div>

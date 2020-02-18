@@ -10,6 +10,9 @@ import csv
 
 class TagProcessing:
 
+    def __init__(self, ):
+        self.output_df = pd.read_csv("DataCollection/MovieInfo/Data/output.csv", header=0, index_col=0)
+
     def float_int(self, x):
         return int(x)
 
@@ -21,15 +24,16 @@ class TagProcessing:
         temp = 0
         while temp < len - 1:
             min = temp
-            if temp + 10000 < len -1:
+            if temp + 10000 < len - 1:
                 max = temp + 10000
             else:
-                max = len -1
+                max = len - 1
             tag_slice = tags.iloc[min:max]
             temp_result = tag_slice.merge(links, how='left', on='movieId')
             temp_result = temp_result.drop(['movieId', 'imdbId'], axis=1)
             result = result.append(temp_result)
-            print("\r" + 'processing %d out of %d items...' % (temp, len), end='')
+            print("\r" + 'processing %d out of %d items...' %
+                  (temp, len), end='')
             temp = max
         result = result[['tmdbId', 'tagId', 'relevance']]
         result.to_csv(write_path)
@@ -51,7 +55,8 @@ class TagProcessing:
             temp_result = rating_slice.merge(id, how='left', on='movieId')
             temp_result = temp_result.drop(['movieId', "Unnamed: 0"], axis=1)
             result = result.append(temp_result)
-            print("\r" + 'processing %d out of %d items...' % (temp + 1, len), end='')
+            print("\r" + 'processing %d out of %d items...' %
+                  (temp + 1, len), end='')
             temp = max
         result.to_csv(write_path)
 
@@ -69,7 +74,8 @@ class TagProcessing:
 
     def pivot_sim(self, tag_path, write_path):
         tags = pd.read_csv(tag_path,  header=0, index_col=0)
-        pivot = tags.pivot_table(values='relevance', index=['tmdbId'], columns=['tagId'])
+        pivot = tags.pivot_table(values='relevance', index=[
+                                 'tmdbId'], columns=['tagId'])
         pivot.to_csv(write_path)
 
     def similarity_sim(self, pivot_path, sim_path):
@@ -104,7 +110,8 @@ class TagProcessing:
                 temp_result.append(names[argmax])
             # print(temp_result)
             result[names[i]] = temp_result
-            print("\r" + 'processing %d out of %d items...' % (count, len), end='')
+            print("\r" + 'processing %d out of %d items...' %
+                  (count, len), end='')
             count += 1
 
         df = pd.DataFrame(result)
@@ -112,7 +119,7 @@ class TagProcessing:
         df.to_csv("Data/output.csv")
 
     def query(self, movieId, num=100):
-        result = pd.read_csv("DataCollection/MovieInfo/Data/output.csv", header=0, index_col=0)
+        result = self.output_df
         rs = []
         df = result.transpose()
         for i in list(df.keys()):
@@ -163,15 +170,16 @@ class TagProcessing:
             if temp is None:
                 continue
             else:
-                remove.extend(self.query(j))
+                temp = temp[:5]
+                remove.extend(temp)
 
         final = [item for item in final if item not in remove]
         # final = [5, 1, 2, 2, 3]
         final_result = sorted(set(final), key=final.index)
-        final_result = [item for item in final_result if item not in original_like and item not in dislike]
+        final_result = [
+            item for item in final_result if item not in original_like and item not in dislike]
         return final_result[:num]
 
-        
     def test(self, ratings):
         df = pd.read_csv(ratings)
 
@@ -183,7 +191,8 @@ class TagProcessing:
         conf = SparkConf().setAppName("Test").setMaster("local")
         sc = SparkContext(conf=conf)
         spark = SparkSession.builder.config(conf=conf).getOrCreate()
-        df = spark.read.format('com.databricks.spark.csv').options(header='true', inferschema='true').load(tag_path, header=True)
+        df = spark.read.format('com.databricks.spark.csv').options(
+            header='true', inferschema='true').load(tag_path, header=True)
         df = df.drop("tagId")
         print(df.columns)
         rdd = df.rdd.map(list)
@@ -193,7 +202,6 @@ class TagProcessing:
         for x in cs.entries.collect():
             print(x)
         print(cs.numRows(), cs.numCols())
-
 
 
 if __name__ == '__main__':
