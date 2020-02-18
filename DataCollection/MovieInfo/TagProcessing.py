@@ -163,7 +163,8 @@ class TagProcessing:
             if temp is None:
                 continue
             else:
-                remove.extend(self.query(j))
+                temp = temp[:5]
+                remove.extend(temp)
 
         final = [item for item in final if item not in remove]
         # final = [5, 1, 2, 2, 3]
