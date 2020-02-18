@@ -7,7 +7,7 @@ import config from '../../config';
 import { GenericButton, Button } from './Button';
 import * as movieActions from '../../store/actions/movie';
 import { connect } from 'react-redux';
-import { Popup } from 'semantic-ui-react';
+import { Popup, Icon } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 
 const Poster = styled.div`
@@ -136,7 +136,7 @@ class Movie extends Component {
 
   render() {
 
-    const { title, vote_average, idMovie, poster_path } = this.props;
+    const { title, vote_average, idMovie, poster_path, userMovies } = this.props;
 
     let backgroundColor;
     if (vote_average >= 8) {
@@ -162,15 +162,22 @@ class Movie extends Component {
             <Content>
               <h3>{title}</h3>
               {this.props.authenticated ? (
+                userMovies.map(m=>(parseInt(m.idMovie))).includes(idMovie) ?
                 <GenericButton
                   title="Favorite"
-                  icon={<FontAwesomeIcon icon={faStar} />}
+                  icon={<Icon name="star"/>}
+                  onClick={e => this.add(e, this.props)}
+                /> :
+                <GenericButton
+                  title="Favorite"
+                  icon={<Icon name="star outline"/>}
                   onClick={e => this.add(e, this.props)}
                 />
+                  
               ) : (
                 <GenericButton
                   title="Favorite"
-                  icon={<FontAwesomeIcon icon={faStar} />}
+                  icon={<Icon name="star outline"/>}
                   onClick={e => {
                     e.stopPropagation();
                     window.location.href = '/login';

@@ -73,6 +73,8 @@ class MovieBrowser extends React.Component {
   componentDidMount() {
     this.setState({ movies: this.props.recommendMovies, loaded: true });
 
+    this.props.getMyRecommendation();
+
     window.scrollTo({
       top: 0,
       left: 0,
