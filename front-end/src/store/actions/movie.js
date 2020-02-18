@@ -196,6 +196,7 @@ export const userMovieRemove = (movie, token) => {
             type: actionTypes.USER_MOVIE_REMOVE,
             movie
           });
+          dispatch(getMyRecommendation());
         }
       })
       .catch(err => {

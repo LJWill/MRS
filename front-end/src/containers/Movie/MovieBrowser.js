@@ -67,7 +67,7 @@ class MovieBrowser extends React.Component {
       loaded: false
     });
 
-    this.props.userMovieRemove(movie, this.props.token);
+    // this.props.userMovieRemove(movie, this.props.token);
   };
 
   componentDidMount() {
@@ -103,7 +103,6 @@ class MovieBrowser extends React.Component {
   render() {
     // let { movies } = this.state;
     let movies = this.props.recommendMovies;
-    console.log('------>', this.props);
     return (
       <div>
         <GlobalStyle />
