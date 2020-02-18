@@ -107,8 +107,8 @@ class Movie extends Component {
 
   add = (e, movie) => {
     e.stopPropagation();
-
-    let newData = Object.assign({ userAction: true }, movie);
+    let idMovie = movie.idMovie ? movie.idMovie : movie.id
+    let newData = Object.assign({ userAction: true, idMovie }, movie);
     this.props.userMovieAction(newData, this.props.token);
     
   };
@@ -136,7 +136,9 @@ class Movie extends Component {
 
   render() {
 
-    const { title, vote_average, idMovie, poster_path, userMovies } = this.props;
+    const { title, vote_average, poster_path, userMovies } = this.props;
+    const idMovie = this.props.idMovie ? this.props.idMovie : this.props.id
+
 
     let backgroundColor;
     if (vote_average >= 8) {
