@@ -93,6 +93,13 @@ class MovieBrowser extends React.Component {
   handlePaginationChange = (e, { activePage }) => {
     console.log(activePage);
     this.setState({ activePage });
+    this.props.getMyRecommendation(activePage);
+
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth'
+    });
   };
 
   createFlipperKey = () => {
@@ -218,7 +225,9 @@ const mapDispatchToProps = dispatch => ({
   userMovieAction: (movie, token) =>
     dispatch(movieActions.userMovieAction(movie, token)),
   userMovieRemove: (movie, token) =>
-    dispatch(movieActions.userMovieRemove(movie, token))
+    dispatch(movieActions.userMovieRemove(movie, token)),
+  getMyRecommendation: pageNumber =>
+    dispatch(movieActions.getMyRecommendation(pageNumber))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MovieBrowser);

@@ -271,7 +271,7 @@ const getRecommendationFail = error => {
   };
 };
 
-export const getMyRecommendation = () => {
+export const getMyRecommendation = (pageNumber=1) => {
   const href = window.location.href.split('/');
   const currentUrl = href[href.length - 1];
 
@@ -294,7 +294,7 @@ export const getMyRecommendation = () => {
     console.log('^^^^^^^^^^', like, dislike);
 
     axios
-      .post('movie/recommendation/', {
+      .post(`movie/recommendation/?page=${pageNumber}`, {
         token,
         like,
         dislike
