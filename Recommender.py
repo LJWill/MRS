@@ -11,10 +11,9 @@ class recommender:
     dislike_lim = 10
 
     def __init__(self):
-        self.list_dfs = [pd.read_csv("./genre/reco_genre%d.csv" % i,index_col=0) for i in range(1, 20)]
+        self.list_dfs = [pd.read_csv("./genre/reco_genre%d.csv" % i, index_col=0) for i in range(1, 20)]
         # for df in self.list_dfs:
         #     print(df)
-
 
     def recommend(self, userHistory):
 
@@ -26,31 +25,59 @@ class recommender:
                 result = [serie[i] for i in range(0, self.dislike_lim)]
                 notRecommend = notRecommend + result
         notRecommend = [movie for movie in notRecommend if notRecommend.count(movie) == 1]
+        notRecommend = notRecommend + userHistory["dislike"] + userHistory["like"]
         genres_weight = {}
         movie_sim = {}
-        recommend = []
+        recommend = {}
         like_lim = 0
-        while len(recommend) < 1:
-            recommend = []
-            like_lim += 1
+        recommend_list=[]
+
+        if len(userHistory["like"]) == 1:
+            movieid1 = userHistory["like"][0]
+            try:
+                movie = db.Movie.objects.get(idMovie=movieid1)
+                collection = movie.collectionid
+                if collection != None:
+                    userHistory["like"] = list(db.Movie.objects.filter(collectionid=collection).\
+                        values_list("idMovie", flat = True))
+
+            except Exception as e:
+                print(e)
+
+
+        while len(recommend) < 100:
+            recommend = {}
+            like_lim += 5
+            for movie in userHistory["like"]:
+                genres = self.getGenres(movie)
+                for genre in genres:
+                    if genre in genres_weight.keys():
+                        genres_weight[genre] += 1
+                    else:
+                        genres_weight[genre] = 1
+            genres_weight = {k: v for k, v in sorted(genres_weight.items(), key=lambda item: item[1])}
+            number, min = list(genres_weight.items())[0]
+            for key in genres_weight.keys():
+                genres_weight[key] = genres_weight[key] / min
             for movie in userHistory["like"]:
                 genres = self.getGenres(movie)
                 dict = self.getSimilar(movie, genres)
-                for serie in dict.values():
-                    result = [serie[i] for i in range(0, like_lim)]
-                    recommend = result + recommend
-
-            recommend = list(set(recommend).difference(set(notRecommend)))
-        return recommend
-        # for genre in genres:
-        #     if genre in genres_weight.keys():
-        #         genres_weight[genre] += 1
-        #     else:
-        #         genres_weight[genre] = 1
-        # genres_weight = {k: v for k, v in sorted(genres_weight.items(), key=lambda item: item[1])}
-        # number, min = list(genres_weight.items())[0]
-        # for key in genres_weight.keys():
-        #     genres_weight[key] = int(genres_weight[key]/ min)
+                for key in dict.keys():
+                    result = [dict[key][i] for i in range(0, int(like_lim * round(genres_weight[key])))]
+                # for serie in dict.values():
+                #     result = [serie[i] for i in range(0, like_lim)]
+                    for movieid in result:
+                        if movieid in recommend.keys():
+                            recommend[movieid] += 1
+                        else:
+                            recommend[movieid] = 1
+            recommend = {k: v for k, v in sorted(recommend.items(), key=lambda item: item[1], reverse=True)}
+            recommend_index = recommend.keys()
+            recommend_list = list(recommend.keys())
+            recommend_list = [movie for movie in recommend_list if movie not in notRecommend]
+            # recommend_list = list(set(recommend_list).difference(set(userHistory["like"])))
+            # recommend_list = list(set(recommend_list).difference(set(userHistory["dislike"])))
+        return recommend_list
 
     def getGenres(self, movieid):
         try:
@@ -72,7 +99,7 @@ class recommender:
 
 reco = recommender()
 his = {}
-his["like"] = [155]
+his["like"] = [954]
 his["dislike"] = []
 result = reco.recommend(his)
 print((result))

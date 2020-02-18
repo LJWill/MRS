@@ -27,7 +27,7 @@ class Recommender:
             trainset, testset = train_test_split(data, test_size=.1)
             print("load")
             list_algos = []
-            algo_KNNBasic = KNNBasic(sim_options={"user_based": False, 'min_support': 10})
+            algo_KNNBasic = KNNBasic(sim_options={"user_based": False, 'min_support': 20})
             list_algos.append((algo_KNNBasic, "KNNBasic"))
 
             # algo_KNNWithMeans = KNNWithMeans()
