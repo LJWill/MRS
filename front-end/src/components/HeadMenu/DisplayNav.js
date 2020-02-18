@@ -32,6 +32,15 @@ const styles = {
     right: '0',
     top: '0',
     padding: '23px 30px'
+  },
+  algoButton: {
+    position: 'absolute',
+    left: '0',
+    right: '0',
+    // width: '100%',
+    margin: '20px auto',
+    display: 'flex',
+    justifyContent: 'center'
   }
 };
 
@@ -109,7 +118,11 @@ const Logo = () => (
 class Nav extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { onTop: true, isOpen: false };
+    this.state = {
+      onTop: true,
+      isOpen: false,
+      algo: 1
+    };
   }
   componentDidMount() {
     window.addEventListener('scroll', this.handleScroll);
@@ -151,13 +164,27 @@ class Nav extends React.Component {
               </NavItem>
             </ul>
 
-            <Search style={styles.searchBar} />
+            {/* <Search style={styles.searchBar} /> */}
 
-            <AccountItem>
+            <AccountItem style={styles.algoButton}>
               <Button.Group size="large">
-                <Button onClick={() => this.props.algo(1)}>Algo One</Button>
+                <Button
+                  onClick={() => {
+                    this.setState({ algo: 1 }, () => this.props.algo(1));
+                  }}
+                  color={this.state.algo === 1 ? 'green' : ''}
+                >
+                  Algo One
+                </Button>
                 <Button.Or />
-                <Button onClick={() => this.props.algo(2)}>Algo Two</Button>
+                <Button
+                  onClick={() => {
+                    this.setState({ algo: 2 }, () => this.props.algo(2));
+                  }}
+                  color={this.state.algo === 2 ? 'green' : ''}
+                >
+                  Algo Two
+                </Button>
               </Button.Group>
             </AccountItem>
 
