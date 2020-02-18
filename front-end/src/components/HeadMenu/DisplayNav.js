@@ -129,6 +129,10 @@ class Nav extends React.Component {
     this.setState({ isOpen: !this.state.isOpen });
   };
 
+  algo = e => {
+    console.log('$$$$$$$$', e);
+  };
+
   render() {
     const { authenticated, username } = this.props;
     const fixed = true;
@@ -151,9 +155,9 @@ class Nav extends React.Component {
 
             <AccountItem>
               <Button.Group size="large">
-                <Button>Algo One</Button>
+                <Button onClick={() => this.props.algo(1)}>Algo One</Button>
                 <Button.Or />
-                <Button>Algo Two</Button>
+                <Button onClick={() => this.props.algo(2)}>Algo Two</Button>
               </Button.Group>
             </AccountItem>
 
