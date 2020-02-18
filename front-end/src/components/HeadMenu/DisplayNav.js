@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { media } from '../../utils';
 import { Link } from 'react-router-dom';
-import Search from './Search';
+// import Search from './Search';
 import { Grid, Button, Dropdown, Icon } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { logout } from '../../store/actions/auth';
@@ -97,7 +97,7 @@ const LogoWrapper = styled.a`
   font-size: 24px;
   text-decoration: none;
   z-index: 1000;
-  
+
   svg {
     height: 64px;
     width: 50px;
