@@ -25,7 +25,7 @@ const GlobalStyle = createGlobalStyle`
   100% { opacity: 1; }
 }
 
- .fadeIn{
+.fadeIn{
   animation: fadeIn .35s forwards;
   animation-timing-function: cubic-bezier(0.39, 0.575, 0.565, 1);
 }
@@ -40,6 +40,10 @@ const GlobalStyle = createGlobalStyle`
   animation-timing-function: cubic-bezier(0.47, 0, 0.745, 0.715);
 }
 
+.myDimmer {
+  position: fixed!important;
+  opacity: 0.8!important
+}
 `;
 
 class MovieBrowser extends React.Component {
@@ -67,11 +71,13 @@ class MovieBrowser extends React.Component {
       loaded: false
     });
 
-    this.props.userMovieRemove(movie, this.props.token);
+    // this.props.userMovieRemove(movie, this.props.token);
   };
 
   componentDidMount() {
     this.setState({ movies: this.props.recommendMovies, loaded: true });
+
+    this.props.getMyRecommendation();
 
     window.scrollTo({
       top: 0,
@@ -93,6 +99,13 @@ class MovieBrowser extends React.Component {
   handlePaginationChange = (e, { activePage }) => {
     console.log(activePage);
     this.setState({ activePage });
+    this.props.getMyRecommendation(activePage);
+
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth'
+    });
   };
 
   createFlipperKey = () => {
@@ -103,7 +116,6 @@ class MovieBrowser extends React.Component {
   render() {
     // let { movies } = this.state;
     let movies = this.props.recommendMovies;
-    console.log('------>', this.props);
     return (
       <div>
         <GlobalStyle />
@@ -113,7 +125,7 @@ class MovieBrowser extends React.Component {
         />
 
         {this.props.isFetching && (
-          <Dimmer active>
+          <Dimmer active className="myDimmer">
             <Loader active inverted>
               Loading
             </Loader>
@@ -135,6 +147,7 @@ class MovieBrowser extends React.Component {
         <Container className="pagination">
           <Pagination
             defaultActivePage={this.props.currentPage}
+            activePage={this.props.currentPage}
             ellipsisItem={{
               content: <Icon name="ellipsis horizontal" />,
               icon: true
@@ -219,7 +232,9 @@ const mapDispatchToProps = dispatch => ({
   userMovieAction: (movie, token) =>
     dispatch(movieActions.userMovieAction(movie, token)),
   userMovieRemove: (movie, token) =>
-    dispatch(movieActions.userMovieRemove(movie, token))
+    dispatch(movieActions.userMovieRemove(movie, token)),
+  getMyRecommendation: pageNumber =>
+    dispatch(movieActions.getMyRecommendation(pageNumber))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MovieBrowser);

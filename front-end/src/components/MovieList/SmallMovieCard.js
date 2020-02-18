@@ -4,6 +4,8 @@ import config from '../../config';
 import { Button, Icon } from 'semantic-ui-react';
 import Zoom from '@material-ui/core/Zoom';
 import Fade from '@material-ui/core/Fade';
+import { connect } from 'react-redux';
+import * as movieActions from '../../store/actions/movie';
 
 const Poster = styled.div`
   background-color: #fff;
@@ -119,7 +121,7 @@ const CoverIcon = ({ data }) => {
     return <Icon name="thumbs down outline" size="big" />;
   }
 };
-export default class Movie extends Component {
+class SmallMovieCard extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -129,31 +131,52 @@ export default class Movie extends Component {
   }
 
   remove = movie => {
-    this.props.func(movie);
+    // this.props.userMovieAction(newData, movie.token);
+    console.log('yooooo', this.props);
+    this.props.userMovieRemove(movie, this.props.token);
+    // this.props.func(movie);
   };
 
   render() {
     const { title, poster_path, onTop, userAction } = this.props;
 
     return (
-        <Wrapper style={this.state.style}>
-          <FrontContent>
-            <CoverIcon data={userAction} />
-          </FrontContent>
+      <Wrapper style={this.state.style}>
+        <FrontContent>
+          <CoverIcon data={userAction} />
+        </FrontContent>
 
-          <Content>
-            <h5>{title}</h5>
-            <Delete
-              onClick={() => {
-                this.remove(this.props);
-              }}
-            >
-              <Icon name="delete" size="big" />
-            </Delete>
-          </Content>
+        <Content>
+          <h5>{title}</h5>
+          <Delete
+            onClick={() => {
+              this.remove(this.props);
+            }}
+          >
+            <Icon name="delete" size="big" />
+          </Delete>
+        </Content>
 
-          <Poster bg={`${config.medium}${poster_path}`} onTop={onTop} />
-        </Wrapper>
+        <Poster bg={`${config.medium}${poster_path}`} onTop={onTop} />
+      </Wrapper>
     );
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    movies: state.movieBrowser.movies,
+    userMovies: state.userMovie.userMovies,
+    authenticated: state.auth.token !== null,
+    token: state.auth.token
+  };
+};
+
+const mapDispatchToProps = dispatch => ({
+  userMovieAction: (movie, token) =>
+    dispatch(movieActions.userMovieAction(movie, token)),
+  userMovieRemove: (movie, token) =>
+    dispatch(movieActions.userMovieRemove(movie, token))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(SmallMovieCard);
