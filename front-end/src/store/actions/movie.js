@@ -197,6 +197,7 @@ export const userMovieRemove = (movie, token) => {
             movie
           });
           dispatch(getMyRecommendation());
+          dispatch(getMyRecommendation2());
         }
       })
       .catch(err => {
@@ -241,6 +242,7 @@ export const userMovieAction = (movie, token) => {
         if (res.status === 201 || res.status === 200) {
           dispatch(userMovieSuccess(movie));
           dispatch(getMyRecommendation());
+          dispatch(getMyRecommendation2());
         } else {
           dispatch(userMovieFail(res));
         }
@@ -313,6 +315,75 @@ export const getMyRecommendation = (pageNumber=1) => {
       })
       .catch(err => {
         dispatch(getRecommendationFail(err));
+      });
+  };
+};
+
+
+
+// ##########################################################
+const getRecommendationStart2 = () => {
+  return {
+    type: actionTypes.GET_RECOMMENDATION_START2
+  };
+};
+
+const getRecommendationSuccess2 = movies => {
+  return {
+    type: actionTypes.GET_RECOMMENDATION_SUCCESS2,
+    movies
+  };
+};
+
+const getRecommendationFail2 = error => {
+  return {
+    type: actionTypes.GET_RECOMMENDATION_FAIL2,
+    error
+  };
+};
+
+export const getMyRecommendation2 = (pageNumber=1) => {
+  const href = window.location.href.split('/');
+  const currentUrl = href[href.length - 1];
+
+  return (dispatch, getState) => {
+    dispatch(getRecommendationStart2());
+
+    const token = getState().auth.token;
+
+    if (!token) {
+      return dispatch(getRecommendationFail2('token not exist'));
+    }
+
+    const like = getState()
+      .userMovie.userMovies.filter(m => m.userAction)
+      .map(i => parseInt(i.idMovie));
+    const dislike = getState()
+      .userMovie.userMovies.filter(m => !m.userAction)
+      .map(i => parseInt(i.idMovie));
+
+    console.log('^^^^^^^^^^', like, dislike);
+
+    axios
+      .post(`movie/recommendation2/?page=${pageNumber}`, {
+        token,
+        like,
+        dislike
+      })
+      .then(res => {
+        if (res.status === 200) {
+          dispatch(getRecommendationSuccess2(res.data));
+
+          if (currentUrl !== 'movies') {
+            window.location.href = '/movies';
+            // browserHistory.push('/movies')
+          }
+        } else {
+          dispatch(getRecommendationFail2(res));
+        }
+      })
+      .catch(err => {
+        dispatch(getRecommendationFail2(err));
       });
   };
 };
