@@ -50,7 +50,7 @@ export default class SearchExampleStandard extends Component {
         {`
             .ui.search .prompt {
                 border-radius: 500rem;
-                width:500px
+                width:50vw
             }
         `}
         </style>

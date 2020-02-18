@@ -4,7 +4,7 @@ import {
   Container,
   Divider,
   Grid,
-  Header,
+  Button,
   Loader,
   Dimmer,
   Icon,
@@ -48,16 +48,14 @@ const GlobalStyle = createGlobalStyle`
 
 class MovieBrowser extends React.Component {
   state = {
-    expanded: false,
-    movies: null,
     loaded: false,
-    activePage: null
+    activePage: null,
+    algo: 1
   };
 
   shuffleMovie = () => {
     this.setState({
       // movies: _.shuffle(this.state.movies),
-      movies: this.props.recommendMovies,
       expanded: !this.state.expanded,
       loaded: false
     });
@@ -66,40 +64,32 @@ class MovieBrowser extends React.Component {
   anotherShuffleMovie = movie => {
     this.setState({
       // movies: _.shuffle(this.state.movies),
-      movies: this.props.recommendMovies,
-      expanded: !this.state.expanded,
       loaded: false
     });
-
-    // this.props.userMovieRemove(movie, this.props.token);
   };
 
-  componentDidMount() {
-    this.setState({ movies: this.props.recommendMovies, loaded: true });
+  switchAlgo = (algo) => {
+    this.setState({
+      algo
+    })
+  }
 
+  componentDidMount() {
     this.props.getMyRecommendation();
+    this.props.getMyRecommendation2();
 
     window.scrollTo({
       top: 0,
       left: 0,
       behavior: 'smooth'
     });
-  }
-
-  componentWillMount() {
-    this.setState({ movies: this.props.recommendMovies });
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.recommendMovies !== this.props.recommendMovies) {
-      this.setState({ movies: nextProps.recommendMovies, loaded: true });
-    }
   }
 
   handlePaginationChange = (e, { activePage }) => {
     console.log(activePage);
     this.setState({ activePage });
     this.props.getMyRecommendation(activePage);
+    this.props.getMyRecommendation2(activePage);
 
     window.scrollTo({
       top: 0,
@@ -108,20 +98,22 @@ class MovieBrowser extends React.Component {
     });
   };
 
-  createFlipperKey = () => {
-    let id_list = this.props.recommendMovies.map(movie => movie.idMovie);
+  createFlipperKey = (data) => {
+    let id_list = data.map(movie => movie.idMovie);
     return id_list.join('-');
   };
 
   render() {
-    // let { movies } = this.state;
-    let movies = this.props.recommendMovies;
+
+    let movies = this.state.algo === 1 ? this.props.recommendMovies : this.props.recommendMovies2;
+
     return (
       <div>
         <GlobalStyle />
         <DisplayNav
           movies={this.props.userMovies}
           func={this.anotherShuffleMovie}
+          algo={this.switchAlgo}
         />
 
         {this.props.isFetching && (
@@ -133,7 +125,7 @@ class MovieBrowser extends React.Component {
         )}
 
         <Container className="movieContainer">
-          <Flipper flipKey={this.createFlipperKey()} spring="gentle">
+          <Flipper flipKey={this.createFlipperKey(movies)} spring="gentle">
             <Grid container columns={5}>
               <MovieView
                 data={movies}
@@ -219,6 +211,7 @@ const mapStateToProps = state => {
     movies: state.movieBrowser.movies,
     userMovies: state.userMovie.userMovies,
     recommendMovies: state.recommendMovie.movies,
+    recommendMovies2: state.recommendMovie2.movies,
     totalPage: state.recommendMovie.total_page,
     currentPage: state.recommendMovie.current_page,
     nextPage: state.recommendMovie.next,
@@ -234,7 +227,9 @@ const mapDispatchToProps = dispatch => ({
   userMovieRemove: (movie, token) =>
     dispatch(movieActions.userMovieRemove(movie, token)),
   getMyRecommendation: pageNumber =>
-    dispatch(movieActions.getMyRecommendation(pageNumber))
+    dispatch(movieActions.getMyRecommendation(pageNumber)),
+  getMyRecommendation2: pageNumber =>
+    dispatch(movieActions.getMyRecommendation2(pageNumber))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MovieBrowser);

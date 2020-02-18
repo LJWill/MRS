@@ -129,6 +129,10 @@ class Nav extends React.Component {
     this.setState({ isOpen: !this.state.isOpen });
   };
 
+  algo = e => {
+    console.log('$$$$$$$$', e);
+  };
+
   render() {
     const { authenticated, username } = this.props;
     const fixed = true;
@@ -148,6 +152,14 @@ class Nav extends React.Component {
             </ul>
 
             <Search style={styles.searchBar} />
+
+            <AccountItem>
+              <Button.Group size="large">
+                <Button onClick={() => this.props.algo(1)}>Algo One</Button>
+                <Button.Or />
+                <Button onClick={() => this.props.algo(2)}>Algo Two</Button>
+              </Button.Group>
+            </AccountItem>
 
             {authenticated ? (
               <ul style={styles.accountItem}>
@@ -198,11 +210,11 @@ class Nav extends React.Component {
           </Grid.Row>
 
           <Grid.Row>
-              <DisplayContainer
-                movies={this.props.movies}
-                onTop={this.state.onTop}
-                func={this.props.func}
-              />
+            <DisplayContainer
+              movies={this.props.movies}
+              onTop={this.state.onTop}
+              func={this.props.func}
+            />
           </Grid.Row>
         </Wrapper>
       </div>
