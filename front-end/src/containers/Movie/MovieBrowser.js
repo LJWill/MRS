@@ -25,7 +25,7 @@ const GlobalStyle = createGlobalStyle`
   100% { opacity: 1; }
 }
 
- .fadeIn{
+.fadeIn{
   animation: fadeIn .35s forwards;
   animation-timing-function: cubic-bezier(0.39, 0.575, 0.565, 1);
 }
@@ -40,6 +40,10 @@ const GlobalStyle = createGlobalStyle`
   animation-timing-function: cubic-bezier(0.47, 0, 0.745, 0.715);
 }
 
+.myDimmer {
+  position: fixed!important;
+  opacity: 0.8!important
+}
 `;
 
 class MovieBrowser extends React.Component {
@@ -121,7 +125,7 @@ class MovieBrowser extends React.Component {
         />
 
         {this.props.isFetching && (
-          <Dimmer active>
+          <Dimmer active className="myDimmer">
             <Loader active inverted>
               Loading
             </Loader>
