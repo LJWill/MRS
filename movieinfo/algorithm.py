@@ -137,8 +137,12 @@ class TagProcessing:
         # print(lens)
         result = [[0 for i in range(100)] for j in range(lens)]
         for i in like:
-            result[count] = self.query(i)
-            count += 1
+            temp = self.query(i)
+            if temp is None:
+                continue
+            else:
+                result[count] = self.query(i)
+                count += 1
         # print(result)
         count = 0
         round = 0
@@ -155,7 +159,11 @@ class TagProcessing:
             round += 1
         # print(final)
         for j in dislike:
-            remove.extend(self.query(j))
+            temp = self.query(j)
+            if temp is None:
+                continue
+            else:
+                remove.extend(self.query(j))
 
         final = [item for item in final if item not in remove]
         # final = [5, 1, 2, 2, 3]

@@ -253,11 +253,12 @@ class MovieDetail extends Component {
 
         <Gallery images={movieDetail && movieDetail.images} />
 
-        {movieDetail.recommendations.results.length > 0 && <ScrollContainer
-          title="Recommended movies"
-          movies={movieDetail.recommendations.results}
-        />}
-        
+        {movieDetail.recommendations.results.length > 0 && (
+          <ScrollContainer
+            title="Recommended movies"
+            movies={movieDetail.recommendations.results}
+          />
+        )}
       </Wrapper>
     );
   }

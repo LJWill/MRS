@@ -1,14 +1,12 @@
 import pandas as pd
-import pyspark
-from pyspark import SparkConf, SparkContext
-from pyspark.sql import SparkSession
-from pyspark.mllib.linalg.distributed import RowMatrix
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
-import csv
+
 
 
 class TagProcessing:
+    def __init__(self, ):
+        self.output_df = pd.read_csv("Data/output.csv", header=0, index_col=0)
 
     def float_int(self, x):
         return int(x)
@@ -55,17 +53,17 @@ class TagProcessing:
             temp = max
         result.to_csv(write_path)
 
-    def pivot_similarity(self, tag_path, write_path):
-        spark = SparkSession.builder.\
-            appName("Python Spark create RDD example")\
-            .config("spark.some.config.option", "some-value") \
-            .getOrCreate()
-        # spark.conf.set('spark.sql.pivotMaxValues', u'70000')
-        df = spark.read.format('com.databricks.spark.csv').options(header='true', inferschema='true').load(tag_path,
-                                                                                                           header=True)
-        df = df.drop("_c0")
-        df = df.groupBy("tmdbId").pivot("tagId").sum("relevance")
-        df.write.csv(path=write_path, header=True, sep=",", mode='overwrite')
+    # def pivot_similarity(self, tag_path, write_path):
+    #     spark = SparkSession.builder.\
+    #         appName("Python Spark create RDD example")\
+    #         .config("spark.some.config.option", "some-value") \
+    #         .getOrCreate()
+    #     # spark.conf.set('spark.sql.pivotMaxValues', u'70000')
+    #     df = spark.read.format('com.databricks.spark.csv').options(header='true', inferschema='true').load(tag_path,
+    #                                                                                                        header=True)
+    #     df = df.drop("_c0")
+    #     df = df.groupBy("tmdbId").pivot("tagId").sum("relevance")
+    #     df.write.csv(path=write_path, header=True, sep=",", mode='overwrite')
 
     def pivot_sim(self, tag_path, write_path):
         tags = pd.read_csv(tag_path,  header=0, index_col=0)
@@ -112,7 +110,7 @@ class TagProcessing:
         df.to_csv("Data/output.csv")
 
     def query(self, movieId, num=100):
-        result = pd.read_csv("Data/output.csv", header=0, index_col=0)
+        result = self.output_df
         rs = []
         df = result.transpose()
         for i in list(df.keys()):
@@ -163,7 +161,8 @@ class TagProcessing:
             if temp is None:
                 continue
             else:
-                remove.extend(self.query(j))
+                temp = temp[:5]
+                remove.extend(temp)
 
         final = [item for item in final if item not in remove]
         # final = [5, 1, 2, 2, 3]
@@ -178,20 +177,20 @@ class TagProcessing:
 
         print(result, len(result))
 
-    def similarity_processing(self, tag_path):
-        conf = SparkConf().setAppName("Test").setMaster("local")
-        sc = SparkContext(conf=conf)
-        spark = SparkSession.builder.config(conf=conf).getOrCreate()
-        df = spark.read.format('com.databricks.spark.csv').options(header='true', inferschema='true').load(tag_path, header=True)
-        df = df.drop("tagId")
-        print(df.columns)
-        rdd = df.rdd.map(list)
-        mat = RowMatrix(rdd)
-        print(mat.numCols(), mat.numRows())
-        cs = mat.columnSimilarities()
-        for x in cs.entries.collect():
-            print(x)
-        print(cs.numRows(), cs.numCols())
+    # def similarity_processing(self, tag_path):
+    #     conf = SparkConf().setAppName("Test").setMaster("local")
+    #     sc = SparkContext(conf=conf)
+    #     spark = SparkSession.builder.config(conf=conf).getOrCreate()
+    #     df = spark.read.format('com.databricks.spark.csv').options(header='true', inferschema='true').load(tag_path, header=True)
+    #     df = df.drop("tagId")
+    #     print(df.columns)
+    #     rdd = df.rdd.map(list)
+    #     mat = RowMatrix(rdd)
+    #     print(mat.numCols(), mat.numRows())
+    #     cs = mat.columnSimilarities()
+    #     for x in cs.entries.collect():
+    #         print(x)
+    #     print(cs.numRows(), cs.numCols())
 
 
 
