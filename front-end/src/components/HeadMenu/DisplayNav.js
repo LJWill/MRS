@@ -60,7 +60,7 @@ const Wrapper = styled.nav`
     margin: 0;
     padding: 30px 30px;
     align-items: center;
-
+    z-index: 1000;
     ${media.tablet`display: none;`};
   }
 `;
@@ -96,7 +96,8 @@ const LogoWrapper = styled.a`
   display: flex;
   font-size: 24px;
   text-decoration: none;
-
+  z-index: 1000;
+  
   svg {
     height: 64px;
     width: 50px;
@@ -167,7 +168,7 @@ class Nav extends React.Component {
             {/* <Search style={styles.searchBar} /> */}
 
             <AccountItem style={styles.algoButton}>
-              <Button.Group size="large">
+              <Button.Group size="large" >
                 <Button
                   onClick={() => {
                     this.setState({ algo: 1 }, () => this.props.algo(1));

@@ -204,7 +204,7 @@ class HomepageLayout extends Component {
           />
         )}
 
-        <Segment style={{ padding: '8em 0em' }} vertical>
+        {/* <Segment style={{ padding: '8em 0em' }} vertical>
           <Grid container stackable verticalAlign="middle">
             <Grid.Row>
               <Grid.Column width={8}>
@@ -297,7 +297,7 @@ class HomepageLayout extends Component {
               I'm Still Quite Interested
             </Button>
           </Container>
-        </Segment>
+        </Segment> */}
       </ResponsiveContainer>
     );
   }
