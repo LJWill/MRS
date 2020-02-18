@@ -97,9 +97,9 @@ class recommender:
         return result
 
 
-reco = recommender()
-his = {}
-his["like"] = [954]
-his["dislike"] = []
-result = reco.recommend(his)
-print((result))
+# reco = recommender()
+# his = {}
+# his["like"] = [496243]
+# his["dislike"] = []
+# result = reco.recommend(his)
+# print((result))
