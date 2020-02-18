@@ -4,7 +4,7 @@ import {
   Container,
   Divider,
   Grid,
-  Header,
+  Button,
   Loader,
   Dimmer,
   Icon,

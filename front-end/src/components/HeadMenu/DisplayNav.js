@@ -149,6 +149,14 @@ class Nav extends React.Component {
 
             <Search style={styles.searchBar} />
 
+            <AccountItem>
+              <Button.Group size="large">
+                <Button>Algo One</Button>
+                <Button.Or />
+                <Button>Algo Two</Button>
+              </Button.Group>
+            </AccountItem>
+
             {authenticated ? (
               <ul style={styles.accountItem}>
                 <AccountItem>
@@ -198,11 +206,11 @@ class Nav extends React.Component {
           </Grid.Row>
 
           <Grid.Row>
-              <DisplayContainer
-                movies={this.props.movies}
-                onTop={this.state.onTop}
-                func={this.props.func}
-              />
+            <DisplayContainer
+              movies={this.props.movies}
+              onTop={this.state.onTop}
+              func={this.props.func}
+            />
           </Grid.Row>
         </Wrapper>
       </div>
