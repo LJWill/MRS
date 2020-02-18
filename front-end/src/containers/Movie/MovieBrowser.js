@@ -89,6 +89,7 @@ class MovieBrowser extends React.Component {
     console.log(activePage);
     this.setState({ activePage });
     this.props.getMyRecommendation(activePage);
+    this.props.getMyRecommendation2(activePage);
 
     window.scrollTo({
       top: 0,
