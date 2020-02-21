@@ -15,11 +15,12 @@ from surprise.model_selection import cross_validate
 
 class Recommender:
     def recommend(self):
-        for i in range(1, 20):
-            print("No.%d genre start:" % i)
-            df = pd.read_csv("./rating/rating%d.csv" % i, header=None)
-            df.columns = ['id', 'rating', 'Movie_idmovie', 'User_iduser']
-            df = df[["User_iduser", "Movie_idmovie", "rating"]]
+        # for i in range(1, 20):
+        #     print("No.%d genre start:" % i)
+            # df = pd.read_csv("./rating/rating%d.csv" % i, header=None)
+            df = pd.read_csv("filterRatings.csv")
+            # df.columns = ['id', 'rating', 'Movie_idmovie', 'User_iduser']
+            df = df[["userId", "tmdbId", "rating"]]
             print("Data retrieved")
             # df = pd.read_csv("ratings.csv")
             reader = Reader(rating_scale=(1, 10), line_format='user item rating')
@@ -30,14 +31,14 @@ class Recommender:
             algo_KNNBasic = KNNBasic(sim_options={"user_based": False, 'min_support': 20})
             list_algos.append((algo_KNNBasic, "KNNBasic"))
 
-            # algo_KNNWithMeans = KNNWithMeans()
-            # list_algos.append((algo_KNNWithMeans,"KNNWithMeans"))
-            #
-            # algo_KNNWithZScore = KNNWithZScore()
-            # list_algos.append((algo_KNNWithZScore,"KNNWithZScore"))
+            algo_KNNWithMeans = KNNWithMeans()
+            list_algos.append((algo_KNNWithMeans,"KNNWithMeans"))
 
-            # algo_KNNBaseline =KNNBaseline()
-            # list_algos.append((algo_KNNBaseline,"KNNBaseline"))
+            algo_KNNWithZScore = KNNWithZScore()
+            list_algos.append((algo_KNNWithZScore,"KNNWithZScore"))
+
+            algo_KNNBaseline =KNNBaseline()
+            list_algos.append((algo_KNNBaseline,"KNNBaseline"))
             #
             # algo_SVD =SVD()
             # list_algos.append((algo_SVD,"SVD"))
@@ -55,7 +56,7 @@ class Recommender:
             # list_algos.append((algo_SlopeOne,"SlopeOne"))
 
             for algo, name in list_algos:
-                algo = self.train(trainset, testset, algo, name + str(i))
+                algo = self.train(trainset, testset, algo, name)
 
     def train(self, trainset, testset, algo, name):
         starttime = datetime.now()
