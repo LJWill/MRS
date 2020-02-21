@@ -6,9 +6,11 @@ from surprise import *
 
 class recommend:
     def recommend(self):
-        for i in range(1, 20):
-            print("genre %d start:" % i)
-            (pred, algo) = dump.load("./KNNBasic/KNNBasic%d" % i)
+        # for i in range(1, 20):
+        #     print("genre %d start:" % i)
+        #     (pred, algo) = dump.load("./KNNBasic/KNNBasic%d" % i)
+
+            (pred, algo) = dump.load("./KNNBasic/KNNBasic")
             list = algo.trainset.all_items()
             list = [algo.trainset.to_raw_iid(inner) for inner in list]
             dict = {}
@@ -36,7 +38,9 @@ class recommend:
                     count += 1
                 # print(df)
             endtime = datetime.now()
-            df.to_csv("./genre/reco_genre%d.csv" % i)
+            # df.to_csv("./genre/reco_genre%d.csv" % i)
+
+            df.to_csv("./genre/reco_genre%d.csv")
             print("%d seconds" % (endtime - starttime).seconds)
 
 
