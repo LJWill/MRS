@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM python:3.6.8
 
 MAINTAINER Will Li
 
