@@ -31,13 +31,13 @@ class Recommender:
             algo_KNNBasic = KNNBasic(sim_options={"user_based": False, 'min_support': 20})
             list_algos.append((algo_KNNBasic, "KNNBasic"))
 
-            algo_KNNWithMeans = KNNWithMeans()
-            list_algos.append((algo_KNNWithMeans,"KNNWithMeans"))
+            # algo_KNNWithMeans = KNNWithMeans(sim_options={"user_based": False, 'min_support': 20})
+            # list_algos.append((algo_KNNWithMeans,"KNNWithMeans"))
 
-            algo_KNNWithZScore = KNNWithZScore()
+            algo_KNNWithZScore = KNNWithZScore(sim_options={"user_based": False, 'min_support': 20})
             list_algos.append((algo_KNNWithZScore,"KNNWithZScore"))
 
-            algo_KNNBaseline =KNNBaseline()
+            algo_KNNBaseline =KNNBaseline(sim_options={"user_based": False, 'min_support': 20})
             list_algos.append((algo_KNNBaseline,"KNNBaseline"))
             #
             # algo_SVD =SVD()
