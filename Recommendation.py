@@ -28,9 +28,9 @@ class Recommender:
             # trainset, testset = train_test_split(data, test_size=.1)
             print("load")
             list_algos = []
-            # algo_KNNBasic_cos = KNNBasic(sim_options={'name': 'cosine',
-            #     "user_based": False, 'min_support': 20})
-            # list_algos.append((algo_KNNBasic_cos, "KNNBasic_cos"))
+            algo_KNNBasic_cos = KNNBasic(sim_options={'name': 'cosine',
+                "user_based": False, 'min_support': 20})
+            list_algos.append((algo_KNNBasic_cos, "KNNBasic_cos"))
 
             algo_KNNBasic_msd = KNNBasic(sim_options={'name': 'msd',
                                                   "user_based": False, 'min_support': 20})
@@ -91,7 +91,7 @@ class Recommender:
         # df = algo.compute_similarities()
         # print(df)
         print(name + ":")
-        cross_validate(algo, data, measures=['RMSE', 'MAE'], cv=4, verbose=True, n_jobs=-1)
+        cross_validate(algo, data, measures=['RMSE', 'MAE'], cv=4, verbose=True)
         endtime = datetime.now()
         print('./KNNBasic/' + name + ": %d seconds" % (endtime - starttime).seconds)
         # print("RMSE is : %d, \nMAE is : %d \nFCP is : %d"%(accuracy.))
