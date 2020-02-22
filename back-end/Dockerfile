@@ -2,7 +2,7 @@ FROM python:3.7-alpine
 
 MAINTAINER Will Li
 
-ENV PROJECTDIR = /MRS
+ENV PROJECTDIR = /movie/back-end
 
 # Install basic apps
 RUN apt update && apt install -y python3-pip git vim curl mysql-server
