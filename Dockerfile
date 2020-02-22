@@ -16,6 +16,7 @@ WORKDIR $PROJECTDIR
 COPY requirements.txt .
 RUN virturalenv venv
 RUN source venv/bin/activate
+RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
 
