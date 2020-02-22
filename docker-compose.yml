@@ -1,11 +1,17 @@
-version: '1'
+version: '3.7'
 
 services:
   db:
     image: mysql
     ports:
       - "3306"
-
+    env_file: .env
+    environment:
+      MYSQL_DATABASE: "moviedb"
+      MYSQL_USER: ${MYSQL_USERNAME}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_RANDOM_ROOT_PASSWORD: "root"
+    
   django:
     build: .
     command: ["python", "manage.py", "runserver", "0.0.0.0:8000"]

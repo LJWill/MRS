@@ -5,7 +5,7 @@ MAINTAINER Will Li
 ENV PROJECTDIR = /MRS
 
 # Install basic apps
-RUN apt-get update && apt-get install -y git vim curl mysql-server
+RUN apt update && apt install -y python3-pip git vim curl mysql-server
 
 # Change default python veriosn
 RUN echo  'alias python=python3' >> ~/.bashrc 
