@@ -95,7 +95,7 @@ class Recommender:
         endtime = datetime.now()
         print('./KNNBasic/' + name + ": %d seconds" % (endtime - starttime).seconds)
         # print("RMSE is : %d, \nMAE is : %d \nFCP is : %d"%(accuracy.))
-        dump.dump('./KNNBasic/' + name, algo=algo, verbose=0)
+        # dump.dump('./KNNBasic/' + name, algo=algo, verbose=0)
         return algo
 
 
