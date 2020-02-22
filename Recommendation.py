@@ -28,9 +28,9 @@ class Recommender:
             # trainset, testset = train_test_split(data, test_size=.1)
             print("load")
             list_algos = []
-            algo_KNNBasic_cos = KNNBasic(sim_options={'name': 'cosine',
-                "user_based": False, 'min_support': 20})
-            list_algos.append((algo_KNNBasic_cos, "KNNBasic_cos"))
+            # algo_KNNBasic_cos = KNNBasic(sim_options={'name': 'cosine',
+            #     "user_based": False, 'min_support': 20})
+            # list_algos.append((algo_KNNBasic_cos, "KNNBasic_cos"))
 
             algo_KNNBasic_msd = KNNBasic(sim_options={'name': 'msd',
                                                   "user_based": False, 'min_support': 20})
