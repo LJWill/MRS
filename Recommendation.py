@@ -91,7 +91,7 @@ class Recommender:
         # df = algo.compute_similarities()
         # print(df)
         print(name + ":")
-        cross_validate(algo, data, measures=['RMSE', 'MAE'], cv=5, verbose=True)
+        cross_validate(algo, data, measures=['RMSE', 'MAE'], cv=5, verbose=True, n_jobs=-1)
         endtime = datetime.now()
         print('./KNNBasic/' + name + ": %d seconds" % (endtime - starttime).seconds)
         # print("RMSE is : %d, \nMAE is : %d \nFCP is : %d"%(accuracy.))
