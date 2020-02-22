@@ -23,7 +23,7 @@ class Recommender:
             df = df[["userId", "tmdbId", "rating"]]
             print("Data retrieved")
             # df = pd.read_csv("ratings.csv")
-            reader = Reader(rating_scale=(1, 10), line_format='user item rating')
+            reader = Reader(rating_scale=(1, 5), line_format='user item rating')
             data = Dataset.load_from_df(df, reader)
             # trainset, testset = train_test_split(data, test_size=.1)
             print("load")
@@ -87,7 +87,7 @@ class Recommender:
 
     def train(self, data, algo, name):
         starttime = datetime.now()
-        algo.fit(data)
+        # algo.fit(data)
         # df = algo.compute_similarities()
         # print(df)
         print(name + ":")
