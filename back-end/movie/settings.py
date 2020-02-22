@@ -17,7 +17,8 @@ import datetime
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-load_dotenv(os.path.join(BASE_DIR, '.env'))
+print(BASE_DIR)
+load_dotenv(os.path.join(BASE_DIR, '../.env'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
@@ -82,7 +83,7 @@ ROOT_URLCONF = 'movie.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'front-end', 'build')],
+        'DIRS': [os.path.join(BASE_DIR, '../front-end', 'build')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -161,7 +162,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'front-end', 'build/static')]
+STATICFILES_DIRS = [os.path.join(BASE_DIR, '../front-end', 'build/static')]
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 SITE_ID = 1

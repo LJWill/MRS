@@ -1,4 +1,4 @@
-FROM python:3.6.8
+FROM python:3.7-alpine
 
 MAINTAINER Will Li
 
@@ -7,17 +7,11 @@ ENV PROJECTDIR = /MRS
 # Install basic apps
 RUN apt update && apt install -y python3-pip git vim curl mysql-server
 
-# Change default python veriosn
-RUN echo  'alias python=python3' >> ~/.bashrc 
-RUN source ~/.bashrc
-
 # Install dependencies
 WORKDIR $PROJECTDIR
 COPY requirements.txt .
-RUN virturalenv venv
-RUN source venv/bin/activate
-RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
+COPY . .
 
 
 EXPOSE 8000
