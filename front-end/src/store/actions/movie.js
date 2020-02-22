@@ -86,6 +86,11 @@ export const getMovies = requestData => {
     });
   });
 
+  axios.get('https://www.cloudflare.com/cdn-cgi/trace')
+    .then(res => {
+      console.log('ippppppppppppppppp', res.data)
+    })
+
   return dispatch => {
     dispatch(getMovieStart());
     Promise.all(requests)
