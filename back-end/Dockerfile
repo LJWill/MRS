@@ -6,18 +6,17 @@ MAINTAINER Will Li
 # ENV VIRTUAL_ENV "/venv"
 # RUN python -m venv $VIRTUAL_ENV
 # ENV PATH "$VIRTUAL_ENV/bin:$PATH"
-RUN mkdir /back-end
-ENV PROJECTDIR = /back-end
+ENV BACKENDDIR = /back-end
 
 # Install basic apps
 # RUN sudo apt update && sudo apt install -y python3-pip git vim curl mysql-server
 
 # Install dependencies
-WORKDIR $PROJECTDIR
-COPY ./requirements.txt /back-end
+WORKDIR $BACKENDDIR
+COPY requirements.txt $BACKENDDIR
 # RUN apk add --update py-pip
 RUN python -m pip install -r requirements.txt
-COPY . /back-end
+COPY . $BACKENDDIR
 
 
 EXPOSE 8000
