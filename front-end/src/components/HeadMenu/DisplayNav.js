@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { media } from '../../utils';
 import { Link } from 'react-router-dom';
-// import Search from './Search';
+import Search from './Search';
 import { Grid, Button, Dropdown, Icon } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { logout } from '../../store/actions/auth';
@@ -34,13 +34,13 @@ const styles = {
     padding: '23px 30px'
   },
   algoButton: {
-    position: 'absolute',
-    left: '0',
-    right: '0',
-    // width: '100%',
-    margin: '20px auto',
-    display: 'flex',
-    justifyContent: 'center'
+    // position: 'absolute',
+    // left: '0',
+    // right: '0',
+    // // width: '100%',
+    // margin: '20px auto',
+    // display: 'flex',
+    // justifyContent: 'center'
   }
 };
 
@@ -165,7 +165,7 @@ class Nav extends React.Component {
               </NavItem>
             </ul>
 
-            {/* <Search style={styles.searchBar} /> */}
+            <Search style={styles.searchBar} />
 
             <AccountItem style={styles.algoButton}>
               <Button.Group size="large" >

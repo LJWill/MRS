@@ -1,15 +1,23 @@
 import _ from 'lodash';
-import faker from 'faker';
+// import faker from 'faker';
 import React, { Component } from 'react';
 import { Search, Grid, Header, Segment } from 'semantic-ui-react';
+import pic from '../../assets/images/m2.png'
 
+// const source = _.times(5, () => ({
+//   title: faker.company.companyName(),
+//   description: faker.company.catchPhrase(),
+//   image: faker.internet.avatar(),
+//   price: faker.finance.amount(0, 100, 2, '$')
+// }));
 
-const source = _.times(5, () => ({
-  title: faker.company.companyName(),
-  description: faker.company.catchPhrase(),
-  image: faker.internet.avatar(),
-  price: faker.finance.amount(0, 100, 2, '$')
-}));
+const source = _.times(10, () => ({
+    title: 'hello',
+    description: 'world',
+    image: pic,
+    price: '$1,000,000'
+  }))
+
 
 const initialState = { isLoading: false, results: [], value: '' };
 
@@ -26,6 +34,7 @@ export default class SearchExampleStandard extends Component {
     this.setState({ value: result.title });
 
   handleSearchChange = (e, { value }) => {
+    
     this.setState({ isLoading: true, value });
 
     setTimeout(() => {
