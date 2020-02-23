@@ -5,7 +5,7 @@ MAINTAINER Will Li
 ENV PROJECTDIR = /movie/back-end
 
 # Install basic apps
-RUN apt update && apt install -y python3-pip git vim curl mysql-server
+RUN sudo apt update && sudo apt install -y python3-pip git vim curl mysql-server
 
 # Install dependencies
 WORKDIR $PROJECTDIR
