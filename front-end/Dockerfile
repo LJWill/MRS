@@ -22,7 +22,7 @@ RUN apk add --no-cache --virtual .build-deps \
     ln -s /usr/local/bin/dist/bin/yarn.js /usr/local/bin/yarn.js && \
     apk del .build-deps
 RUN yarn
-COPY . ./front-end
+COPY ./ ./front-end
 
 CMD ["yarn", "build"]
 # RUN npm run build
