@@ -1,4 +1,3 @@
-.env
 venv/
 **/*.pyc
 **/__pycache__
@@ -16,4 +15,4 @@ Lib/
 Scripts/
 pyvenv.cfg
 /.ipynb_checkpoints
-/genre
+/__pycache__
