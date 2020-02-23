@@ -13,7 +13,7 @@ ENV BACKENDDIR = /back-end
 
 # Install dependencies
 WORKDIR $BACKENDDIR
-COPY requirements.txt $BACKENDDIR
+COPY ./requirements.txt $BACKENDDIR
 # RUN apk add --update py-pip
 RUN python -m pip install -r requirements.txt
 COPY . $BACKENDDIR
