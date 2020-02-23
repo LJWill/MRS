@@ -27,6 +27,6 @@ services:
   frontend:
     build: ./front-end
     container_name: frontend
-    # command: ["npm", "run", "build"]
+    command: ["yarn", "start"]
     ports:
       - "3000:3000"

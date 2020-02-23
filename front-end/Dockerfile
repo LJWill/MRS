@@ -16,5 +16,6 @@ RUN apk add --no-cache --virtual .build-deps \
 RUN yarn
 COPY . /front-end/
 
-CMD ["yarn", "build"]
+EXPOSE 3000
+CMD ["yarn", "start"]
 # RUN npm run build
