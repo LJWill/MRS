@@ -22,11 +22,11 @@ services:
     depends_on:
       - db
     volumes: 
-      - .:.
+      - .:./back-end
 
   frontend:
     build: ./front-end
     container_name: frontend
-    command: ["npm", "run", "build"]
+    # command: ["npm", "run", "build"]
     ports:
       - "3000:3000"

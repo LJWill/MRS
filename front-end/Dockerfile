@@ -2,8 +2,7 @@ FROM node:alpine
 
 MAINTAINER Will Li
 
-ENV PROJECTDIR = /MRS
-ENV FRONTENDDIR = /MRS/front-end
+ENV FRONTENDDIR = /front-end
 
 # Copy forntend files
 WORKDIR $FRONTENDDIR
@@ -23,7 +22,7 @@ RUN apk add --no-cache --virtual .build-deps \
     ln -s /usr/local/bin/dist/bin/yarn.js /usr/local/bin/yarn.js && \
     apk del .build-deps
 RUN yarn
-COPY . .
+COPY . ./front-end
 
 CMD ["yarn", "run", "build"]
 # RUN npm run build
