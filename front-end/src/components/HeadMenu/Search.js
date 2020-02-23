@@ -12,8 +12,8 @@ import pic from '../../assets/images/m2.png'
 // }));
 
 const source = _.times(10, () => ({
-    title: 'hello',
-    description: 'world',
+    title: 'hello world',
+    description: 'people',
     image: pic,
     price: '$1,000,000'
   }))
@@ -34,7 +34,7 @@ export default class SearchExampleStandard extends Component {
     this.setState({ value: result.title });
 
   handleSearchChange = (e, { value }) => {
-    
+
     this.setState({ isLoading: true, value });
 
     setTimeout(() => {

@@ -13,6 +13,7 @@ from movie.pagination import CustomPagination
 from .algorithm import TagProcessing
 from Recommender import recommender
 
+
 class MovieDetailAPI(APIView):
     serializer_class = MovieDetailSerializer
 
@@ -48,17 +49,19 @@ class MovieRecommendationAPI(GenericAPIView):
         decode_payload = jwt_decode_handler(request.data['token'])
         like = [int(item) for item in request.data['like']]
         dislike = [int(item) for item in request.data['dislike']]
-        queryDict = {'like':like, 'dislike': dislike}
-        
+        queryDict = {'like': like, 'dislike': dislike}
+
         # recomm_mids = self.re.recommend(queryDict)
         recomm_mids = self.tp.query_list(queryDict, 100)
 
-        if not recomm_mids: return Response(status=status.HTTP_404_NOT_FOUND)
+        if not recomm_mids:
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
-        preserved = Case(*[When(pk=pk, then=pos) for pos, pk in enumerate(recomm_mids)])
+        preserved = Case(*[When(pk=pk, then=pos)
+                           for pos, pk in enumerate(recomm_mids)])
         queryset = self.get_queryset().filter(pk__in=recomm_mids).order_by(preserved)
         page = self.paginate_queryset(queryset)
-        
+
         if page is not None:
             serializer = self.serializer_class(
                 page, many=True, context={'user_id': decode_payload['user_id']})
@@ -82,16 +85,18 @@ class MovieRecommendationAPI2(GenericAPIView):
         decode_payload = jwt_decode_handler(request.data['token'])
         like = [int(item) for item in request.data['like']]
         dislike = [int(item) for item in request.data['dislike']]
-        queryDict = {'like':like, 'dislike': dislike}
-        
+        queryDict = {'like': like, 'dislike': dislike}
+
         recomm_mids = self.re.recommend(queryDict)
 
-        if not recomm_mids: return Response(status=status.HTTP_404_NOT_FOUND)
+        if not recomm_mids:
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
-        preserved = Case(*[When(pk=pk, then=pos) for pos, pk in enumerate(recomm_mids)])
+        preserved = Case(*[When(pk=pk, then=pos)
+                           for pos, pk in enumerate(recomm_mids)])
         queryset = self.get_queryset().filter(pk__in=recomm_mids).order_by(preserved)
         page = self.paginate_queryset(queryset)
-        
+
         if page is not None:
             serializer = self.serializer_class(
                 page, many=True, context={'user_id': decode_payload['user_id']})
@@ -103,6 +108,7 @@ class MovieRecommendationAPI2(GenericAPIView):
             data = serializer.data
 
         return Response(data, status=status.HTTP_200_OK)
+
 
 class MovieListAPI(GenericAPIView):
     serializer_class = MovieBriefSerializer
@@ -125,6 +131,7 @@ class MovieListAPI(GenericAPIView):
 
         return Response(data, status=status.HTTP_200_OK)
 
+
 class TopRatedMovieAPI(GenericAPIView):
     serializer_class = MovieInfoSerializer
     pagination_class = CustomPagination
@@ -145,6 +152,7 @@ class TopRatedMovieAPI(GenericAPIView):
             data = serializer.data
 
         return Response(data, status=status.HTTP_200_OK)
+
 
 class RecentMovieAPI(GenericAPIView):
     serializer_class = MovieInfoSerializer
@@ -167,6 +175,7 @@ class RecentMovieAPI(GenericAPIView):
 
         return Response(data, status=status.HTTP_200_OK)
 
+
 class PopularMovieAPI(GenericAPIView):
     serializer_class = MovieInfoSerializer
     pagination_class = CustomPagination
@@ -188,6 +197,7 @@ class PopularMovieAPI(GenericAPIView):
 
         return Response(data, status=status.HTTP_200_OK)
 
+
 class MostWatchedMovieAPI(GenericAPIView):
     serializer_class = MovieInfoSerializer
     pagination_class = CustomPagination
@@ -208,6 +218,7 @@ class MostWatchedMovieAPI(GenericAPIView):
             data = serializer.data
 
         return Response(data, status=status.HTTP_200_OK)
+
 
 class CreateUserHistoryAPI(APIView):
     serializer_class = CreateUserHistorySerializer
@@ -237,6 +248,7 @@ class CreateUserHistoryAPI(APIView):
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 class RetrieveUserHistoryAPI(APIView):
     serializer_class = RetrieveUserHistorySerializer
 
@@ -248,6 +260,38 @@ class RetrieveUserHistoryAPI(APIView):
             userhistory, many=True)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class SearchMovieAPI(GenericAPIView):
+    serializer_class = MovieInfoSerializer
+    pagination_class = CustomPagination
+    queryset = Movie.objects.all()
+
+
+    def get_queryset(self, keywords):
+        """Return movies that contains keywords"""
+        return Movie.objects.all().filter(title__icontains=keywords[0]).order_by('-popularity')
+
+    def post(self, request):
+        keywords = request.data['keywords']
+
+        print('\n\n---------->', self.get_queryset(keywords), '\n\n')
+
+        queryset = self.filter_queryset(self.get_queryset(keywords))
+        page = self.paginate_queryset(queryset)
+
+        if page is not None:
+            serializer = self.serializer_class(
+                page, many=True,)
+            result = self.get_paginated_response(serializer.data)
+            data = result.data  # pagination data
+        else:
+            serializer = self.serializer_class(
+                page, many=True)
+            data = serializer.data
+
+        return Response(data, status=status.HTTP_200_OK)
+
 
 class RatingAPI(APIView):
     serializer_class = RatingSerializer
