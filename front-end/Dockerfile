@@ -7,7 +7,7 @@ RUN mkdir /front-end
 ENV FRONTENDDIR = /front-end
 
 WORKDIR $FRONTENDDIR
-COPY package.json /front-end
+COPY ./package.json /front-end
 # RUN npm install
 # RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
 # RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
