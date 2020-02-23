@@ -1,5 +1,5 @@
 from django.http import Http404
-from django.db.models import Case, When
+from django.db.models import Case, When, Q
 from rest_framework import status
 from rest_framework.generics import get_object_or_404
 from rest_framework.views import APIView
@@ -12,6 +12,8 @@ from rest_framework_jwt.utils import jwt_decode_handler
 from movie.pagination import CustomPagination
 from .algorithm import TagProcessing
 from Recommender import recommender
+from functools import reduce
+import operator
 
 
 class MovieDetailAPI(APIView):
@@ -267,44 +269,44 @@ class SearchMovieAPI(GenericAPIView):
     pagination_class = CustomPagination
     queryset = Movie.objects.all()
 
-
     def get_queryset(self, keywords):
         """Return movies that contains keywords"""
-        return Movie.objects.all().filter(title__icontains=keywords[0]).order_by('-popularity')
+        lookups = reduce(operator.or_, (Q(title__icontains=x) for x in keywords if x))
+        return Movie.objects.all().filter(lookups).order_by('-popularity')
 
     def post(self, request):
-        keywords = request.data['keywords']
+        keywords=request.data['keywords']
 
         print('\n\n---------->', self.get_queryset(keywords), '\n\n')
 
-        queryset = self.filter_queryset(self.get_queryset(keywords))
-        page = self.paginate_queryset(queryset)
+        queryset=self.filter_queryset(self.get_queryset(keywords))
+        page=self.paginate_queryset(queryset)
 
         if page is not None:
-            serializer = self.serializer_class(
+            serializer=self.serializer_class(
                 page, many=True,)
-            result = self.get_paginated_response(serializer.data)
-            data = result.data  # pagination data
+            result=self.get_paginated_response(serializer.data)
+            data=result.data  # pagination data
         else:
-            serializer = self.serializer_class(
+            serializer=self.serializer_class(
                 page, many=True)
-            data = serializer.data
+            data=serializer.data
 
         return Response(data, status=status.HTTP_200_OK)
 
 
 class RatingAPI(APIView):
-    serializer_class = RatingSerializer
+    serializer_class=RatingSerializer
 
     def put(self, request):
-        rating = request.data
+        rating=request.data
         try:
-            ratings = Ratings.objects.get(
+            ratings=Ratings.objects.get(
                 movie_idmovie=rating['movie_idmovie'], user_iduser=rating['user_iduser'])
-            serializer = self.serializer_class(ratings, data=rating)
+            serializer=self.serializer_class(ratings, data=rating)
             serializer.is_valid(raise_exception=True)
         except:
-            serializer = self.serializer_class(data=rating)
+            serializer=self.serializer_class(data=rating)
             serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(
