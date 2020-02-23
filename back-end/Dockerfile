@@ -2,18 +2,13 @@ FROM python:3.7.5
 
 MAINTAINER Will Li
 
-# Set up and activate virtual environment
-ENV BACKENDDIR = MRS/movie/back-end
-
-# Install basic apps
-# RUN sudo apt update && sudo apt install -y python3-pip git vim curl mysql-server
 
 # Install dependencies
-WORKDIR $BACKENDDIR
-COPY requirements.txt /back-end
+WORKDIR /back-end
+COPY requirements.txt /back-end/
 # RUN apk add --update py-pip
 RUN python -m pip install -r requirements.txt
-COPY . /back-end
+COPY . /back-end/
 
 EXPOSE 8000
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]]
