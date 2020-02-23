@@ -16,7 +16,7 @@ WORKDIR $PROJECTDIR
 COPY requirements.txt .
 # RUN apk add --update py-pip
 RUN python -m pip install -r requirements.txt
-COPY . ./back-end
+COPY ./ ./back-end
 
 
 EXPOSE 8000
