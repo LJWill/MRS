@@ -10,11 +10,10 @@ ENV BACKENDDIR = /movie/back-end
 
 # Install dependencies
 WORKDIR $BACKENDDIR
-COPY requirements.txt $BACKENDDIR
+COPY ./requirements.txt $BACKENDDIR
 # RUN apk add --update py-pip
 RUN python -m pip install -r requirements.txt
 COPY . $BACKENDDIR
-
 
 EXPOSE 8000
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]]

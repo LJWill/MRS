@@ -5,7 +5,7 @@ MAINTAINER Will Li
 ENV FRONTENDDIR = /movie/front-end
 
 WORKDIR $FRONTENDDIR
-COPY package.json $FRONTENDDIR
+COPY ./package.json $FRONTENDDIR
 RUN apk add --no-cache --virtual .build-deps \
     ca-certificates \
     wget \
