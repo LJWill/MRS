@@ -3,9 +3,9 @@ FROM python:3.7.5-slim
 MAINTAINER Will Li
 
 # Set up and activate virtual environment
-ENV VIRTUAL_ENV "/venv"
-RUN python -m venv $VIRTUAL_ENV
-ENV PATH "$VIRTUAL_ENV/bin:$PATH"
+# ENV VIRTUAL_ENV "/venv"
+# RUN python -m venv $VIRTUAL_ENV
+# ENV PATH "$VIRTUAL_ENV/bin:$PATH"
 ENV PROJECTDIR = /movie/back-end
 
 # Install basic apps
