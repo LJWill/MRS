@@ -1,4 +1,4 @@
-FROM python:3.7.5-slim
+FROM python:3.7.5
 
 MAINTAINER Will Li
 
@@ -14,7 +14,7 @@ ENV PROJECTDIR = /movie/back-end
 # Install dependencies
 WORKDIR $PROJECTDIR
 COPY requirements.txt .
-RUN apk add --update py-pip
+# RUN apk add --update py-pip
 RUN python -m pip install -r requirements.txt
 COPY . .
 
