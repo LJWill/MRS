@@ -3,11 +3,11 @@ FROM node:alpine
 MAINTAINER Will Li
 
 
-RUN mkdir /app
-ENV FRONTENDDIR = /app
+RUN mkdir /front-end
+ENV FRONTENDDIR = /front-end
 
 WORKDIR $FRONTENDDIR
-COPY ./package.json /app
+COPY package.json /front-end
 # RUN npm install
 # RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
 # RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
@@ -23,7 +23,7 @@ RUN apk add --no-cache --virtual .build-deps \
     ln -s /usr/local/bin/dist/bin/yarn.js /usr/local/bin/yarn.js && \
     apk del .build-deps
 RUN yarn
-COPY ./ /app
+COPY . /front-end
 
 CMD ["yarn", "build"]
 # RUN npm run build
