@@ -3,17 +3,14 @@ FROM python:3.7.5
 MAINTAINER Will Li
 
 # Set up and activate virtual environment
-# ENV VIRTUAL_ENV "/venv"
-# RUN python -m venv $VIRTUAL_ENV
-# ENV PATH "$VIRTUAL_ENV/bin:$PATH"
-ENV BACKENDDIR = /back-end
+ENV BACKENDDIR = /movie/back-end
 
 # Install basic apps
 # RUN sudo apt update && sudo apt install -y python3-pip git vim curl mysql-server
 
 # Install dependencies
 WORKDIR $BACKENDDIR
-COPY ./requirements.txt $BACKENDDIR
+COPY requirements.txt $BACKENDDIR
 # RUN apk add --update py-pip
 RUN python -m pip install -r requirements.txt
 COPY . $BACKENDDIR
