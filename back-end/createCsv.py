@@ -4,8 +4,12 @@ import pandas as pd
 from surprise import *
 
 
-class recommend:
-    def recommend(self):
+class createCsv:
+    """"
+    This class using the models produced by scikit-surprise to get 100 most similar movie to each of
+    13700 movies, and save the result to the csv.
+    """
+    def createCsv(self):
         # for i in range(1, 20):
         #     print("genre %d start:" % i)
         #     (pred, algo) = dump.load("./KNNBasic/KNNBasic%d" % i)
@@ -45,5 +49,5 @@ class recommend:
 
 
 if __name__ == '__main__':
-    ub = recommend()
-    ub.recommend()
+    ub = createCsv()
+    ub.createCsv()

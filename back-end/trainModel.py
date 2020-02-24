@@ -1,11 +1,9 @@
 import os
 from datetime import datetime
-
 import django
 from surprise import *
 # from surprise import Dataset, Reader
 from surprise.model_selection import train_test_split
-
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "movie.settings")
 django.setup()
 import pandas as pd
@@ -13,7 +11,11 @@ from movieinfo import models as movies
 from surprise.model_selection import cross_validate
 
 
-class Recommender:
+class trainModels:
+    """
+    This class use the surprise package to train the models and evaluate them. The resulting models are
+    dumped into KNNBasic folder.
+    """
     def recommend(self):
         # for i in range(1, 20):
         #     print("No.%d genre start:" % i)
@@ -73,5 +75,5 @@ class Recommender:
 
 
 if __name__ == '__main__':
-    rc = Recommender()
+    rc = trainModels()
     rc.recommend()

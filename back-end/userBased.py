@@ -12,7 +12,9 @@ from movieinfo import models as movies
 
 
 class UserBased:
-
+    """
+    This is the implementation of user-based CF, data is read from MySQL database through Django
+    """
     def split(self, numSplit, testSplit, seed):
         users = movies.User.objects.all().values_list("iduser",flat=True)
         test = []

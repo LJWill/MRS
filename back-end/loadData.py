@@ -13,7 +13,9 @@ from movieinfo import models as movies
 
 
 class LoadingData:
-
+    """
+    This class read data from .csv files and import them into the MySQL database through Django
+    """
 
     def writeMovie(self, read_path):
         raw = pd.read_csv(read_path,

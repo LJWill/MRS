@@ -8,6 +8,11 @@ from movieinfo import models as db
 
 
 class recommender:
+    """
+    This is the real recommendation class. When this class instantiated, it read the .csv file of
+    similar produced in createCsv.py into the memory. Then it can return recommanded movies list
+    based on the input user history of like and dislike.
+    """
     dislike_lim = 10
 
     def __init__(self):
