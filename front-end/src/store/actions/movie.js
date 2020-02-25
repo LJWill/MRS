@@ -86,10 +86,9 @@ export const getMovies = requestData => {
     });
   });
 
-  axios.get('https://www.cloudflare.com/cdn-cgi/trace')
-    .then(res => {
-      console.log('ippppppppppppppppp', res.data)
-    })
+  axios.get('https://www.cloudflare.com/cdn-cgi/trace').then(res => {
+    console.log('ippppppppppppppppp', res.data);
+  });
 
   return dispatch => {
     dispatch(getMovieStart());
@@ -105,7 +104,6 @@ export const getMovies = requestData => {
 };
 
 export const getMovieDetail = id => {
-  console.log('heloooooooooooo', id);
   const requests = [
     getMovie(id),
     getActors(id),
@@ -278,7 +276,7 @@ const getRecommendationFail = error => {
   };
 };
 
-export const getMyRecommendation = (pageNumber=1) => {
+export const getMyRecommendation = (pageNumber = 1) => {
   const href = window.location.href.split('/');
   const currentUrl = href[href.length - 1];
 
@@ -324,8 +322,6 @@ export const getMyRecommendation = (pageNumber=1) => {
   };
 };
 
-
-
 // ##########################################################
 const getRecommendationStart2 = () => {
   return {
@@ -347,7 +343,7 @@ const getRecommendationFail2 = error => {
   };
 };
 
-export const getMyRecommendation2 = (pageNumber=1) => {
+export const getMyRecommendation2 = (pageNumber = 1) => {
   const href = window.location.href.split('/');
   const currentUrl = href[href.length - 1];
 
@@ -390,5 +386,53 @@ export const getMyRecommendation2 = (pageNumber=1) => {
       .catch(err => {
         dispatch(getRecommendationFail2(err));
       });
+  };
+};
+
+// ##################################################//
+
+export const getMovieSearch = keywords => {
+  console.log('heloooooooooooo', keywords);
+
+  return (dispatch, getState) => {
+    const token = getState().auth.token;
+    dispatch(getMovieSearchStart());
+    
+    axios
+      .post(`movie/search/`, {
+        token,
+        keywords
+      })
+      .then(res => {
+        dispatch(getMovieSearchSuccess(res));
+      })
+      .catch(err => {
+        console.log('*****', err);
+        dispatch(getMovieSearchFail(err));
+      });
+  };
+};
+
+
+
+// get movie search list
+export const getMovieSearchStart = () => {
+  return {
+    type: actionTypes.GET_MOVIE_SEARCH_START
+  };
+};
+
+export const getMovieSearchSuccess = (res) => {
+
+  return {
+    type: actionTypes.GET_MOVIE_SEARCH_SUCCESS,
+    movies: res.results,
+  };
+};
+
+export const getMovieSearchFail = error => {
+  return {
+    type: actionTypes.GET_MOVIE_SEARCH_FAIL,
+    error: error
   };
 };
