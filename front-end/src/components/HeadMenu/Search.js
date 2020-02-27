@@ -31,7 +31,7 @@ class SearchExampleStandard extends Component {
   handleSearchChange = (e, { value }) => {
     this.setState({ isLoading: true, value });
 
-    let keywords = value.split(' ');
+    let keywords = value;
 
     // console.log('&&&&&&&&&&&&&&&&', keywords);
 

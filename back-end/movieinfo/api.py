@@ -271,9 +271,11 @@ class SearchMovieAPI(GenericAPIView):
 
     def get_queryset(self, keywords):
         """Return movies that contains keywords"""
-        lookups = reduce(operator.or_, (Q(title__icontains=x) for x in keywords if x))
-        return Movie.objects.all().filter(lookups).order_by('-popularity')
-
+        # lookups = reduce(operator.or_, (Q(title__icontains=x) for x in keywords if x))
+        # return Movie.objects.all().filter(lookups).order_by('-popularity')
+        
+        return Movie.objects.all().filter(title__icontains=keywords).order_by('-popularity')
+        
     def post(self, request):
         keywords=request.data['keywords']
 
