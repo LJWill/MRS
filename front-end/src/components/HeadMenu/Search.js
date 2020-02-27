@@ -5,6 +5,7 @@ import { Search, Grid, Header, Segment } from 'semantic-ui-react';
 import pic from '../../assets/images/m2.png';
 import { connect } from 'react-redux';
 import * as movieActions from '../../store/actions/movie';
+import config from '../../config';
 
 const source = _.times(6, () => ({
   title: 'hello world',
@@ -50,11 +51,23 @@ class SearchExampleStandard extends Component {
   };
 
   componentWillReceiveProps(nextProps) {
-
     if (this.props.movieSearch !== nextProps.movieSearch) {
+      let results = [];
+      nextProps.movieSearch.forEach(item => {
+        let newItem = {
+          ...item,
+          description: item.release_date ? item.release_date : '',
+          price: item.vote_average ? item.vote_average : '',
+          image: item.backdrop_path
+            ? `${config.small}${item.backdrop_path}`
+            : `${config.small}${item.poster_path}`
+        };
+        results.push(newItem);
+      });
+
       this.setState({
         isLoading: false,
-        results: nextProps.movieSearch
+        results
       });
     }
   }
@@ -76,7 +89,7 @@ class SearchExampleStandard extends Component {
           fluid
           loading={isLoading}
           onResultSelect={this.handleResultSelect}
-          onSearchChange={_.debounce(this.handleSearchChange, 500, {
+          onSearchChange={_.debounce(this.handleSearchChange, 1000, {
             leading: true
           })}
           results={results}

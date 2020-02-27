@@ -20,7 +20,6 @@ const getRecommendationStart2 = (state, action) => {
 
 const getRecommendationSuccess2 = (state, action) => {
   const movies = action.movies
-  // console.log('#################################################', movies);
   return updateObject(state, {
     movies: movies.results,
     isFetching: false,
