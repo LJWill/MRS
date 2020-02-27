@@ -392,8 +392,6 @@ export const getMyRecommendation2 = (pageNumber = 1) => {
 // ##################################################//
 
 export const getMovieSearch = keywords => {
-  console.log('heloooooooooooo', keywords);
-
   return (dispatch, getState) => {
     const token = getState().auth.token;
     dispatch(getMovieSearchStart());
@@ -404,7 +402,7 @@ export const getMovieSearch = keywords => {
         keywords
       })
       .then(res => {
-        dispatch(getMovieSearchSuccess(res));
+        dispatch(getMovieSearchSuccess(res.data));
       })
       .catch(err => {
         console.log('*****', err);
@@ -423,7 +421,6 @@ export const getMovieSearchStart = () => {
 };
 
 export const getMovieSearchSuccess = (res) => {
-
   return {
     type: actionTypes.GET_MOVIE_SEARCH_SUCCESS,
     movies: res.results,

@@ -6,7 +6,7 @@ import pic from '../../assets/images/m2.png';
 import { connect } from 'react-redux';
 import * as movieActions from '../../store/actions/movie';
 
-const source = _.times(10, () => ({
+const source = _.times(6, () => ({
   title: 'hello world',
   description: 'people',
   image: pic,
@@ -30,20 +30,34 @@ class SearchExampleStandard extends Component {
   handleSearchChange = (e, { value }) => {
     this.setState({ isLoading: true, value });
 
-    console.log('&&&&&&&&&&&&&&&&', value);
+    let keywords = value.split(' ');
 
-    setTimeout(() => {
-      if (this.state.value.length < 1) return this.setState(initialState);
+    // console.log('&&&&&&&&&&&&&&&&', keywords);
 
-      const re = new RegExp(_.escapeRegExp(this.state.value), 'i');
-      const isMatch = result => re.test(result.title);
+    // setTimeout(() => {
+    //   if (this.state.value.length < 1) return this.setState(initialState);
 
+    //   const re = new RegExp(_.escapeRegExp(this.state.value), 'i');
+    //   const isMatch = result => re.test(result.title);
+
+    //   this.setState({
+    //     isLoading: false,
+    //     results: _.filter(source, isMatch)
+    //   });
+    // }, 1500);
+
+    this.props.getMovieSearch(keywords);
+  };
+
+  componentWillReceiveProps(nextProps) {
+
+    if (this.props.movieSearch !== nextProps.movieSearch) {
       this.setState({
         isLoading: false,
-        results: _.filter(source, isMatch)
+        results: nextProps.movieSearch
       });
-    }, 300);
-  };
+    }
+  }
 
   render() {
     const { isLoading, value, results } = this.state;
@@ -78,14 +92,14 @@ const mapStateToProps = state => {
   return {
     movies: state.movieBrowser.movies,
     userMovies: state.userMovie.userMovies,
-    authenticated: state.auth.token !== null,
-    token: state.auth.token
+    movieSearch: state.movieSearch.movies
   };
 };
 
 const mapDispatchToProps = dispatch => ({
   userMovieAction: (movie, token) =>
-    dispatch(movieActions.userMovieAction(movie, token))
+    dispatch(movieActions.userMovieAction(movie, token)),
+  getMovieSearch: keywords => dispatch(movieActions.getMovieSearch(keywords))
 });
 
 export default connect(
