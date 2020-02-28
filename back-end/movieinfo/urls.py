@@ -16,5 +16,6 @@ urlpatterns = [
   path('info/userhistory/', CreateUserHistoryAPI.as_view()),
   path('info/usermovies/', RetrieveUserHistoryAPI.as_view()),
 
+  path('search/', SearchMovieAPI.as_view()),
 
 ]

@@ -13,7 +13,10 @@ class CustomPagination(PageNumberPagination):
         if(self.get_next_link() is not None):
             currentPage = int(self.get_next_link().split('=')[-1]) - 1
         else:
-            currentPage = int(self.get_previous_link().split('=')[-1]) + 1
+            if(self.get_previous_link() is not None):
+                currentPage = int(self.get_previous_link().split('=')[-1]) + 1
+            else:
+                currentPage = 1
 
         return Response({
             'links': {

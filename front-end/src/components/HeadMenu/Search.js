@@ -1,14 +1,17 @@
 import _ from 'lodash';
-import faker from 'faker';
+// import faker from 'faker';
 import React, { Component } from 'react';
 import { Search, Grid, Header, Segment } from 'semantic-ui-react';
+import pic from '../../assets/images/m2.png';
+import { connect } from 'react-redux';
+import * as movieActions from '../../store/actions/movie';
+import config from '../../config';
 
-
-const source = _.times(5, () => ({
-  title: faker.company.companyName(),
-  description: faker.company.catchPhrase(),
-  image: faker.internet.avatar(),
-  price: faker.finance.amount(0, 100, 2, '$')
+const source = _.times(6, () => ({
+  title: 'hello world',
+  description: 'people',
+  image: pic,
+  price: '$1,000,000'
 }));
 
 const initialState = { isLoading: false, results: [], value: '' };
@@ -19,27 +22,47 @@ const styles = {
     display: 'flex'
   }
 };
-export default class SearchExampleStandard extends Component {
+class SearchExampleStandard extends Component {
   state = initialState;
 
-  handleResultSelect = (e, { result }) =>
-    this.setState({ value: result.title });
+  handleResultSelect = (e, { result }) => {
+    let selectMovie = Object.assign({ userAction: true }, result);
+
+    this.setState({ value: result.title }, () => {
+      this.props.userMovieAction(selectMovie, this.props.token);
+    });
+  };
 
   handleSearchChange = (e, { value }) => {
-    this.setState({ isLoading: true, value });
+    this.setState({ isLoading: true, value }, () => {
+      this.props.getMovieSearch(value);
+    });
+  };
 
-    setTimeout(() => {
-      if (this.state.value.length < 1) return this.setState(initialState);
+  componentWillReceiveProps(nextProps) {
+    if (this.props.movieSearch !== nextProps.movieSearch) {
+      let results = [];
+      nextProps.movieSearch.forEach(item => {
+        let newItem = {
+          ...item,
+          key: item.idMovie,
+          description: item.release_date ? item.release_date : '',
+          price: item.vote_average ? `${item.vote_average}` : '',
+          image: item.backdrop_path
+            ? `${config.small}${item.backdrop_path}`
+            : `${config.small}${item.poster_path}`
+        };
+        delete newItem.adult;
 
-      const re = new RegExp(_.escapeRegExp(this.state.value), 'i');
-      const isMatch = result => re.test(result.title);
+        results.push(newItem);
+      });
 
       this.setState({
         isLoading: false,
-        results: _.filter(source, isMatch)
+        results
       });
-    }, 300);
-  };
+    }
+  }
 
   render() {
     const { isLoading, value, results } = this.state;
@@ -47,10 +70,15 @@ export default class SearchExampleStandard extends Component {
     return (
       <Grid.Column width={12} style={styles.searchBar}>
         <style>
-        {`
+          {`
             .ui.search .prompt {
                 border-radius: 500rem;
                 width:50vw
+            }
+
+            .ui.search>.results {
+              overflow-y: scroll;
+              max-height: 500px
             }
         `}
         </style>
@@ -58,14 +86,33 @@ export default class SearchExampleStandard extends Component {
           fluid
           loading={isLoading}
           onResultSelect={this.handleResultSelect}
-          onSearchChange={_.debounce(this.handleSearchChange, 500, {
+          onSearchChange={_.debounce(this.handleSearchChange, 1000, {
             leading: true
           })}
           results={results}
           value={value}
-          {...this.props}
         />
       </Grid.Column>
     );
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    movies: state.movieBrowser.movies,
+    userMovies: state.userMovie.userMovies,
+    movieSearch: state.movieSearch.movies,
+    token: state.auth.token
+  };
+};
+
+const mapDispatchToProps = dispatch => ({
+  userMovieAction: (movie, token) =>
+    dispatch(movieActions.userMovieAction(movie, token)),
+  getMovieSearch: keywords => dispatch(movieActions.getMovieSearch(keywords))
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SearchExampleStandard);

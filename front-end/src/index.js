@@ -12,7 +12,7 @@ import movieDetailReducer from "./store/reducers/movieDetail";
 import userMovieReducer from "./store/reducers/userMovie"; 
 import recommendMovieReducer from "./store/reducers/recommendMovie"; 
 import recommendMovieReducer2 from "./store/reducers/recommendMovie2"; 
-
+import movieSearchReducer from "./store/reducers/movieSearch"; 
 
 const composeEnhances = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
@@ -23,6 +23,7 @@ const rootReducer = combineReducers({
   userMovie: userMovieReducer,
   recommendMovie: recommendMovieReducer,
   recommendMovie2: recommendMovieReducer2,
+  movieSearch: movieSearchReducer
 });
 
 const store = createStore(rootReducer, composeEnhances(applyMiddleware(thunk)));
