@@ -26,12 +26,12 @@ class SearchExampleStandard extends Component {
   state = initialState;
 
   handleResultSelect = (e, { result }) =>
-    this.setState({ value: result.title });
+    this.setState({ value: result.title});
 
   handleSearchChange = (e, { value }) => {
-    this.setState({ isLoading: true, value });
-
-    let keywords = value;
+    this.setState({ isLoading: true, value}, () => {
+      this.props.getMovieSearch(value);
+    });
 
     // console.log('&&&&&&&&&&&&&&&&', keywords);
 
@@ -46,8 +46,7 @@ class SearchExampleStandard extends Component {
     //     results: _.filter(source, isMatch)
     //   });
     // }, 1500);
-
-    this.props.getMovieSearch(keywords);
+    
   };
 
   componentWillReceiveProps(nextProps) {
@@ -82,6 +81,11 @@ class SearchExampleStandard extends Component {
             .ui.search .prompt {
                 border-radius: 500rem;
                 width:50vw
+            }
+
+            .ui.search>.results {
+              overflow-y: scroll;
+              max-height: 500px;
             }
         `}
         </style>
