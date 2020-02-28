@@ -25,8 +25,13 @@ const styles = {
 class SearchExampleStandard extends Component {
   state = initialState;
 
-  handleResultSelect = (e, { result }) =>
-    this.setState({ value: result.title });
+  handleResultSelect = (e, { result }) => {
+    let selectMovie = Object.assign({ userAction: true }, result);
+
+    this.setState({ value: result.title }, () => {
+      this.props.userMovieAction(selectMovie, this.props.token);
+    });
+  };
 
   handleSearchChange = (e, { value }) => {
     this.setState({ isLoading: true, value }, () => {
@@ -48,7 +53,6 @@ class SearchExampleStandard extends Component {
             : `${config.small}${item.poster_path}`
         };
         delete newItem.adult;
-        delete newItem.idMovie;
 
         results.push(newItem);
       });
@@ -97,7 +101,8 @@ const mapStateToProps = state => {
   return {
     movies: state.movieBrowser.movies,
     userMovies: state.userMovie.userMovies,
-    movieSearch: state.movieSearch.movies
+    movieSearch: state.movieSearch.movies,
+    token: state.auth.token
   };
 };
 
