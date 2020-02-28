@@ -42,11 +42,14 @@ class SearchExampleStandard extends Component {
           ...item,
           key: item.idMovie,
           description: item.release_date ? item.release_date : '',
-          price: item.vote_average ? item.vote_average : '',
+          price: item.vote_average ? `${item.vote_average}` : '',
           image: item.backdrop_path
             ? `${config.small}${item.backdrop_path}`
             : `${config.small}${item.poster_path}`
         };
+        delete newItem.adult;
+        delete newItem.idMovie;
+
         results.push(newItem);
       });
 
@@ -84,7 +87,6 @@ class SearchExampleStandard extends Component {
           })}
           results={results}
           value={value}
-          {...this.props}
         />
       </Grid.Column>
     );
