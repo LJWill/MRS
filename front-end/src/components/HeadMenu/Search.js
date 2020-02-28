@@ -26,27 +26,12 @@ class SearchExampleStandard extends Component {
   state = initialState;
 
   handleResultSelect = (e, { result }) =>
-    this.setState({ value: result.title});
+    this.setState({ value: result.title });
 
   handleSearchChange = (e, { value }) => {
-    this.setState({ isLoading: true, value}, () => {
+    this.setState({ isLoading: true, value }, () => {
       this.props.getMovieSearch(value);
     });
-
-    // console.log('&&&&&&&&&&&&&&&&', keywords);
-
-    // setTimeout(() => {
-    //   if (this.state.value.length < 1) return this.setState(initialState);
-
-    //   const re = new RegExp(_.escapeRegExp(this.state.value), 'i');
-    //   const isMatch = result => re.test(result.title);
-
-    //   this.setState({
-    //     isLoading: false,
-    //     results: _.filter(source, isMatch)
-    //   });
-    // }, 1500);
-    
   };
 
   componentWillReceiveProps(nextProps) {
@@ -55,6 +40,7 @@ class SearchExampleStandard extends Component {
       nextProps.movieSearch.forEach(item => {
         let newItem = {
           ...item,
+          key: item.idMovie,
           description: item.release_date ? item.release_date : '',
           price: item.vote_average ? item.vote_average : '',
           image: item.backdrop_path
@@ -85,7 +71,7 @@ class SearchExampleStandard extends Component {
 
             .ui.search>.results {
               overflow-y: scroll;
-              max-height: 500px;
+              max-height: 500px
             }
         `}
         </style>
