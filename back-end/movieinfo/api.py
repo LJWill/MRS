@@ -279,7 +279,7 @@ class SearchMovieAPI(GenericAPIView):
     def post(self, request):
         keywords=request.data['keywords']
 
-        print('\n\n---------->', self.get_queryset(keywords), '\n\n')
+        # print('\n\n---------->', self.get_queryset(keywords), '\n\n')
 
         queryset=self.filter_queryset(self.get_queryset(keywords))
         page=self.paginate_queryset(queryset)
